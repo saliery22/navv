@@ -44,7 +44,7 @@ function getUnitMarker(unit) {
   if (!unitPos) return null;
     
   if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
-  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){imsaze = 24;}
+  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0){imsaze = 24;}
 
   marker = L.marker([unitPos.y, unitPos.x], {
     clickable: true,
