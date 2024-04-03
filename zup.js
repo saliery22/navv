@@ -44,7 +44,7 @@ function getUnitMarker(unit) {
   if (!unitPos) return null;
     
   if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
-  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0){imsaze = 24;}
+  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){imsaze = 24;}
 
   marker = L.marker([unitPos.y, unitPos.x], {
     clickable: true,
@@ -1141,7 +1141,7 @@ function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
             litry=0;
             if (it>0) litry=getTableValue(rows[j].c[it]); 
             datt= Date.parse(getTableValue(rows[j].c[1]));
-            Global_DATA[ii].push([getTableValue(rows[j].c[0]),getTableValue(rows[j].c[1]),litry,getTableValue(rows[j].c[2]),datt]);
+            Global_DATA[ii].push([getTableValue(rows[j].c[0]),getTableValue(rows[j].c[1]),litry,getTableValue(rows[j].c[2]),datt,getTableValue(rows[j].c[4])]);
             Global_DATA[ii][0][2]=datt/1000+1;
           }
           ii++;
@@ -1190,7 +1190,7 @@ function position(t)  {
             y = parseFloat(Global_DATA[ii][i][0].split(',')[0]);
             x = parseFloat(Global_DATA[ii][i][0].split(',')[1]);
             markerrr.setLatLng([y, x]); 
-            markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ '<br />' +Global_DATA[ii][i][2]+'л');
+            markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ '<br />' +Global_DATA[ii][i][2]+'л'+ '<br />' +Global_DATA[ii][i][5]);
             if(rux == 1){if (Global_DATA[ii][i][3][0]!='0' ) {markerrr.setOpacity(1);}}
             break;
           }
@@ -1489,7 +1489,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0){ 
+      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
       }
@@ -2059,7 +2059,7 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
     for (let iii = 1; iii < geo_splines[i][ii].length; iii++) {
       p1 = turf.point(geo_splines[i][ii][iii-1]);
       p2 = turf.point(geo_splines[i][ii][iii]);
-      if(turf.distance(p1, p2, {units: 'meters'})<zaxvat*0.5){
+      if(turf.distance(p1, p2, {units: 'meters'})<2){
         geo_splines[i][ii].splice(iii, 1);
         iii--;
         if(geo_splines[i][ii].length<2){
@@ -2113,7 +2113,7 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
           let p2p3=turf.distance(p2, p3, {units: 'meters'});
           let p1p4=turf.distance(p1, p4, {units: 'meters'});
 
-          if(p2p3<zaxvat*0.5 || p1p4<zaxvat*0.5)continue;
+          if(p2p3<1 || p1p4<1)continue;
           let linestring1 = turf.lineString([ turf.getCoord(p2), turf.getCoord(p3)]);
           let linestring2 = turf.lineString([ turf.getCoord(p1), turf.getCoord(p4)]);
           
