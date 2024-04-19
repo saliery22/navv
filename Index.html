@@ -23,7 +23,7 @@
 #marrr { width: 50%; height:750px; margin-left: 50%; overflow-y: auto; overflow-x: auto;}
 #option { width: 50%; height:750px; margin-left: 50%; overflow-y: auto; overflow-x: auto;}
 #unit_info { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
-
+#zupinki { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
 
 #grafik { width: 100%; border: 1px solid #c6c6c6;}
 #chart1 { width: 100%; height:200px;}
@@ -110,7 +110,6 @@ button, input, span, select {
 }
 
 #v11{ background-color: #8868e2; cursor: pointer; margin-left: 100px; }
-#v7{ background-color: #f5f4b4; cursor: pointer; }
 #v10{ background-color: #f8b1c0; cursor: pointer;}
 #v8{ background-color: #b2f5b4; cursor: pointer;}
 #v18{ background-color: #cbf5b2; cursor: pointer;}
@@ -119,6 +118,7 @@ button, input, span, select {
 #men1{ float: right;  cursor: pointer;}
 #men3{ float: right;  cursor: pointer;}
 #men4{ float: right;  cursor: pointer;}
+#men5{ float: right;  cursor: pointer;}
 
 
 #fff{float: right;  }
@@ -126,6 +126,10 @@ button, input, span, select {
 #ff{ position: relative;left: 25%;}
 #f{  position: relative;left: 25%;}
 #shirzahvata{  width: 30px;}
+#unit_zup{  width: 500px;}
+#min_zup{  width: 30px;}
+
+
 
 
 </style>
@@ -150,13 +154,13 @@ button, input, span, select {
 <button id='v13'>Автомобілі</button> 
 
 <button id='v11'>Показати/Закрити Графік</button>
-<button id='v7'>Зупинки вантажівок</button>
 <button id='v10'>Збої навігації</button> 
 <button id='v18'>Очистити маркери</button>
 <button id='v8'>Очистити трек</button>
 <button id='men4'>Інф</button>
 <button id='men3'>Геомодуль</button>
 <button id='men1'>Маршрути</button>
+<button id='men5'>Зупинки</button>
 
     </div>
 
@@ -237,6 +241,30 @@ button, input, span, select {
  <table id="unit_table"></table>
  <button id='prDUT'>перевірка ДРП/GPS</button>
  </div>
+
+ <div id="zupinki">
+    <br> 
+    <br> 
+    <br> 
+    фільтр техніки(JD,Камаз,SCANIA)<input id='unit_zup' type='text' placeholder='Всі' value="All">
+    <br> 
+    мінімальний час зупинки(секунд)<input id='min_zup' type='text' placeholder='30' value="30"> 
+    <br>  
+    <button id='per_zup'>перевірка зупинок</button>
+    <br>  
+    <br>
+    <br> 
+    <button id='gruz_zup'>зупинки вантажівок більше 3хв</button> 
+    <br>  
+    <button id='benzovoz_zup'>зупинки бензовозів більше 3хв</button>
+    <br>  
+    <button id='gaz_zup'>зупинки газонів більше 3хв</button>
+    <br>  
+    <button id='moloko_zup'>зупинки молоковозів більше 1хв</button> 
+    <br>  
+    <button id='pogr_zup'>зупинки погрузчиків більше 3хв</button>
+    </div>
+
  <div><input id='fromtime1' type='text' placeholder='date1'><input id='fromtime2' type='text' placeholder='date2'><button id='eeew'>Завантажити</button><button id='vchora'>Вчора</button><span id="ff">Час:</span><span id="f"></span><span id="fff">Автоповтор</span><input id='gif' type="checkbox"></div>
 
  <div class="slidecontainer">
