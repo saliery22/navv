@@ -1,6 +1,5 @@
 
 
-
 // global variables
 var map, marker,geozones = [], unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
@@ -44,7 +43,7 @@ function getUnitMarker(unit) {
   if (!unitPos) return null;
     
   if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
-  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0){imsaze = 24;}
+  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0){imsaze = 24;} 
 
   marker = L.marker([unitPos.y, unitPos.x], {
     clickable: true,
@@ -294,9 +293,11 @@ $(".livesearch").chosen({search_contains : true});
   }
   $('#option').hide();
   $('#unit_info').hide();
+  $('#zupinki').hide();
   clearGEO();
   $('#men3').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
+  $('#men5').css({'background':'#e9e9e9'});
   });
  $('#men3').click(function() { 
   if ($('#option').is(':hidden')) {
@@ -312,9 +313,11 @@ $(".livesearch").chosen({search_contains : true});
 $('#marrr').hide();
 $('#unit_info').hide();
 $('#inftb').empty();
+$('#zupinki').hide();
 clearGEO(); 
 $('#men1').css({'background':'#e9e9e9'});
 $('#men4').css({'background':'#e9e9e9'});
+$('#men5').css({'background':'#e9e9e9'});
 });
 
 
@@ -331,14 +334,36 @@ $('#men4').css({'background':'#e9e9e9'});
     }
     $('#marrr').hide();
     $('#option').hide();
+    $('#zupinki').hide();
     clearGEO(); 
     $('#men3').css({'background':'#e9e9e9'});
     $('#men1').css({'background':'#e9e9e9'});
+    $('#men5').css({'background':'#e9e9e9'});
  });
+
+ $('#men5').click(function() { 
+  if ($('#zupinki').is(':hidden')) {
+    $('#zupinki').show();
+    $('#map').css('width', '60%');
+    this.style.background = '#b2f5b4';
+  }else{
+   $('#zupinki').hide();
+   $('#map').css('width', '100%');
+   this.style.background = '#e9e9e9';
+  }
+  $('#marrr').hide();
+  $('#option').hide();
+  $('#unit_info').hide();
+  clearGEO(); 
+  $('#men3').css({'background':'#e9e9e9'});
+  $('#men1').css({'background':'#e9e9e9'});
+  $('#men4').css({'background':'#e9e9e9'});
+});
 
  $('#marrr').hide();
  $('#option').hide();
  $('#unit_info').hide();
+ $('#zupinki').hide();
 
 
 
@@ -390,7 +415,7 @@ $('#men4').css({'background':'#e9e9e9'});
   $('#gooo2').click(fn_load1);
   
   
-  $('#v7').click(Cikle2);
+
   $('#v8').click(clear);
   $('#v18').click(clear2);
     $('#v1').click(chuse);
@@ -437,7 +462,36 @@ $('#men4').css({'background':'#e9e9e9'});
       
       ObrabotkaPolya(texnika,$('#shirzahvata').val());
     });
-  
+    $("#per_zup").click(function() { 
+      maska_zup=$('#unit_zup').val();
+      min_zup=$('#min_zup').val();
+      Cikle2();
+    });
+    $("#gruz_zup").click(function() { 
+      maska_zup='Камаз,SCANIA,МАЗ';
+      min_zup=180;
+      Cikle2();
+    });
+    $("#benzovoz_zup").click(function() { 
+      maska_zup='ВМ1613СР,ВМ1614СР,ВМ2893ЕН,ВМ3861ВО,ВМ3862ВО,ВМ4156ВС';
+      min_zup=180;
+      Cikle2();
+    });
+    $("#gaz_zup").click(function() { 
+      maska_zup='ГАЗ';
+      min_zup=180;
+      Cikle2();
+    });
+    $("#moloko_zup").click(function() { 
+      maska_zup='ВМ3204ЕВ,ВМ3372СТ,ВМ5913СІ';
+      min_zup=60;
+      Cikle2();
+    });
+    $("#pogr_zup").click(function() { 
+      maska_zup='JCB,Manitou';
+      min_zup=180;
+      Cikle2();
+    });
 
     
     
@@ -527,7 +581,7 @@ basemaps.OSM.addTo(map);
 
 }
 
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8422B1AF0981EDAA636C40E4ACE7FEC87BE5CBDFF6F|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+
 
 
 function show_track (time1,time2) {
@@ -1221,32 +1275,29 @@ if($("#gif").is(":checked")) {
     
 var icl2 =-1;
 var idun2=0;
+let maska_zup='All';
+let min_zup=60;
+
 function Cikle2(){
  icl2+=1;
-  if(icl2==0){msg('ЗАЧЕКАЙТЕ -завантаження');data_zup = [];}
- $('button').prop("disabled", true);
-   
-   if(icl2< unitslist.length){
-  
-     idun2 = unitslist[icl2];
-     var name =idun2.getName();
-     if(name.indexOf('МАЗ')>0 || name.indexOf('Камаз')>0|| name.indexOf('ГАЗ')>0|| name.indexOf('SCANIA')>0){ 
+ if(icl2==0)data_zup=[];
+    let str = maska_zup.split(',');
+    let unit= false;
+    if (maska_zup=='All')unit= true;
+      if(icl2 < unitslist.length){
+        str.forEach((element) => {if(unitslist[icl2].getName().indexOf(element)>=0){unit = true;}});
+        if(unit){
+          msg(unitslist.length-icl2);
+          idun2 = unitslist[icl2];
           executeReport2(idun2);
-
-     }else{Cikle2();}
-     
-    
-    
-    }else{
-    icl2=-1;
-
-    $('button').prop("disabled", false);
-    msg('ЗАВЕРШЕНО');
-     zupinki();
-    
-    }
-    
-
+        }else{ Cikle2(); }
+      } else {
+        icl2=-1;
+        $('button').prop("disabled", false);
+        $('#log').empty();
+        msg('Завантажено');
+        zupinki();
+      }   
 }
 function executeReport2(id){ // execute selected report
     // get data from corresponding fields
@@ -1318,13 +1369,17 @@ result.getTableRows(0, 0, tables[0].rows, // get Table rows
 var zup_mark_data=[];
 var zup_hist=[];
 function zupinki(){
- for(var iii=0; iii < zup_mark_data.length; iii++){
- map.removeLayer(zup_mark_data[iii]);
-  if(iii == zup_mark_data.length-1){zup_mark_data=[];}
- }
+ //for(var iii=0; iii < zup_mark_data.length; iii++){
+// map.removeLayer(zup_mark_data[iii]);
+ // if(iii == zup_mark_data.length-1){zup_mark_data=[];}
+ //}
   
  for(var i=0; i < data_zup.length; i++){
  
+  msg(data_zup[i][3]);
+if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** iy), 0)<min_zup) continue;
+       
+
  if(data_zup[i][0]){
     var y = parseFloat(data_zup[i][0].split(',')[0]);
     var x = parseFloat(data_zup[i][0].split(',')[1]);
@@ -1487,7 +1542,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){ 
+      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
       }
@@ -2119,12 +2174,14 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
           if(turf.booleanIntersects(linestring1, linestring2)){poliXY = [[turf.getCoord(p1), turf.getCoord(p2), turf.getCoord(p4), turf.getCoord(p3),turf.getCoord(p1)]];}
 
           let polygon = turf.polygon(poliXY,{ name: traktor });
+          let options = {precision: 6, coordinates: 2};
+          let polygon2 = turf.truncate(polygon, options);
           //let result = turf.unkinkPolygon(polygon);
           //let polylinee = L.geoJSON(polygon).addTo(map);
           //geo_layer.push(polylinee); 
           p1=p4;
           p2=p3;
-          polis.push(polygon);
+          polis.push(polygon2);
       }
 
   } 
