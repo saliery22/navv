@@ -1376,7 +1376,7 @@ function zupinki(){
   
  for(var i=0; i < data_zup.length; i++){
  
-  msg(data_zup[i][3]);
+
 if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** iy), 0)<min_zup) continue;
        
 
