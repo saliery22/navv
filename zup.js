@@ -427,6 +427,17 @@ $('#men5').css({'background':'#e9e9e9'});
     $('#v9').click(chuse);
     $('#v12').click(chuse);
     $('#v13').click(chuse);
+	
+    $('#v21').click(chuse);
+    $('#v22').click(chuse);
+    $('#v23').click(chuse);
+    $('#v24').click(chuse);
+    $('#v25').click(chuse);
+    $('#v26').click(chuse);
+    $('#v27').click(chuse);
+    $('#v28').click(chuse);
+    $('#v29').click(chuse);
+    $('#v30').click(chuse);
     
     $('#o0').click(Gozone_History);
     $('#o1').click(Gozone_History);
@@ -1244,6 +1255,16 @@ function position(t)  {
             markerrr.setLatLng([y, x]); 
             markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ '<br />' +Global_DATA[ii][i][2]+'л'+ '<br />' +Global_DATA[ii][i][5]);
             if(rux == 1){if (Global_DATA[ii][i][3][0]!='0' ) {markerrr.setOpacity(1);}}
+            if(rux == 21){ if (Global_DATA[ii][i][5][0]=='Д' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 22){ if (Global_DATA[ii][i][5][0]=='К' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 23){ if (Global_DATA[ii][i][5][0]=='Б' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 24){ if (Global_DATA[ii][i][5][0]=='Г' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 25){ if (Global_DATA[ii][i][5][0]=='П' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 26){ if (Global_DATA[ii][i][5][0]=='Р' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 30){ if (Global_DATA[ii][i][5][0]=='' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             break;
           }
      }
@@ -1500,7 +1521,7 @@ function clear2(){
 
 function chuse() {
   var nmm,mm,idd;
-	
+  
    $('#v1').css({'background':'#e9e9e9'});
    $('#v2').css({'background':'#e9e9e9'});
    $('#v3').css({'background':'#e9e9e9'});
@@ -1510,11 +1531,31 @@ function chuse() {
    $('#v9').css({'background':'#e9e9e9'});
    $('#v12').css({'background':'#e9e9e9'});
    $('#v13').css({'background':'#e9e9e9'});
-	
-  if ($(this).attr("id")=='v9'){
-     if(rux==0)rux = 1;
-     this.style.background = '#b2f5b4';
-     }else{rux = 0;}
+
+   $('#v21').css({'background':'#e9e9e9'});
+   $('#v22').css({'background':'#e9e9e9'});
+   $('#v23').css({'background':'#e9e9e9'});
+   $('#v24').css({'background':'#e9e9e9'});
+   $('#v25').css({'background':'#e9e9e9'});
+   $('#v26').css({'background':'#e9e9e9'});
+   $('#v27').css({'background':'#e9e9e9'});
+   $('#v28').css({'background':'#e9e9e9'});
+   $('#v29').css({'background':'#e9e9e9'});
+   $('#v30').css({'background':'#e9e9e9'});
+  
+   rux = 0;
+
+  if ($(this).attr("id")=='v9'){if(rux==0)rux = 1; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v21'){if(rux==0)rux = 21; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v22'){if(rux==0)rux = 22; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v23'){if(rux==0)rux = 23; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v24'){if(rux==0)rux = 24; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v25'){if(rux==0)rux = 25; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v26'){if(rux==0)rux = 26; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v27'){if(rux==0)rux = 27; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v28'){if(rux==0)rux = 28; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v29'){if(rux==0)rux = 29; this.style.background = '#b2f5b4';}
+  if ($(this).attr("id")=='v30'){if(rux==0)rux = 30; this.style.background = '#b2f5b4';}
   
 for(var i=0; i < allunits.length; i++){
 nmm =allunits[i].getName();
@@ -1525,49 +1566,49 @@ mm = markerByUnit[idd];
    
      if ($(this).attr("id")=='v1'){
       mm.setOpacity(1);
-	      this.style.background = '#b2f5b4';
+      this.style.background = '#b2f5b4';
      }
      
      if ($(this).attr("id")=='v2'){
      if(nmm.indexOf('КАМАЗ')>0|| nmm.indexOf('Камаз')>0){ 
      mm.setOpacity(1);
        mm.setZIndexOffset(1000);
-	      this.style.background = '#b2f5b4';
+       this.style.background = '#b2f5b4';
      }
      }  
      if ($(this).attr("id")=='v3'){
      if(nmm.indexOf(' МАЗ')>0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
-	      this.style.background = '#b2f5b4';
+       this.style.background = '#b2f5b4';
      }
      } 
      if ($(this).attr("id")=='v4'){
      if(nmm.indexOf('SCANIA')>0){ 
        mm.setOpacity(1);
        mm.setZIndexOffset(1000);
-	      this.style.background = '#b2f5b4';
+       this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v5'){
      if(nmm.indexOf('JCB')>0|| nmm.indexOf('Manitou')>0 || nmm.indexOf('Scorpion')>0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
-	      this.style.background = '#b2f5b4';
+       this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v6'){
      if(nmm.indexOf('ГАЗ')>0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
-	      this.style.background = '#b2f5b4';
+       this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v12'){
       if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
-	       this.style.background = '#b2f5b4';
+        this.style.background = '#b2f5b4';
       }
       }
      
@@ -1575,7 +1616,15 @@ mm = markerByUnit[idd];
       if(nmm.indexOf('Нива')>0 || nmm.indexOf('Газель')>0 || nmm.indexOf('Лада')>0 || nmm.indexOf('Lanos')>0 || nmm.indexOf('Дастер')>0 || nmm.indexOf('Stepway')>0 || nmm.indexOf('ВАЗ')>0 || nmm.indexOf('ФОРД')>0 || nmm.indexOf('Toyota')>0 || nmm.indexOf('Рено')>0 || nmm.indexOf('TOYOTA')>0 || nmm.indexOf('Skoda')>0|| nmm.indexOf('ЗАЗ ')>0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
-	       this.style.background = '#b2f5b4';
+        this.style.background = '#b2f5b4';
+      }
+      }
+
+     if ($(this).attr("id")=='v30'){
+      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0){
+       mm.setOpacity(1);
+        mm.setZIndexOffset(1000);
+        this.style.background = '#b2f5b4';
       }
       }
 }
