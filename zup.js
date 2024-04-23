@@ -1261,7 +1261,7 @@ function position(t)  {
             if(rux == 24){ if (Global_DATA[ii][i][5][0]=='Г' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 25){ if (Global_DATA[ii][i][5][0]=='П' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 26){ if (Global_DATA[ii][i][5][0]=='Р' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+           // if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 30){ if (Global_DATA[ii][i][5][0]=='' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
@@ -1552,7 +1552,7 @@ function chuse() {
   if ($(this).attr("id")=='v24'){if(rux==0)rux = 24; this.style.background = '#b2f5b4';}
   if ($(this).attr("id")=='v25'){if(rux==0)rux = 25; this.style.background = '#b2f5b4';}
   if ($(this).attr("id")=='v26'){if(rux==0)rux = 26; this.style.background = '#b2f5b4';}
-  if ($(this).attr("id")=='v27'){if(rux==0)rux = 27; this.style.background = '#b2f5b4';}
+  //if ($(this).attr("id")=='v27'){if(rux==0)rux = 27; this.style.background = '#b2f5b4';}
   if ($(this).attr("id")=='v28'){if(rux==0)rux = 28; this.style.background = '#b2f5b4';}
   if ($(this).attr("id")=='v29'){if(rux==0)rux = 29; this.style.background = '#b2f5b4';}
   if ($(this).attr("id")=='v30'){if(rux==0)rux = 30; this.style.background = '#b2f5b4';}
@@ -1614,6 +1614,14 @@ mm = markerByUnit[idd];
      
     if ($(this).attr("id")=='v13'){
       if(nmm.indexOf('Нива')>0 || nmm.indexOf('Газель')>0 || nmm.indexOf('Лада')>0 || nmm.indexOf('Lanos')>0 || nmm.indexOf('Дастер')>0 || nmm.indexOf('Stepway')>0 || nmm.indexOf('ВАЗ')>0 || nmm.indexOf('ФОРД')>0 || nmm.indexOf('Toyota')>0 || nmm.indexOf('Рено')>0 || nmm.indexOf('TOYOTA')>0 || nmm.indexOf('Skoda')>0|| nmm.indexOf('ЗАЗ ')>0){ 
+       mm.setOpacity(1);
+        mm.setZIndexOffset(1000);
+        this.style.background = '#b2f5b4';
+      }
+      }
+
+      if ($(this).attr("id")=='v27'){
+      if(nmm.indexOf('CASE 4430')>0 || nmm.indexOf('R4045')>0|| nmm.indexOf('612R')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
