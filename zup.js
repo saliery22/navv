@@ -1409,7 +1409,7 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
 
     
     for(var ii=0; ii < zup_hist.length; ii++){
-      if(data_zup[i][1]==zup_hist[ii]){gren=1;}
+      if((data_zup[i][1]+data_zup[i][3])==zup_hist[ii]){gren=1;}
     }
     
    
@@ -1436,7 +1436,7 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
   var loo = (e.target._popup._content.split('<br />')[2]).split(':')[0]*3600000;
   var t1=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])-3600000);
   var t2=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])+3600000+loo);
- 
+  
    show_track(t1,t2);
    slider.value=(Date.parse(e.target._popup._content.split('<br />')[1])-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
    position(Date.parse(e.target._popup._content.split('<br />')[1]));
@@ -1459,8 +1459,8 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
                    var cpdataa='';
                  cpdataa += e.target._popup._content.split('<br />')[0] + '\t' +e.target._popup._content.split('<br />')[1] + '\t' +e.target._popup._content.split('<br />')[2] + ' \t' + e.target._popup._content.split('<br />')[3];
   navigator.clipboard.writeText(cpdataa);  
-  zup_hist.push(e.target._popup._content.split('<br />')[1]);
-  if(zup_hist.length>300){zup_hist.shift();}
+  zup_hist.push(e.target._popup._content.split('<br />')[1]+e.target._popup._content.split('<br />')[2]);
+  if(zup_hist.length>700){zup_hist.shift();}
   $("#lis0").chosen().val(unitsID[e.target._popup._content.split('<br />')[0]]); 
   $("#lis0").trigger("chosen:updated");
   layers[0]=0;
@@ -1470,9 +1470,8 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
   var t2=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])+3600000+loo);
  
    show_track(t1,t2);
-   slider.value=(Date.parse(e.target._popup._content.split('<br />')[1])-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+    slider.value=(Date.parse(e.target._popup._content.split('<br />')[1])-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
    position(Date.parse(e.target._popup._content.split('<br />')[1]));
-			 
    e.target.setIcon(L.icon({iconUrl: '333.png',iconSize:   [24, 24],iconAnchor: [12, 24]}));
    localStorage.setItem('arhivzup', JSON.stringify(zup_hist)); 
                  });
