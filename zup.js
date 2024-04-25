@@ -490,7 +490,7 @@ $('#men5').css({'background':'#e9e9e9'});
     });
     $("#gaz_zup").click(function() { 
       maska_zup='ГАЗ';
-      min_zup=180;
+      min_zup=30;
       Cikle2();
     });
     $("#moloko_zup").click(function() { 
@@ -500,7 +500,7 @@ $('#men5').css({'background':'#e9e9e9'});
     });
     $("#pogr_zup").click(function() { 
       maska_zup='JCB,Manitou';
-      min_zup=180;
+      min_zup=60;
       Cikle2();
     });
 
