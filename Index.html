@@ -23,7 +23,7 @@
 #marrr { width: 50%; height:750px; margin-left: 50%; overflow-y: auto; overflow-x: auto;}
 #option { width: 50%; height:750px; margin-left: 50%; overflow-y: auto; overflow-x: auto;}
 #unit_info { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
-#zupinki { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
+#zupinki { width: 20%; height:750px; margin-left: 80%; overflow-y: auto; overflow-x: auto;}
 
 #grafik { width: 100%; border: 1px solid #c6c6c6;}
 #chart1 { width: 100%; height:200px;}
@@ -128,6 +128,11 @@ button, input, span, select {
 #shirzahvata{  width: 40px;}
 
 #min_zup{  width: 40px;}
+#min_zup1{  width: 40px;}
+#min_zup2{  width: 40px;}
+#min_zup3{  width: 40px;}
+#min_zup4{  width: 40px;}
+#min_zup5{  width: 40px;}
 
 
 
@@ -246,7 +251,7 @@ button, input, span, select {
     <br> 
     <br> 
     <br> 
-    фільтр техніки(JD,Камаз,SCANIA,22270,Писаренко)
+    фільтр техніки(JD,Камаз,SCANIA)
     <br>
     <textarea id='unit_zup'  rows="5" cols="50">All</textarea>
     <br> 
@@ -256,15 +261,15 @@ button, input, span, select {
     <br>  
     <br>
     <br> 
-    <button id='gruz_zup'>зупинки вантажівок більше 3хв</button> 
+    <input id='min_zup1' type='number' placeholder='180' value="180"> <button id='gruz_zup'>зупинки вантажівок</button> 
     <br>  
-    <button id='benzovoz_zup'>зупинки бензовозів більше 3хв</button>
+    <input id='min_zup2' type='number' placeholder='180' value="180"> <button id='benzovoz_zup'>зупинки бензовозів</button> 
     <br>  
-    <button id='gaz_zup'>зупинки газонів більше 30с</button>
+    <input id='min_zup3' type='number' placeholder='30' value="30"> <button id='gaz_zup'>зупинки газонів</button> 
     <br>  
-    <button id='moloko_zup'>зупинки молоковозів більше 1хв</button> 
+    <input id='min_zup4' type='number' placeholder='60' value="60"> <button id='moloko_zup'>зупинки молоковозів</button> 
     <br>  
-    <button id='pogr_zup'>зупинки погрузчиків більше 1хв</button>
+    <input id='min_zup5' type='number' placeholder='60' value="60"> <button id='pogr_zup'>зупинки погрузчиків</button> 
     </div>
 
  <div><input id='fromtime1' type='text' placeholder='date1'><input id='fromtime2' type='text' placeholder='date2'><button id='eeew'>Завантажити</button><button id='vchora'>Вчора</button><span id="ff">Час:</span><span id="f"></span><span id="fff">Автоповтор</span><input id='gif' type="checkbox"></div>
