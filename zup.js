@@ -344,7 +344,7 @@ $('#men5').css({'background':'#e9e9e9'});
  $('#men5').click(function() { 
   if ($('#zupinki').is(':hidden')) {
     $('#zupinki').show();
-    $('#map').css('width', '60%');
+    $('#map').css('width', '80%');
     this.style.background = '#b2f5b4';
   }else{
    $('#zupinki').hide();
@@ -478,29 +478,29 @@ $('#men5').css({'background':'#e9e9e9'});
       min_zup=$('#min_zup').val();
       Cikle2();
     });
-    $("#gruz_zup").click(function() { 
+   $("#gruz_zup").click(function() { 
       maska_zup='Камаз,SCANIA,МАЗ';
-      min_zup=180;
+      min_zup=$('#min_zup1').val();
       Cikle2();
     });
     $("#benzovoz_zup").click(function() { 
       maska_zup='ВМ1613СР,ВМ1614СР,ВМ2893ЕН,ВМ3861ВО,ВМ3862ВО,ВМ4156ВС';
-      min_zup=180;
+      min_zup=$('#min_zup2').val();
       Cikle2();
     });
     $("#gaz_zup").click(function() { 
       maska_zup='ГАЗ';
-      min_zup=30;
+      min_zup=$('#min_zup3').val();
       Cikle2();
     });
     $("#moloko_zup").click(function() { 
       maska_zup='ВМ3204ЕВ,ВМ3372СТ,ВМ5913СІ';
-      min_zup=60;
+      min_zup=$('#min_zup4').val();
       Cikle2();
     });
     $("#pogr_zup").click(function() { 
       maska_zup='JCB,Manitou';
-      min_zup=60;
+      min_zup=$('#min_zup5').val();
       Cikle2();
     });
 
