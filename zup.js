@@ -1351,10 +1351,7 @@ var data_zup = [];
 function showReportResult2(result,name){ // show result after report execute
 	var tables = result.getTables(); // get report tables
 	if (!tables)  {Cikle2(); return;} // exit if no tables
-
    
-
-
 		var html = [];
 		
 		 //data_unit = [[],[]];
@@ -1367,11 +1364,23 @@ function showReportResult2(result,name){ // show result after report execute
 					if (typeof rows[j].c == "undefined") continue; // skip empty rows
 					data_zup.push([getTableValue(rows[j].c[0]),getTableValue(rows[j].c[1]),getTableValue(rows[j].c[2]),getTableValue(rows[j].c[3]),name.getName(),name.getId(),getTableValue(rows[j].c[5]),getTableValue(rows[j].c[6])]);
         //msg(name.getName());
+       
+				} 	
+        result.getTableRows(0, 0, tables[0].rows, // get Table rows
+			  qx.lang.Function.bind( function(html, code, rows) { // getTableRows callback
+				if (code) {msg(wialon.core.Errors.getErrorText(code));  Cikle2(); return;} // exit if error code
+				for(var j in rows) { // cycle on table rows
+					if (typeof rows[j].c == "undefined") continue; // skip empty rows
+					data_zup.push([getTableValue(rows[j].c[0]),getTableValue(rows[j].c[1]),getTableValue(rows[j].c[2]),getTableValue(rows[j].c[3]),name.getName(),name.getId(),getTableValue(rows[j].c[5]),getTableValue(rows[j].c[6])]);
+        //msg(name.getName());
          
-				} 				
+				}
+         Cikle2();    				
+			}, this, html)
+		);			
 			}, this, html)
 		);
-} 
+} else{
 result.getTableRows(0, 0, tables[0].rows, // get Table rows
 			qx.lang.Function.bind( function(html, code, rows) { // getTableRows callback
 				if (code) {msg(wialon.core.Errors.getErrorText(code));  Cikle2(); return;} // exit if error code
@@ -1384,6 +1393,7 @@ result.getTableRows(0, 0, tables[0].rows, // get Table rows
          Cikle2();    				
 			}, this, html)
 		);
+}
 
 }
 
