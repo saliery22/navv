@@ -1614,7 +1614,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){
+      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1638,7 +1638,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v30'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0){
+      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
