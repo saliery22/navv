@@ -1157,7 +1157,7 @@ function track_marshruta(evt){
 Global_DATA=[];
 function UpdateGlobalData(t2=0,idrep=7,i=0){
     if(i==0){
-     $('button').prop("disabled", true);
+     $('#eeew').prop("disabled", true);
      if($('#fromtime1').val()!=from111 || $('#fromtime2').val()!=from222){
        Global_DATA = [];
        from111=$('#fromtime1').val();
