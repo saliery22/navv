@@ -6,6 +6,8 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
     <script type="text/javascript" src="//hst-api.wialon.com/wsdk/script/wialon.js"></script>
     <script type="text/javascript" src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    
+
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -24,12 +26,14 @@
 #option { width: 50%; height:750px; margin-left: 50%; overflow-y: auto; overflow-x: auto;}
 #unit_info { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
 #zupinki { width: 20%; height:750px; margin-left: 80%; overflow-y: auto; overflow-x: auto;}
+#palne { width: 40%; height:750px; margin-left: 60%; overflow-y: auto; overflow-x: auto;}
 
 #grafik { width: 100%; border: 1px solid #c6c6c6;}
 #chart1 { width: 100%; height:200px;}
 #chart2 { width: 100%; height:80px;}
 #inftb td{ border: 1px solid black;  padding: 2px 20px;opacity: 0.8;}
 #unit_table td{ border: 1px solid black;  padding: 2px 2px;}
+#palne_table td{ border: 1px solid black;  padding: 2px 20px;}
 #obrobkablok { max-height:250px; overflow-x: auto;border: 1px solid #c6c6c6;}
 #obrobka td{ border: 1px solid black;  padding: 1px 2px;}
 #obrobkatehnika td{  padding: 1px 5px;}
@@ -119,6 +123,7 @@ button, input, span, select {
 #men3{ float: right;  cursor: pointer;}
 #men4{ float: right;  cursor: pointer;}
 #men5{ float: right;  cursor: pointer;}
+#men6{ float: right;  cursor: pointer;}
 
 
 #fff{float: right;  }
@@ -159,10 +164,10 @@ button, input, span, select {
 <button id='v13'>Автомобілі</button> 
 
 <button id='v11'>Показати/Закрити Графік</button>
-<button id='v10'>Збої навігації</button> 
 <button id='v18'>Очистити маркери</button>
 <button id='v8'>Очистити трек</button>
 <button id='men4'>Інф</button>
+<button id='men6'>Пальне</button>
 <button id='men3'>Геомодуль</button>
 <button id='men1'>Маршрути</button>
 <button id='men5'>Зупинки</button>
@@ -244,7 +249,9 @@ button, input, span, select {
  </div>
  <div id="unit_info">
  <table id="unit_table"></table>
+ <button id='v10'>Збої навігації</button> 
  <button id='prDUT'>перевірка ДРП/GPS</button>
+ <button id='grupstraktors'>Групи тракторів</button>
  </div>
 
  <div id="zupinki">
@@ -253,7 +260,7 @@ button, input, span, select {
     <br> 
     фільтр техніки(JD,Камаз,SCANIA)
     <br>
-    <textarea id='unit_zup'  rows="7" cols="40">All</textarea>
+    <textarea id='unit_zup'  rows="5" cols="50">All</textarea>
     <br> 
     мінімальний час зупинки(секунд)<input id='min_zup' type='number' placeholder='30' value="30"> 
     <br>  
@@ -271,6 +278,10 @@ button, input, span, select {
     <br>  
     <input id='min_zup5' type='number' placeholder='60' value="60"> <button id='pogr_zup'>зупинки погрузчиків</button> 
     </div>
+    
+    <div id="palne">
+        <table id="palne_table"></table>
+     </div>
 
  <div><input id='fromtime1' type='text' placeholder='date1'><input id='fromtime2' type='text' placeholder='date2'><button id='eeew'>Завантажити</button><button id='vchora'>Вчора</button><span id="ff">Час:</span><span id="f"></span><span id="fff">Автоповтор</span><input id='gif' type="checkbox"></div>
 
