@@ -7,7 +7,6 @@ var marshrutID=99;
 var cklikkk=0;
 var markerstart =0;
 var markerend =0;
-var menumarsh=0;
 var rux=0;
 
 
@@ -155,7 +154,7 @@ function initUIData() {
            }
            var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.5, fillColor: color});
            geozona.bindPopup(zone.n);
-	   geozona.bindTooltip(zone.n,{opacity:0.8});
+           geozona.bindTooltip(zone.n,{opacity:0.8});
            geozona.zone = zone;
            geozones.push(geozona);   
 
@@ -269,7 +268,7 @@ $(".livesearch").chosen({search_contains : true});
     $('#marrr').show();
     $('#map').css('width', '50%');
     this.style.background = '#b2f5b4';
-    menumarsh=1;
+    $('.leaflet-container').css('cursor','crosshair');
     var tableRow =document.querySelectorAll('#marshrut tr');
     var radddddd;
      for ( j = 1; j < tableRow.length; j++){
@@ -280,26 +279,30 @@ $(".livesearch").chosen({search_contains : true});
        var polyline = L.polyline([[parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])],[parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])]], {opacity: 0.3, color: '#0000FF'}).addTo(map);
        marshrutMarkers.push(polyline); 
      } 
+     
   }else{
     $('#marrr').hide();
     $('#map').css('width', '100%');
     this.style.background = '#e9e9e9';
-    menumarsh=0;
+    $('.leaflet-container').css('cursor','');
     markerstart.setLatLng([0,0]); 
     markerend.setLatLng([0,0]);
     cklikkk=0;
-      for(var iii=0; iii < marshrutMarkers.length; iii++){
-        map.removeLayer(marshrutMarkers[iii]);
-        if(iii == marshrutMarkers.length-1){marshrutMarkers=[];}
-      }
+    clearGarbage(marshrutMarkers);
+
   }
   $('#option').hide();
   $('#unit_info').hide();
   $('#zupinki').hide();
+  $('#palne').hide();
   clearGEO();
   $('#men3').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
   $('#men5').css({'background':'#e9e9e9'});
+  $('#men6').css({'background':'#e9e9e9'});
+  clearGarbage(garbage);
+  clearGarbage(garbagepoly);
+  bufer=[];
   });
  $('#men3').click(function() { 
   if ($('#option').is(':hidden')) {
@@ -307,6 +310,10 @@ $(".livesearch").chosen({search_contains : true});
     $('#gektary').hide();
     $('#map').css('width', '50%');
     this.style.background = '#b2f5b4';
+    $('.leaflet-container').css('cursor','');
+    markerstart.setLatLng([0,0]); 
+    markerend.setLatLng([0,0]);
+    cklikkk=0;
   }else{
     $('#option').hide();
     $('#map').css('width', '100%');
@@ -316,10 +323,16 @@ $('#marrr').hide();
 $('#unit_info').hide();
 $('#inftb').empty();
 $('#zupinki').hide();
+$('#palne').hide();
 clearGEO(); 
 $('#men1').css({'background':'#e9e9e9'});
 $('#men4').css({'background':'#e9e9e9'});
 $('#men5').css({'background':'#e9e9e9'});
+$('#men6').css({'background':'#e9e9e9'});
+clearGarbage(garbage);
+clearGarbage(garbagepoly);
+clearGarbage(marshrutMarkers);
+bufer=[];
 });
 
 
@@ -329,6 +342,10 @@ $('#men5').css({'background':'#e9e9e9'});
       $('#unit_info').show();
       $('#map').css('width', '60%');
       this.style.background = '#b2f5b4';
+      $('.leaflet-container').css('cursor','');
+      markerstart.setLatLng([0,0]); 
+     markerend.setLatLng([0,0]);
+    cklikkk=0;
     }else{
      $('#unit_info').hide();
      $('#map').css('width', '100%');
@@ -337,10 +354,16 @@ $('#men5').css({'background':'#e9e9e9'});
     $('#marrr').hide();
     $('#option').hide();
     $('#zupinki').hide();
+    $('#palne').hide();
     clearGEO(); 
     $('#men3').css({'background':'#e9e9e9'});
     $('#men1').css({'background':'#e9e9e9'});
     $('#men5').css({'background':'#e9e9e9'});
+    $('#men6').css({'background':'#e9e9e9'});
+    clearGarbage(garbage);
+    clearGarbage(garbagepoly);
+    clearGarbage(marshrutMarkers);
+    bufer=[];
  });
 
  $('#men5').click(function() { 
@@ -348,6 +371,10 @@ $('#men5').css({'background':'#e9e9e9'});
     $('#zupinki').show();
     $('#map').css('width', '80%');
     this.style.background = '#b2f5b4';
+    $('.leaflet-container').css('cursor','');
+    markerstart.setLatLng([0,0]); 
+    markerend.setLatLng([0,0]);
+    cklikkk=0;
   }else{
    $('#zupinki').hide();
    $('#map').css('width', '100%');
@@ -356,18 +383,54 @@ $('#men5').css({'background':'#e9e9e9'});
   $('#marrr').hide();
   $('#option').hide();
   $('#unit_info').hide();
+  $('#palne').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
   $('#men1').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
+  $('#men6').css({'background':'#e9e9e9'});
+  clearGarbage(garbage);
+  clearGarbage(garbagepoly);
+  clearGarbage(marshrutMarkers);
+  bufer=[];
+});
+
+ $('#men6').click(function() { 
+  if ($('#palne').is(':hidden')) {
+    $('#palne').show();
+    $('#map').css('width', '60%');
+    this.style.background = '#b2f5b4';
+      $('.leaflet-container').css('cursor','crosshair');
+      markerstart.setLatLng([0,0]); 
+      markerend.setLatLng([0,0]);
+    cklikkk=0;
+    $("#palne_table").empty();
+  }else{
+   $('#palne').hide();
+   $('#map').css('width', '100%');
+   this.style.background = '#e9e9e9';
+   $('.leaflet-container').css('cursor','');
+  }
+  $('#marrr').hide();
+  $('#option').hide();
+  $('#unit_info').hide();
+  $('#zupinki').hide();
+  clearGEO(); 
+  $('#men3').css({'background':'#e9e9e9'});
+  $('#men1').css({'background':'#e9e9e9'});
+  $('#men4').css({'background':'#e9e9e9'});
+  $('#men5').css({'background':'#e9e9e9'});
+  clearGarbage(garbage);
+  clearGarbage(garbagepoly);
+  clearGarbage(marshrutMarkers);
+  bufer=[];
 });
 
  $('#marrr').hide();
  $('#option').hide();
  $('#unit_info').hide();
  $('#zupinki').hide();
-
-
+ $('#palne').hide();
 
 // Unit choosed from <select>
   function onUnitSelected() {  
@@ -408,8 +471,8 @@ $('#men5').css({'background':'#e9e9e9'});
   $("#zvit").on("click", ".mar_trak", track_marshruta);
   $("#obrobkatehnika").on("click", ".geo_trak", track_geomarshruta);
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
+  $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
 
-  
 
 
   $('#goooo').click(fn_copy);
@@ -429,7 +492,7 @@ $('#men5').css({'background':'#e9e9e9'});
     $('#v9').click(chuse);
     $('#v12').click(chuse);
     $('#v13').click(chuse);
-	
+
     $('#v21').click(chuse);
     $('#v22').click(chuse);
     $('#v23').click(chuse);
@@ -451,6 +514,7 @@ $('#men5').css({'background':'#e9e9e9'});
     
     $('#v10').click(function() { SendDataReportInCallback(0,0,'аправка,Писаренко,Білоус,Штацький,Колотуша,Дробниця,ВМ4156ВС',7,[],0,TestNavigation);});
     $('#prDUT').click(function() { SendDataReportInCallback(0,0,'All',7,[],0,TestNavigation);});
+    $('#grupstraktors').click(GropsTraktors);
 
     $('#vchora').click(function() { 
       let cur_day111 = new Date(Date.now()-86400000);
@@ -480,7 +544,7 @@ $('#men5').css({'background':'#e9e9e9'});
       min_zup=$('#min_zup').val();
       Cikle2();
     });
-   $("#gruz_zup").click(function() { 
+    $("#gruz_zup").click(function() { 
       maska_zup='Камаз,SCANIA,МАЗ';
       min_zup=$('#min_zup1').val();
       Cikle2();
@@ -557,8 +621,7 @@ basemaps.OSM.addTo(map);
       
       var raddddd;
 
-
-      if (menumarsh==1){
+if (!$('#marrr').is(':hidden')) {
    cklikkk++;
    if (cklikkk==1){
    markerstart.setLatLng(pos);
@@ -588,14 +651,41 @@ basemaps.OSM.addTo(map);
         marshrutMarkers.push(polyline);
         Marshrut(dist1,dist2);
          }
-    }  
+    } 
+    
+    
+ 
   });
+  
 
+
+ map.on('click', function(e) { 
+ if(!$('#palne').is(':hidden')) {
+ RemainsFuel(e); 
+ }
+ });
 
 }
+
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -603,6 +693,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/
   $('#zupinki').hide();
   $('#map').hide();
 }
+
 
 
 function show_track (time1,time2) {
@@ -1271,7 +1362,7 @@ function position(t)  {
             if(rux == 24){ if (Global_DATA[ii][i][5][0]=='Г' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
             if(rux == 25){ if (Global_DATA[ii][i][5][0]=='П' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
             if(rux == 26){ if (Global_DATA[ii][i][5][0]=='Р' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
-           // if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
+            //if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
             if(rux == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
             if(rux == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
             if(rux == 30){ if (Global_DATA[ii][i][5][0]=='' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0.1);}}
@@ -1414,10 +1505,10 @@ function zupinki(){
 // map.removeLayer(zup_mark_data[iii]);
  // if(iii == zup_mark_data.length-1){zup_mark_data=[];}
  //}
-  
+
  for(var i=0; i < data_zup.length; i++){
  
-
+  
 if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** iy), 0)<min_zup) continue;
        
 
@@ -1624,7 +1715,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
+      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1639,7 +1730,7 @@ mm = markerByUnit[idd];
       }
       }
 
-      if ($(this).attr("id")=='v27'){
+     if ($(this).attr("id")=='v27'){
       if(nmm.indexOf('CASE 4430')>0 || nmm.indexOf('R4045')>0|| nmm.indexOf('612R')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
@@ -1648,7 +1739,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v30'){
-      if(nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
+      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -2359,6 +2450,7 @@ function TestNavigation(data){
     $('#marrr').hide();
     $('#option').hide();
     $('#zupinki').hide();
+    $('#palne').hide();
     $('#men3').css({'background':'#e9e9e9'});
     $('#men1').css({'background':'#e9e9e9'});
     
@@ -2410,4 +2502,102 @@ function TestNavigation(data){
     }
 }
 
+//===================================================================
+function GropsTraktors(){
 
+
+
+ for(let i = 0; i<Global_DATA.length; i++){
+ let pointss = []; 
+ let nametr = Global_DATA[i][0][1];
+ if(nametr.indexOf('JD')>=0 || nametr.indexOf(' CL ')>=0){
+   for (let ii = 1; ii<Global_DATA[i].length; ii++){
+   if(!Global_DATA[i][ii][0])continue;
+  
+   let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+   let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+   pointss.push(turf.point([x,y])); 
+ }
+if(pointss.length>10){
+let points = turf.featureCollection(pointss);
+let options = {units: 'kilometers', maxEdge: 0.01};
+let hull = turf.concave(points, options);
+
+
+ if(hull){
+ if(hull.geometry.type =="MultiPolygon"){
+hull.geometry.coordinates.forEach(function(coords){
+   let poly= turf.polygon(coords);
+   let polylinee = L.geoJSON(poly).addTo(map);
+   });
+   }
+   }
+   }
+}
+}
+}
+//====================zalishki palnogo================================
+let bufer=[];
+let garbage =[];
+let garbagepoly =[];
+let buferpoly=[];
+function RemainsFuel(e){
+ bufer.push(e.latlng);
+ buferpoly.push({x:e.latlng.lat, y:e.latlng.lng}); 
+ if(bufer.length>1){
+ let line = L.polyline([bufer[bufer.length-2],bufer[bufer.length-1]], {opacity: 0.3, color: '#0000FF'}).addTo(map);
+ garbage.push(line);
+
+ if(wialon.util.Geometry.getDistance(bufer[0].lat, bufer[0].lng,bufer[bufer.length-1].lat, bufer[bufer.length-1].lng)<2000){
+ if(bufer.length>2){
+  let color='#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
+  let polygon = L.polygon(bufer, {color: color}).addTo(map);
+  garbagepoly.push(polygon);
+    for(let i = 0; i<unitslist.length; i++){
+      let namet = unitslist[i].getName();
+        if(namet.indexOf('John')>0 || namet.indexOf(' JD ')>0 || namet.indexOf(' CL ')>0|| namet.indexOf('CASE')>0  ||  namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0){
+          let markerr= markerByUnit[unitslist[i].getId()];
+          if(markerr){
+           let lat = markerr.getLatLng().lat;
+           let lon = markerr.getLatLng().lng;
+            if(wialon.util.Geometry.pointInShape(buferpoly, 0, lat, lon)){
+              let agregat = markerr._popup._content.split('<br />')[4];
+              if(agregat)agregat=agregat.split(' ')[0];
+              if(!agregat){
+                agregat="-----";
+                if(namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0)agregat="погрузчик";
+                if(namet.indexOf('CASE 4430')>0 || namet.indexOf('R4045')>0|| namet.indexOf('612R')>0)agregat="обприскувач";
+              }
+              let drp = markerr._popup._content.split('<br />')[3]; 
+              if(!drp)drp="-----";
+              $("#palne_table").append("<tr class='fail_trak' id='" + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td></tr>");
+            }
+          }
+        }
+    }
+
+
+ }
+
+ clearGarbage(garbage);
+ bufer=[];
+ buferpoly=[];
+
+ }else{ var tooltip = L.tooltip(bufer[0], {content: 'end'}).addTo(map);}
+ }else{ 
+  var tooltip = L.tooltip(e.latlng, {content: 'start'}).addTo(map);
+  bufer=[];
+  buferpoly=[];
+  bufer.push(e.latlng);
+  buferpoly.push({x:e.latlng.lat, y:e.latlng.lng}); 
+}
+}
+
+//if(wialon.util.Geometry.pointInShape(geozonepoint, 0, lat, lon)){
+
+function clearGarbage(garbage){
+  for(var i=0; i < garbage.length; i++){
+    map.removeLayer(garbage[i]);
+     if(i == garbage.length-1){garbage.length=0;}
+    }
+}
