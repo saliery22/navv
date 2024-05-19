@@ -153,7 +153,7 @@ function initUIData() {
             cord.push([zone.p[ii].y , zone.p[ii].x])
            }
            var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.5, fillColor: color});
-           geozona.bindPopup(zone.n);
+           //geozona.bindPopup(zone.n);
            geozona.bindTooltip(zone.n,{opacity:0.8});
            geozona.zone = zone;
            geozones.push(geozona);   
