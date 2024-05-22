@@ -2603,7 +2603,7 @@ let str =$('#unit_palne').val().split(',');
               if(namet.indexOf('CASE 4430')>0 || namet.indexOf('R4045')>0|| namet.indexOf('612R')>0)agregat="обприскувач";
             }
             let drp = markerr._popup._content.split('<br />')[3]; 
-            if(!drp)drp="-----";else drp.split('.')[0];
+            if(!drp)drp="-----";else drp=drp.split('.')[0];
             let mesto = "-----";
            
             for(let i = 0; i<geozonesgrup.length; i++){ 
@@ -2646,7 +2646,6 @@ let str =$('#unit_palne').val().split(',');
 }
 }
 
-//if(wialon.util.Geometry.pointInShape(geozonepoint, 0, lat, lon)){
 
 function clearGarbage(garbage){
   for(var i=0; i < garbage.length; i++){
