@@ -1,7 +1,7 @@
 
 
 // global variables
-var map, marker,geozones = [], unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
+var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
 var marshrutID=99;
 var cklikkk=0;
@@ -103,12 +103,13 @@ function init() { // Execute after login succeed
   var session = wialon.core.Session.getInstance();
   // specify what kind of data should be returned
   var flags = wialon.item.Item.dataFlag.base | wialon.item.Unit.dataFlag.lastPosition;
-  var res_flags = wialon.item.Item.dataFlag.base | wialon.item.Resource.dataFlag.reports | wialon.item.Resource.dataFlag.zones;  
+  var res_flags = wialon.item.Item.dataFlag.base | wialon.item.Resource.dataFlag.reports | wialon.item.Resource.dataFlag.zones| wialon.item.Resource.dataFlag.zoneGroups;
  
 	var remote= wialon.core.Remote.getInstance();
   remote.remoteCall('render/set_locale',{"tzOffset":7200,"language":'ru',"formatDate":'%Y-%m-%E %H:%M:%S'});
 	session.loadLibrary("resourceZones"); // load Geofences Library 
   session.loadLibrary("resourceReports"); // load Reports Library
+  session.loadLibrary("resourceZoneGroups"); // load Reports Library
 
   // load Icon Library
   session.loadLibrary('itemIcon');
@@ -137,24 +138,36 @@ function init() { // Execute after login succeed
 
 
 // will be called after updateDataFlags success
-var geozonepoint = [];
+let geozonepoint = [];
+let geozones = [];
+let geozonesgrup = [];
+let IDzonacord=[];
 function initUIData() {
   var session = wialon.core.Session.getInstance();
-
   var resource = wialon.core.Session.getInstance().getItem(20030); //26227 - Gluhiv 20030 "11_ККЗ"
-  
+    let gzgroop = resource.getZonesGroups();
   resource.getZonesData(null, function(code, geofences) {
     var cord=[];
       for (let i = 0; i < geofences.length; i++) {
         cord=[];
          var zone = geofences[i];
+         var zonegr="";
+           for (var key in gzgroop) {
+            if(gzgroop[key].n[0]!='*'){
+           gzgroop[key].zns.forEach(function(item, arr) {
+           if(item==zone.id){zonegr=gzgroop[key].n;return;}
+           });
+            }
+           }
          var color = "#" + wialon.util.String.sprintf("%08x", zone.c).substr(2);
            for (let ii = 0; ii < zone.p.length; ii++) {
-            cord.push([zone.p[ii].y , zone.p[ii].x])
+            cord.push([zone.p[ii].y , zone.p[ii].x]);
+
            }
+           IDzonacord[zone.id]=cord;
            var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.5, fillColor: color});
-           //geozona.bindPopup(zone.n);
-           geozona.bindTooltip(zone.n,{opacity:0.8});
+          // geozona.bindPopup(zone.n);
+           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8});
            geozona.zone = zone;
            geozones.push(geozona);   
 
@@ -226,10 +239,34 @@ function initUIData() {
 
       }
   
+      
+   
+
+      for (var key in gzgroop) {
+        let point=[];
+        if(gzgroop[key].n[0]!='*'){
+        gzgroop[key].zns.forEach(function(item, arr) { 
+          IDzonacord[item].forEach(function(item, arr) {
+            point.push(turf.point([item[1],item[0]])); 
+          });
+        });
+        let points = turf.featureCollection(point);
+        let hull = turf.convex(points);
+        let poly = L.geoJSON(hull,{fillOpacity: 0,weight:2}).bindTooltip(gzgroop[key].n);
+        geozonesgrup.push(poly);
+        }
+      }
+
       var lgeozone = L.layerGroup(geozones);
       layerControl.addOverlay(lgeozone, "Геозони");
-   
+      var lgeozonee = L.layerGroup(geozonesgrup);
+      layerControl.addOverlay(lgeozonee, "Регіони");
+
   });
+
+
+  
+
 
 
 
@@ -243,7 +280,14 @@ function initUIData() {
     // Add option
 $('#lis0').append($('<option>').text(unit.getName()).val(unit.getId()));
 
- 
+//unit.addListener('changePosition', function(event) {
+//  let id = unit.getId();
+//  for (let i = 0; i < list_zavatajennya.length; i++){
+//    if(list_zavatajennya[i]==id)break;
+//    if(list_zavatajennya.length-1==i)list_zavatajennya.push(id);
+//  }
+// if(list_zavatajennya.length==0)list_zavatajennya.push(id); 
+//});
   
   
 
@@ -669,7 +713,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -1256,11 +1316,12 @@ function UpdateGlobalData(t2=0,idrep=7,i=0){
     }   
 }
 
-
+let list_zavatajennya=[];
 function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
   let id_res=26227, id_unit = unit.getId(), ii=i;
   if(Global_DATA[ii]==undefined){Global_DATA.push([[id_unit,unit.getName(),Date.parse($('#fromtime1').val())/1000]])}
   let t1=Global_DATA[ii][0][2];
+  //if($("#gif").is(":checked")) {for (let iii=0; iii<list_zavatajennya.length; iii++){if(list_zavatajennya[iii]==id_unit){break;}if(list_zavatajennya[iii].length-1==iii){ii++; UpdateGlobalData(t2,idrep,ii);return;}}}
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!idrep){ msg("Select report template"); return;} // exit if no report template selected
 	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
@@ -1298,6 +1359,9 @@ function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
       }  
 	});       
 }
+
+
+
 
 function getTableValue(data) { // calculate ceil value
 	if (typeof data == "object")
@@ -1655,7 +1719,7 @@ for(var i=0; i < allunits.length; i++){
 nmm =allunits[i].getName();
 idd =allunits[i].getId();
 mm = markerByUnit[idd];
- mm.setOpacity(0.1);
+ mm.setOpacity(0);
  if (Date.parse($('#fromtime1').val())/1000 > allunits[i].getPosition().t || rux == 1){ mm.setOpacity(0);}
    
      if ($(this).attr("id")=='v1'){
@@ -2525,7 +2589,9 @@ let bufer=[];
 let garbage =[];
 let garbagepoly =[];
 let buferpoly=[];
+
 function RemainsFuel(e){
+let str =$('#unit_palne').val().split(',');
  bufer.push(e.latlng);
  buferpoly.push({x:e.latlng.lat, y:e.latlng.lng}); 
  if(bufer.length>1){
@@ -2539,25 +2605,44 @@ function RemainsFuel(e){
   garbagepoly.push(polygon);
     for(let i = 0; i<unitslist.length; i++){
       let namet = unitslist[i].getName();
-        if(namet.indexOf('John')>0 || namet.indexOf(' JD ')>0 || namet.indexOf(' CL ')>0|| namet.indexOf('CASE')>0  ||  namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0){
-          let markerr= markerByUnit[unitslist[i].getId()];
-          if(markerr){
-           let lat = markerr.getLatLng().lat;
-           let lon = markerr.getLatLng().lng;
-            if(wialon.util.Geometry.pointInShape(buferpoly, 0, lat, lon)){
-              let agregat = markerr._popup._content.split('<br />')[4];
-              if(agregat)agregat=agregat.split(' ')[0];
-              if(!agregat){
-                agregat="-----";
-                if(namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0)agregat="погрузчик";
-                if(namet.indexOf('CASE 4430')>0 || namet.indexOf('R4045')>0|| namet.indexOf('612R')>0)agregat="обприскувач";
-              }
-              let drp = markerr._popup._content.split('<br />')[3]; 
-              if(!drp)drp="-----";
-              $("#palne_table").append("<tr class='fail_trak' id='" + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td></tr>");
+      str.forEach((element) => {if(namet.indexOf(element)>=0){
+        let markerr= markerByUnit[unitslist[i].getId()];
+        if(markerr){
+         let lat = markerr.getLatLng().lat;
+         let lon = markerr.getLatLng().lng;
+          if(wialon.util.Geometry.pointInShape(buferpoly, 0, lat, lon)){
+            let agregat = markerr._popup._content.split('<br />')[4];
+            if(agregat)agregat=agregat.split(' ')[0];
+            if(!agregat){
+              agregat="-----";
+              if(namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0)agregat="погрузчик";
+              if(namet.indexOf('CASE 4430')>0 || namet.indexOf('R4045')>0|| namet.indexOf('612R')>0)agregat="обприскувач";
             }
+            let drp = markerr._popup._content.split('<br />')[3]; 
+            if(!drp)drp="-----";else drp.split('.')[0];
+            let mesto = "-----";
+           
+            for(let i = 0; i<geozonesgrup.length; i++){ 
+              let cord= geozonesgrup[i].toGeoJSON().features[0];
+              let buferpoly2 =[];
+              if(cord){
+                
+                cord.geometry.coordinates[0].forEach(function(item, arr) {
+                  buferpoly2.push({x:item[1], y:item[0]}); 
+                });
+                if(wialon.util.Geometry.pointInShape(buferpoly2, 0, lat, lon)){
+                  mesto=geozonesgrup[i]._tooltip._content;
+                  break;
+                }
+              }
+            }
+
+            $("#palne_table").append("<tr class='fail_trak' id='" + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
+
           }
-        }
+        } 
+      }});
+        
     }
 
 
