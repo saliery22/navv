@@ -1,5 +1,5 @@
 
-var TOKEN = '0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20';
+
 
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
@@ -758,23 +758,7 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-// execute when DOM ready
-$(document).ready(function () {
-  // init session
-
-  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
-  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
-    function (code) { // login callback
-      // if error code - print error message
-      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
-      msg('Зеднання з Глухів - успішно');
-      initMap();
-      init(); // when login suceed then run init() function
-      
-      
-    }
-  );
-});
+eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
 }else{
   $('#marrr').hide();
   $('#option').hide();
