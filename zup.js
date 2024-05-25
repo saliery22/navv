@@ -1,4 +1,5 @@
 
+var TOKEN = '0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20';
 
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
@@ -339,11 +340,13 @@ $(".livesearch").chosen({search_contains : true});
   $('#unit_info').hide();
   $('#zupinki').hide();
   $('#palne').hide();
+  $('#monitoring').hide();
   clearGEO();
   $('#men3').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
   $('#men5').css({'background':'#e9e9e9'});
   $('#men6').css({'background':'#e9e9e9'});
+  $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
   bufer=[];
@@ -368,11 +371,13 @@ $('#unit_info').hide();
 $('#inftb').empty();
 $('#zupinki').hide();
 $('#palne').hide();
+$('#monitoring').hide();
 clearGEO(); 
 $('#men1').css({'background':'#e9e9e9'});
 $('#men4').css({'background':'#e9e9e9'});
 $('#men5').css({'background':'#e9e9e9'});
 $('#men6').css({'background':'#e9e9e9'});
+$('#men7').css({'background':'#e9e9e9'});
 clearGarbage(garbage);
 clearGarbage(garbagepoly);
 clearGarbage(marshrutMarkers);
@@ -384,12 +389,13 @@ bufer=[];
  $('#men4').click(function() { 
     if ($('#unit_info').is(':hidden')) {
       $('#unit_info').show();
-      $('#map').css('width', '60%');
+      $('#map').css('width', '65%');
       this.style.background = '#b2f5b4';
       $('.leaflet-container').css('cursor','');
       markerstart.setLatLng([0,0]); 
      markerend.setLatLng([0,0]);
     cklikkk=0;
+    SendDataReportInCallback(0,0,'аправка,Писаренко,Білоус,Штацький,Колотуша,Дробниця,ВМ4156ВС',7,[],0,TestNavigation);
     }else{
      $('#unit_info').hide();
      $('#map').css('width', '100%');
@@ -399,11 +405,13 @@ bufer=[];
     $('#option').hide();
     $('#zupinki').hide();
     $('#palne').hide();
+    $('#monitoring').hide();
     clearGEO(); 
     $('#men3').css({'background':'#e9e9e9'});
     $('#men1').css({'background':'#e9e9e9'});
     $('#men5').css({'background':'#e9e9e9'});
     $('#men6').css({'background':'#e9e9e9'});
+    $('#men7').css({'background':'#e9e9e9'});
     clearGarbage(garbage);
     clearGarbage(garbagepoly);
     clearGarbage(marshrutMarkers);
@@ -428,11 +436,13 @@ bufer=[];
   $('#option').hide();
   $('#unit_info').hide();
   $('#palne').hide();
+  $('#monitoring').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
   $('#men1').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
   $('#men6').css({'background':'#e9e9e9'});
+  $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
   clearGarbage(marshrutMarkers);
@@ -442,7 +452,7 @@ bufer=[];
  $('#men6').click(function() { 
   if ($('#palne').is(':hidden')) {
     $('#palne').show();
-    $('#map').css('width', '60%');
+    $('#map').css('width', '65%');
     this.style.background = '#b2f5b4';
       $('.leaflet-container').css('cursor','crosshair');
       markerstart.setLatLng([0,0]); 
@@ -459,15 +469,49 @@ bufer=[];
   $('#option').hide();
   $('#unit_info').hide();
   $('#zupinki').hide();
+  $('#monitoring').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
   $('#men1').css({'background':'#e9e9e9'});
   $('#men4').css({'background':'#e9e9e9'});
   $('#men5').css({'background':'#e9e9e9'});
+  $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
   clearGarbage(marshrutMarkers);
   bufer=[];
+});
+
+ $('#men7').click(function() { 
+  if ($('#monitoring').is(':hidden')) {
+    $('#monitoring').show();
+    $('#map').css('width', '65%');
+    this.style.background = '#b2f5b4';
+      $('.leaflet-container').css('cursor','');
+      markerstart.setLatLng([0,0]); 
+      markerend.setLatLng([0,0]);
+    cklikkk=0;
+  }else{
+   $('#monitoring').hide();
+   $('#map').css('width', '100%');
+   this.style.background = '#e9e9e9';
+  
+  }
+  $('#marrr').hide();
+  $('#option').hide();
+  $('#unit_info').hide();
+  $('#zupinki').hide();
+  $('#palne').hide();
+  clearGEO(); 
+  $('#men3').css({'background':'#e9e9e9'});
+  $('#men1').css({'background':'#e9e9e9'});
+  $('#men4').css({'background':'#e9e9e9'});
+  $('#men5').css({'background':'#e9e9e9'});
+  $('#men6').css({'background':'#e9e9e9'});
+  clearGarbage(garbage);
+  clearGarbage(garbagepoly);
+  clearGarbage(marshrutMarkers);
+
 });
 
  $('#marrr').hide();
@@ -475,6 +519,7 @@ bufer=[];
  $('#unit_info').hide();
  $('#zupinki').hide();
  $('#palne').hide();
+ $('#monitoring').hide();
 
 // Unit choosed from <select>
   function onUnitSelected() {  
@@ -516,7 +561,7 @@ bufer=[];
   $("#obrobkatehnika").on("click", ".geo_trak", track_geomarshruta);
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
   $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
-
+  $("#monitoring_table").on("click", track_Monitoring);
 
 
   $('#goooo').click(fn_copy);
@@ -556,9 +601,9 @@ bufer=[];
     $('#o5').click(Gozone_History);
     $('#o6').click(Gozone_History);
     
-    $('#v10').click(function() { SendDataReportInCallback(0,0,'аправка,Писаренко,Білоус,Штацький,Колотуша,Дробниця,ВМ4156ВС',7,[],0,TestNavigation);});
+    
     $('#prDUT').click(function() { SendDataReportInCallback(0,0,'All',7,[],0,TestNavigation);});
-    $('#grupstraktors').click(GropsTraktors);
+    $('#monitoring_bt').click(Monitoring);
 
     $('#vchora').click(function() { 
       let cur_day111 = new Date(Date.now()-86400000);
@@ -713,7 +758,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -1265,7 +1326,7 @@ function track_marshruta(evt){
  $("#lis0").chosen().val(this.id);     
  $("#lis0").trigger("chosen:updated");
  show_track(data_zvit[this.rowIndex-1][11],data_zvit[this.rowIndex-1][12]);
-
+  markerByUnit[this.id].openPopup();
 }
 
 
@@ -1419,6 +1480,7 @@ if($("#gif").is(":checked")) {
     sec =0;
     UpdateGlobalData(0,7,0);
     }
+    if (sec == 1000 && $("#monitoring_gif").is(":checked")) {Monitoring();}
     var interval = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*tik;
     position(interval);
   }
@@ -1607,7 +1669,6 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
   $("#lis0").chosen().val(unitsID[e.target._popup._content.split('<br />')[0]]); 
   $("#lis0").trigger("chosen:updated");
   layers[0]=0;
-  
   var loo = (e.target._popup._content.split('<br />')[2]).split(':')[0]*3600000;
   var t1=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])-3600000);
   var t2=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])+3600000+loo);
@@ -2468,7 +2529,8 @@ function track_TestNavigation(evt){
   this.style.backgroundColor = 'pink';
    $("#lis0").chosen().val(this.id);     
    $("#lis0").trigger("chosen:updated");
-   map.setView([parseFloat(this.id.split(',')[0]), parseFloat(this.id.split(',')[1])+0.001],20);   
+   map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],10); 
+    markerByUnit[this.id.split(',')[0]].openPopup();
 }
 
 var nav_mark_data=[];
@@ -2491,7 +2553,7 @@ function TestNavigation(data){
   for(var ii=0; ii < unitslist.length; ii++){
 
     if (Date.parse($('#fromtime2').val())/1000-3600> unitslist[ii].getPosition().t && unitslist[ii].getPosition().s>0){
-        $("#unit_table").append("<tr class='fail_trak' id='" + unitslist[ii].getPosition().y+","+unitslist[ii].getPosition().x+ "'><td>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис у русі</td></tr>");
+        $("#unit_table").append("<tr class='fail_trak' id='"+unitslist[ii].getId()+"," + unitslist[ii].getPosition().y+","+unitslist[ii].getPosition().x+ "'><td>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис у русі</td></tr>");
           mark = L.marker([unitslist[ii].getPosition().y, unitslist[ii].getPosition().x], {icon: L.icon({iconUrl: '777.png', draggable: true, iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
           mark.bindPopup(unitslist[ii].getName() +'<br />'+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+'<br />'+unitslist[ii].getPosition().s+' км/год');
           nav_mark_data.push(mark);
@@ -2535,39 +2597,84 @@ function TestNavigation(data){
 }
 
 //===================================================================
-function GropsTraktors(){
 
-
-
+function Monitoring(){
+let rows = document.querySelectorAll('#monitoring_table tr');
  for(let i = 0; i<Global_DATA.length; i++){
- let pointss = []; 
+ let points = 0; 
+ let robota=0;
+ let pereizd=0;
+ let stroka=[];
  let nametr = Global_DATA[i][0][1];
- if(nametr.indexOf('JD')>=0 || nametr.indexOf(' CL ')>=0){
-   for (let ii = 1; ii<Global_DATA[i].length; ii++){
+ let id = Global_DATA[i][0][0];
+ let str =$('#unit_monitoring').val().split(',');
+ str.forEach((element) => {if(nametr.indexOf(element)>=0){
+ pereizd=0;
+ robota=0;
+ stroka=[];
+   for (let ii = Global_DATA[i].length-1; ii>0; ii-=30){
+   points = 0;
    if(!Global_DATA[i][ii][0])continue;
-  
    let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
    let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-   pointss.push(turf.point([x,y])); 
+       for (let iii = ii-1; iii>0; iii--){
+       if(Global_DATA[i][iii][3][0]=='0')continue;
+       if(ii<40|| ii<1 || ii-iii>500){break;}
+       let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
+       let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
+       if(wialon.util.Geometry.getDistance(y,x,yy,xx)<1000){points++;}
+       }
+      
+    if(points>0 && points<100){pereizd++;robota=0;}
+    if(points>100 ){robota++;pereizd=0;}
+     if(pereizd==2){stroka.push('пер');}
+     if(robota==2){stroka.push('роб');}
  }
-if(pointss.length>10){
-let points = turf.featureCollection(pointss);
-let options = {units: 'kilometers', maxEdge: 0.01};
-let hull = turf.concave(points, options);
+ 
+  if(stroka.length>0){
+  
+  
+  let strr="";
+ if(rows.length>0){
+  for(let v = 0; v<rows.length; v++){
+  if(rows[v].cells[0].textContent==nametr){
+   ind=stroka.length-(rows[v].length-1);
+   for(let vv = ind-1; vv>=0; vv--){
+   rows[v].insertRow(1);
+   rows[v].cells[1].textContent=stroka[vv];
+   rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+   }
+   break;
+  }else{
+    if(v==rows.length-1){
+   for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
+       }
+   }
+  }
+  }else{
+  for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
+  }
+ }
+}});
+}
+}
 
-
- if(hull){
- if(hull.geometry.type =="MultiPolygon"){
-hull.geometry.coordinates.forEach(function(coords){
-   let poly= turf.polygon(coords);
-   let polylinee = L.geoJSON(poly).addTo(map);
-   });
+function track_Monitoring(evt){
+  // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
+   if(evt.target.cellIndex>0){
+   
+   evt.target.style.backgroundColor = 'transparent';
+   }else{
+   $("#lis0").chosen().val(evt.target.parentNode.id);
+   $("#lis0").trigger("chosen:updated");
+   layers[0]=0;
+   show_track();
+   markerByUnit[evt.target.parentNode.id].openPopup();
    }
-   }
-   }
-}
-}
-}
+     
+ }
 //====================zalishki palnogo================================
 let bufer=[];
 let garbage =[];
@@ -2575,6 +2682,7 @@ let garbagepoly =[];
 let buferpoly=[];
 
 function RemainsFuel(e){
+//let cir = L.circle(e.latlng, {radius: 2000}).addTo(map);
 let str =$('#unit_palne').val().split(',');
  bufer.push(e.latlng);
  buferpoly.push({x:e.latlng.lat, y:e.latlng.lng}); 
@@ -2621,7 +2729,7 @@ let str =$('#unit_palne').val().split(',');
               }
             }
 
-            $("#palne_table").append("<tr class='fail_trak' id='" + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
+            $("#palne_table").append("<tr class='fail_trak' id='"+unitslist[i].getId()+"," + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
 
           }
         } 
@@ -2646,6 +2754,7 @@ let str =$('#unit_palne').val().split(',');
 }
 }
 
+//if(wialon.util.Geometry.pointInShape(geozonepoint, 0, lat, lon)){
 
 function clearGarbage(garbage){
   for(var i=0; i < garbage.length; i++){
