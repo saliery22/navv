@@ -2596,6 +2596,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  pereizd=0;
  robota=0;
  stroka=[];
+ 
    for (let ii = Global_DATA[i].length-1; ii>0; ii-=30){
    points = 0;
    if(!Global_DATA[i][ii][0])continue;
@@ -2645,6 +2646,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   for(let v = 0; v<rows.length; v++){
   if(rows[v].cells[0].textContent==nametr){
    let ind=stroka.length-(rows[v].cells.length-1);
+
    if(ind<=0){
    if(rows[v].cells[1].textContent!=stroka[0]){
    rows[v].cells[1].textContent=stroka[0];
@@ -2652,7 +2654,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    }
    }
    for(let vv = ind-1; vv>=0; vv--){
-    rows[v].insertRow(1);
+    rows[v].insertCell(1);
     rows[v].cells[1].textContent=stroka[vv];
     rows[v].cells[1].style.backgroundColor = "#f8b1c0";
    }
