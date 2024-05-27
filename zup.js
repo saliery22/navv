@@ -1957,18 +1957,29 @@ for ( j = 1; j < tableRow.length; j++){
 
   $('#grafik').hide();
   $('#v11').click(menu10);
-  function menu10() {
+ function menu10() {
 if ($('#grafik').is(':hidden')) {
   $('#grafik').show();
   $('#map').css('height', '470px');
   $('#marrr').css('height', '470px');
+  $('#option').css('height', '470px');
+  $('#unit_info').css('height', '470px');
+  $('#zupinki').css('height', '470px');
+  $('#palne').css('height', '470px');
+  $('#monitoring').css('height', '470px');
   show_gr();
 }else{
   $('#grafik').hide();
   $('#map').css('height', '750px');
   $('#marrr').css('height', '750px');
+   $('#option').css('height', '750px');
+  $('#unit_info').css('height', '750px');
+  $('#zupinki').css('height', '750px');
+  $('#palne').css('height', '750px');
+  $('#monitoring').css('height', '750px');
 }
     }
+ 
  
   
   function show_gr() {
@@ -2515,6 +2526,8 @@ function track_TestNavigation(evt){
    $("#lis0").trigger("chosen:updated");
    map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],10); 
     markerByUnit[this.id.split(',')[0]].openPopup();
+$("#lis0").chosen().val(this.id.split(',')[0]);
+   $("#lis0").trigger("chosen:updated");
 }
 
 var nav_mark_data=[];
