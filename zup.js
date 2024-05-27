@@ -2611,7 +2611,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        }
        
       
-    if(points>0 && points<100){pereizd++;robota=0;
+    if(points>10 && points<100){pereizd++;robota=0;
      //let tooltipp = L.tooltip([y,x], {content: 'пер',permanent: true}).addTo(map);
     }
     if(points>100 ){robota++;pereizd=0;
