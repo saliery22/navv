@@ -2595,7 +2595,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  str.forEach((element) => {if(nametr.indexOf(element)>=0){
  pereizd=0;
  robota=0;
- let pr,rob =0;
+ let pr=0,rob =0;
  stroka=[];
    for (let ii = Global_DATA[i].length-1; ii>0; ii-=30){
    points = 0;
@@ -2609,6 +2609,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
        if(wialon.util.Geometry.getDistance(y,x,yy,xx)<1000){points++;}
        }
+       
       
     if(points>0 && points<100){pereizd++;robota=0;
      //let tooltipp = L.tooltip([y,x], {content: 'пер',permanent: true}).addTo(map);
