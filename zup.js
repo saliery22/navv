@@ -2610,8 +2610,12 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        if(wialon.util.Geometry.getDistance(y,x,yy,xx)<1000){points++;}
        }
       
-    if(points>0 && points<100){pereizd++;robota=0;}
-    if(points>100 ){robota++;pereizd=0;}
+    if(points>0 && points<100){pereizd++;robota=0;
+     //let tooltipp = L.tooltip([y,x], {content: 'пер',permanent: true}).addTo(map);
+    }
+    if(points>100 ){robota++;pereizd=0;
+     //let tooltip = L.tooltip([y,x], {content: 'роб',permanent: true}).addTo(map);
+    }
      if(pereizd==2){if(pr==0){stroka.push('пер');}pr=1;rob=0;}
      if(robota==2){if(rob==0){stroka.push('роб');}rob=1;pr=0;}
  }
@@ -2625,9 +2629,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   if(rows[v].cells[0].textContent==nametr){
    ind=stroka.length-(rows[v].length-1);
    for(let vv = ind-1; vv>=0; vv--){
-   if(rows[v].cells[1].textContent!=stroka[vv]){
+   if(rows[v].cells[1].textContent!=stroka[stroka.length -vv-1]){
     rows[v].insertRow(1);
-    rows[v].cells[1].textContent=stroka[vv];
+    rows[v].cells[1].textContent=stroka[stroka.length -vv-1];
     rows[v].cells[1].style.backgroundColor = "#f8b1c0";
    }
   
@@ -2635,19 +2639,20 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    break;
   }else{
     if(v==rows.length-1){
-   for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+   for(let v = 0; v<stroka.length; v++){strr= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>"+strr;}
     $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
        }
    }
   }
   }else{
-  for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+  for(let v = 0; v<stroka.length; v++){strr= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>"+strr;}
     $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
   }
  }
 }});
 }
 }
+
 
 function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
