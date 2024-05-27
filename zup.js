@@ -2644,7 +2644,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  if(rows.length>0){
   for(let v = 0; v<rows.length; v++){
   if(rows[v].cells[0].textContent==nametr){
-   let ind=stroka.length-(rows[v].length-1);
+   let ind=stroka.length-(rows[v].cells.length-1);
    if(ind<=0){
    if(rows[v].cells[1].textContent!=stroka[0]){
    rows[v].cells[1].textContent=stroka[0];
@@ -2672,6 +2672,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 }});
 }
 }
+
 
 function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
