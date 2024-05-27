@@ -2595,6 +2595,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  str.forEach((element) => {if(nametr.indexOf(element)>=0){
  pereizd=0;
  robota=0;
+ let pr,rob =0;
  stroka=[];
    for (let ii = Global_DATA[i].length-1; ii>0; ii-=30){
    points = 0;
@@ -2611,8 +2612,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
       
     if(points>0 && points<100){pereizd++;robota=0;}
     if(points>100 ){robota++;pereizd=0;}
-     if(pereizd==2){stroka.push('пер');}
-     if(robota==2){stroka.push('роб');}
+     if(pereizd==2){if(pr==0){stroka.push('пер');}pr=1;rob=0;}
+     if(robota==2){if(rob==0){stroka.push('роб');}rob=1;pr=0;}
  }
  
   if(stroka.length>0){
