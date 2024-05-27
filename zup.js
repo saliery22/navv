@@ -2625,9 +2625,12 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   if(rows[v].cells[0].textContent==nametr){
    ind=stroka.length-(rows[v].length-1);
    for(let vv = ind-1; vv>=0; vv--){
-   rows[v].insertRow(1);
-   rows[v].cells[1].textContent=stroka[vv];
-   rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+   if(rows[v].cells[1].textContent!=stroka[vv]){
+    rows[v].insertRow(1);
+    rows[v].cells[1].textContent=stroka[vv];
+    rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+   }
+  
    }
    break;
   }else{
