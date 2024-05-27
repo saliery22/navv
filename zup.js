@@ -2646,8 +2646,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   if(rows[v].cells[0].textContent==nametr){
    let ind=stroka.length-(rows[v].length-1);
    if(ind<=0){
-   if(rows[v].cells[1].textContent!=stroka[vv]){
-   rows[v].cells[1].textContent=stroka[vv];
+   if(rows[v].cells[1].textContent!=stroka[0]){
+   rows[v].cells[1].textContent=stroka[0];
    rows[v].cells[1].style.backgroundColor = "#f8b1c0";
    }
    }
