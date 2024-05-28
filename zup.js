@@ -2661,8 +2661,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
        let dist1=wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx);
        let dist2=wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx);
-       if(dis1<100 && dis1>3){points++;}
-       if(dis2<100 && dis2>3){points++;}
+       if(dist1<100 && dist1>3){points++;}
+       if(dist1<100 && dist1>3){points++;}
        }
        //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
