@@ -166,9 +166,10 @@ function initUIData() {
 
            }
            IDzonacord[zone.id]=cord;
+           
            var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.5, fillColor: color});
           // geozona.bindPopup(zone.n);
-           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8});
+           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.6});
            geozona.zone = zone;
            geozones.push(geozona);   
 
@@ -201,9 +202,10 @@ function initUIData() {
                let polilane = L.polyline(ramka, {color: 'red'}).addTo(map);
                geo_layer.push(polilane); 
               
+              
 
               var color1 = e.target.options.fillColor
-              var namee = e.target._popup._content.split('-')[0];
+              var namee = this.zone.n;
               var kol=0;
               var plo=0;
               var kol2=0;
@@ -231,7 +233,7 @@ function initUIData() {
               }
               //$('#infoGEO').append("Назва    "+e.target._popup._content+"<br> Засіяно в регіоні  "+namee+" - "+kol2+"шт   "+(plo2/10000).toFixed(2)+"га <br> Всього  "+kol+"шт  "+(plo/10000).toFixed(2)+"га");
              
-           $('#inftb').append('<caption>'+e.target._popup._content+'</caption>');
+           $('#inftb').append('<caption>'+namee+'</caption>');
            $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namee+"</td><td>"+kol2+"шт</td><td>"+(plo2/10000).toFixed(2)+"га</td></tr>");
            $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>всього</td><td>"+kol+"шт</td><td>"+(plo/10000).toFixed(2)+"га</td></tr>");
           });
@@ -240,17 +242,14 @@ function initUIData() {
 
       }
   
-      
+      let lgeozone = L.layerGroup(geozones);
+      layerControl.addOverlay(lgeozone, "Геозони");
    
 
       for (var key in gzgroop) {
         let point=[];
         if(gzgroop[key].n[0]!='*'){
-        gzgroop[key].zns.forEach(function(item, arr) { 
-          IDzonacord[item].forEach(function(item, arr) {
-            point.push(turf.point([item[1],item[0]])); 
-          });
-        });
+        gzgroop[key].zns.forEach(function(item1) { if(IDzonacord[item1]){IDzonacord[item1].forEach(function(item2) {point.push(turf.point([item2[1],item2[0]]));});}});
         let points = turf.featureCollection(point);
         let hull = turf.convex(points);
         let poly = L.geoJSON(hull,{fillOpacity: 0,weight:2}).bindTooltip(gzgroop[key].n);
@@ -258,10 +257,10 @@ function initUIData() {
         }
       }
 
-      var lgeozone = L.layerGroup(geozones);
-      layerControl.addOverlay(lgeozone, "Геозони");
-      var lgeozonee = L.layerGroup(geozonesgrup);
+    
+       let lgeozonee = L.layerGroup(geozonesgrup);
       layerControl.addOverlay(lgeozonee, "Регіони");
+    
 
   });
 
@@ -758,7 +757,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -1957,7 +1972,7 @@ for ( j = 1; j < tableRow.length; j++){
 
   $('#grafik').hide();
   $('#v11').click(menu10);
- function menu10() {
+  function menu10() {
 if ($('#grafik').is(':hidden')) {
   $('#grafik').show();
   $('#map').css('height', '470px');
@@ -1979,7 +1994,6 @@ if ($('#grafik').is(':hidden')) {
   $('#monitoring').css('height', '750px');
 }
     }
- 
  
   
   function show_gr() {
@@ -2526,7 +2540,7 @@ function track_TestNavigation(evt){
    $("#lis0").trigger("chosen:updated");
    map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],10); 
     markerByUnit[this.id.split(',')[0]].openPopup();
-$("#lis0").chosen().val(this.id.split(',')[0]);
+    $("#lis0").chosen().val(this.id.split(',')[0]);
    $("#lis0").trigger("chosen:updated");
 }
 
@@ -2598,6 +2612,7 @@ function TestNavigation(data){
 function Monitoring(){
 let rows = document.querySelectorAll('#monitoring_table tr');
  for(let i = 0; i<Global_DATA.length; i++){
+  if(Global_DATA[i].length<200)continue;
  let points = 0; 
  let robota=0;
  let pereizd=0;
@@ -2610,27 +2625,51 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  robota=0;
  stroka=[];
  
-   for (let ii = Global_DATA[i].length-1; ii>0; ii-=30){
+   
+   for (let ii = Global_DATA[i].length-2; ii>10; ii-=30){
    points = 0;
    if(!Global_DATA[i][ii][0])continue;
+   if(!Global_DATA[i][ii-1][0])continue;
+   if(!Global_DATA[i][ii+1][0])continue;
    let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
    let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+
+
+
+   let p0 = turf.point([x,y]);
+   let p1 = turf.point([parseFloat(Global_DATA[i][ii+1][0].split(',')[1]),parseFloat(Global_DATA[i][ii+1][0].split(',')[0])]);
+   let p2 = turf.point([parseFloat(Global_DATA[i][ii-1][0].split(',')[1]),parseFloat(Global_DATA[i][ii-1][0].split(',')[0])]);
+   let ang =turf.bearing(p1, p2);
+   let ang1=ang-90;
+   if(ang1<-180)ang1=360+ang1;
+   let ang2 = ang+90;
+   if(ang2>180)ang2=ang2-360;
+   p1 = turf.destination(p0, 100,ang2, {units: 'meters'});
+   p2 = turf.destination(p0, 100,ang1, {units: 'meters'});
+
+   let coord1 = turf.getCoord(p1);
+   let coord2 = turf.getCoord(p2);
+   //let circle1 = L.circle([coord1[1], coord1[0]], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 100}).addTo(map);
+   //let circle2 = L.circle([coord2[1], coord2[0]], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 100}).addTo(map);
+  
+
+
        for (let iii = ii-1; iii>0; iii--){
        if(Global_DATA[i][iii][3][0]=='0')continue;
-       if(ii<40|| ii<1 || ii-iii>500){break;}
+       if(ii<20|| ii<1 || ii-iii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
-       if(wialon.util.Geometry.getDistance(y,x,yy,xx)<1000){points++;}
+       let dist1=wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx);
+       let dist2=wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx);
+       if(dis1<100 && dis1>3){points++;}
+       if(dis2<100 && dis2>3){points++;}
        }
-       
+       //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
-    if(points>10 && points<100){pereizd++;robota=0;
-     //let tooltipp = L.tooltip([y,x], {content: 'пер',permanent: true}).addTo(map);
-    }
-    if(points>100 ){robota++;pereizd=0;
-     //let tooltip = L.tooltip([y,x], {content: 'роб',permanent: true}).addTo(map);
-    }
-     if(pereizd==2){
+    if(points==0){pereizd++;robota=0;}
+    if(points>10){robota++;pereizd=0;}
+
+     if(pereizd==5){
      if(stroka.length>0){
      if(stroka[stroka.length-1]=='роб'){
      stroka.push('пер');
@@ -2643,9 +2682,19 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      if(stroka.length>0){
      if(stroka[stroka.length-1]=='пер'){
      stroka.push('роб');
+     if ($("#robviz_gif").is(":checked")) {
+    let markerrr = L.marker([y,x]).addTo(map);
+     markerrr.bindPopup(""+nametr+"");
+     zup_mark_data.push(markerrr);
+     }
      }
      }else{
       stroka.push('роб');
+      if ($("#robviz_gif").is(":checked")) {
+      let markerrr = L.marker([y,x]).addTo(map);
+       markerrr.bindPopup(""+nametr+"");
+       zup_mark_data.push(markerrr);
+       }
      }
      }
     
@@ -2687,7 +2736,6 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 }});
 }
 }
-
 
 function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
