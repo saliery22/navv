@@ -2643,10 +2643,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        if(ii<20|| ii<1 || ii-iii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
-       let dist1=wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx);
-       let dist2=wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx);
-       if(dist1<100 && dist1>3){points++;}
-       if(dist1<100 && dist1>3){points++;}
+       if(wialon.util.Geometry.getDistance(y,x,yy,xx)<3){points--;}
+       if(wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx)<100){points++;}
+       if(wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx)<100){points++;}
        }
        //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
