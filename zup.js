@@ -2639,7 +2639,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 
 
        for (let iii = ii-1; iii>0; iii--){
-       if(Global_DATA[i][iii][3][0]=='0'){points--;continue;}
+       if(Global_DATA[i][iii][3][0]=='0'){if(points>=0){points--};continue;}
        if(ii<20|| ii<1 || ii-iii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
