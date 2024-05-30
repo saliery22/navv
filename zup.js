@@ -167,9 +167,9 @@ function initUIData() {
            }
            IDzonacord[zone.id]=cord;
            
-           var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.5, fillColor: color});
+           var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.3, fillColor: color});
           // geozona.bindPopup(zone.n);
-           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.6});
+           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8});
            geozona.zone = zone;
            geozones.push(geozona);   
 
@@ -2598,6 +2598,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  for(let i = 0; i<Global_DATA.length; i++){
   if(Global_DATA[i].length<200)continue;
  let points = 0; 
+ let spd = 0; 
  let robota=0;
  let pereizd=0;
  let stroka=[];
@@ -2612,6 +2613,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    
    for (let ii = Global_DATA[i].length-2; ii>10; ii-=30){
    points = 0;
+   spd=0;
    if(!Global_DATA[i][ii][0])continue;
    if(!Global_DATA[i][ii-1][0])continue;
    if(!Global_DATA[i][ii+1][0])continue;
@@ -2639,7 +2641,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 
 
        for (let iii = ii-1; iii>0; iii--){
-       if(Global_DATA[i][iii][3][0]=='0'){if(points==0){points--};continue;}
+       if(Global_DATA[i][iii][3][0]=='0'){spd--;continue;}
+	spd++;
        if(ii<20|| ii<1 || ii-iii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
@@ -2649,7 +2652,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        }
        //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
-    if(points==0){pereizd++;robota=0;}
+    if(points==0 && spd>0){pereizd++;robota=0;}
     if(points>10){robota++;pereizd=0;}
 
      if(pereizd==5){
