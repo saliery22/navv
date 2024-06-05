@@ -154,7 +154,7 @@ function initUIData() {
          var zone = geofences[i];
          var zonegr="";
            for (var key in gzgroop) {
-            if(gzgroop[key].n[0]!='*' || gzgroop[key].n[0]!='#'){
+            if(gzgroop[key].n[0]!='*' && gzgroop[key].n[0]!='#'){
            gzgroop[key].zns.forEach(function(item, arr) {
            if(item==zone.id){zonegr=gzgroop[key].n;return;}
            });
