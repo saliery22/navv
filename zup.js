@@ -1,6 +1,5 @@
 
 
-
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
@@ -43,7 +42,7 @@ function getUnitMarker(unit) {
   if (!unitPos) return null;
     
   if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
-  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0){imsaze = 24;} 
+  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0 || unit.getName().indexOf(' NH ')>0){imsaze = 24;} 
 
   marker = L.marker([unitPos.y, unitPos.x], {
     clickable: true,
@@ -393,8 +392,7 @@ bufer=[];
       $('.leaflet-container').css('cursor','');
       markerstart.setLatLng([0,0]); 
      markerend.setLatLng([0,0]);
-    cklikkk=0;
-    SendDataReportInCallback(0,0,'аправка,Писаренко,Білоус,Штацький,Колотуша,Дробниця,ВМ4156ВС',7,[],0,TestNavigation);
+    cklikkk=0; 
     }else{
      $('#unit_info').hide();
      $('#map').css('width', '100%');
@@ -561,6 +559,7 @@ bufer=[];
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
   $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
+  $("#prMot").on("click", Motogod);
 
 
   $('#goooo').click(fn_copy);
@@ -602,6 +601,7 @@ bufer=[];
     
     
     $('#prDUT').click(function() { SendDataReportInCallback(0,0,'All',7,[],0,TestNavigation);});
+    $('#prNV').click(function() {  SendDataReportInCallback(0,0,'аправка,Писаренко,Білоус,Штацький,Колотуша,Дробниця,ВМ4156ВС',7,[],0,TestNavigation)});
     $('#monitoring_bt').click(Monitoring);
 
     $('#vchora').click(function() { 
@@ -757,7 +757,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe8428FD86B11D191C63FBA2E7E99A76BA983502BAA20|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -1791,7 +1807,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0){
+      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1815,7 +1831,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v30'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0){
+      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0 ){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -2572,7 +2588,7 @@ function TestNavigation(data){
          if(data[i][ii][4]  && zapcarta != data[i][ii][4]){
           zapcarta = data[i][ii][4];
           no_aktiv.forEach((element) => {if(element.getName().indexOf(zapcarta)>=0){
-            $("#unit_table").append("<tr class='fail_trak' id='" + element.getPosition().y+","+element.getPosition().x+ "'><td>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
+            $("#unit_table").append("<tr class='fail_trak' id='"+unitslist[ii].getId()+","  + element.getPosition().y+","+element.getPosition().x+ "'><td>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
             mark = L.marker([element.getPosition().y, element.getPosition().x], {icon: L.icon({iconUrl: '666.png',draggable: true,iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
             mark.bindPopup(element.getName() +'<br />'+wialon.util.DateTime.formatTime(element.getPosition().t));
             nav_mark_data.push(mark);
@@ -2823,4 +2839,44 @@ function clearGarbage(garbage){
     map.removeLayer(garbage[i]);
      if(i == garbage.length-1){garbage.length=0;}
     }
+}
+
+function Motogod(){
+$("#unit_table").empty();
+  $("#unit_table").append("<tr><td>ТЗ</td><td>ЧАС ХОЛОСТОГО ХОДУ</td><td>ВИКОРИСТАНО ЛІТРІВ НА ХОЛОСТОМУ ХОДІ</td></tr>");
+let str =$('#unit_prMot').val().split(',');
+for(let i = 0; i<Global_DATA.length; i++){
+let nametr = Global_DATA[i][0][1];
+let litry=0;
+let prostoy=0;
+str.forEach((element) => {if(nametr.indexOf(element)>=0){
+ litry=0;
+ prostoy=0;
+ for (let ii = 0; ii<Global_DATA[i].length-11; ii++){
+ if(!Global_DATA[i][ii][3])continue;
+ if(!Global_DATA[i][ii+10][3])continue;
+ if(!Global_DATA[i][ii][4])continue;
+ if(!Global_DATA[i][ii+10][4])continue;
+ if(!Global_DATA[i][ii][2])continue;
+ if(!Global_DATA[i][ii+10][2])continue;
+ 
+ 
+  if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+10][3][0]==0){
+ let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2])/((Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/3600000);
+  if(ras<10){
+  litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2];
+  prostoy+=(Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/1000;
+  ii+=9;
+  
+  }
+  }
+ }
+ 
+  let m = Math.trunc(prostoy / 60) + '';
+  prostoy = (prostoy % 60) + '';
+ 
+  $("#unit_table").append("<tr><td>"+nametr+"</td><td>"+m.padStart(2, 0) + ':' + prostoy.padStart(2, 0)+"</td><td>"+ Math.round(litry) +"</td></tr>");
+  
+}});
+}
 }
