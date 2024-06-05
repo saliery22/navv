@@ -248,7 +248,7 @@ function initUIData() {
 
       for (var key in gzgroop) {
         let point=[];
-        if(gzgroop[key].n[0]!='*'){
+        if(gzgroop[key].n[0]!='*' && gzgroop[key].n[0]!='#'){
         gzgroop[key].zns.forEach(function(item1) { if(IDzonacord[item1]){IDzonacord[item1].forEach(function(item2) {point.push(turf.point([item2[1],item2[0]]));});}});
         let points = turf.featureCollection(point);
         let hull = turf.convex(points);
