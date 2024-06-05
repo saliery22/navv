@@ -111,7 +111,7 @@ button:hover {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.45), 0 1px 3px 1px rgb(26 115 232 / 30%);
 }
 
-button, input, span, select {	
+button, input, span, select,textarea {	
    margin: 3px 0px 0px 3px; 
    font-family: "Arial"; font-size: 12px;
 }
@@ -172,7 +172,7 @@ button, input, span, select {
 <button id='v18'>Очистити маркери</button>
 <button id='v8'>Очистити трек</button>
 <button id='men7'>Моніторинг</button>
-<button id='men4'>Збої навігації</button>
+<button id='men4'>Інфо</button>
 <button id='men6'>Пальне</button>
 <button id='men3'>Геомодуль</button>
 <button id='men1'>Маршрути</button>
@@ -254,8 +254,12 @@ button, input, span, select {
 
  </div>
  <div id="unit_info">
- <table id="unit_table"></table>
+ <button id='prNV'>перевірка навігації</button>
+ <br>
+ <button id='prMot'>перевірка мотогодин</button><textarea id='unit_prMot'  rows="1" cols="30">John, JD , CL , NH ,CASE,JCB,Manitou,Scorpion</textarea>
+ <br>
  <button id='prDUT'>перевірка ДРП/GPS</button>
+ <table id="unit_table"></table>
  </div>
 
  <div id="zupinki">
@@ -286,14 +290,14 @@ button, input, span, select {
     <div id="palne">
         фільтр техніки(JD,Камаз,SCANIA)
         <br>
-        <textarea id='unit_palne'  rows="1" cols="60">John, JD , CL ,CASE,JCB,Manitou,Scorpion</textarea>
+        <textarea id='unit_palne'  rows="1" cols="60">John, JD , NH , CL ,CASE,JCB,Manitou,Scorpion</textarea>
         <br> 
         <table id="palne_table"></table>
      </div>
     <div id="monitoring">
         фільтр техніки(JD,Камаз,SCANIA)
         <br>
-        <textarea id='unit_monitoring'  rows="1" cols="50">John, JD , CL ,CASE</textarea>
+        <textarea id='unit_monitoring'  rows="1" cols="50">John, JD , NH , CL ,CASE</textarea>
         <br> 
         Автоповтор <input id='monitoring_gif' type="checkbox">
         Візуалізація місць роботи <input id='robviz_gif' type="checkbox">
