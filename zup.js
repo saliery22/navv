@@ -2826,7 +2826,7 @@ function clearGarbage(garbage){
 
 function Motogod(){
 $("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>ЧАС ХОЛОСТОГО ХОДУ</td><td>ВИКОРИСТАНО ЛІТРІВ НА ХОЛОСТОМУ ХОДІ</td></tr>");
+  $("#unit_table").append("<tr><td>ТЗ</td><td>ЧАС</td><td>ЛІТРИ</td></tr>");
 let str =$('#unit_prMot').val().split(',');
 for(let i = 0; i<Global_DATA.length; i++){
 let nametr = Global_DATA[i][0][1];
@@ -2846,7 +2846,7 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  
   if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+10][3][0]==0){
  let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2])/((Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/3600000);
-  if(ras<10){
+  if(ras<10 && ras>2){
   litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2];
   prostoy+=(Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/1000;
   ii+=9;
@@ -2856,9 +2856,11 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  }
  
   let m = Math.trunc(prostoy / 60) + '';
-  prostoy = (prostoy % 60) + '';
- 
-  $("#unit_table").append("<tr><td>"+nametr+"</td><td>"+m.padStart(2, 0) + ':' + prostoy.padStart(2, 0)+"</td><td>"+ Math.round(litry) +"</td></tr>");
+  let h = Math.trunc(m / 60) + '';
+  m=(m % 60) + '';
+
+  if(litry>0){$("#unit_table").append("<tr><td>"+nametr+"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td><td>"+ Math.round(litry) +"</td></tr>");
+}
   
 }});
 }
