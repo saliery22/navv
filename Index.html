@@ -111,10 +111,9 @@ button:hover {
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.45), 0 1px 3px 1px rgb(26 115 232 / 30%);
 }
 
-button, input, span, select,textarea {	
-   margin: 3px 0px 0px 3px; 
-   font-family: "Arial"; font-size: 12px;
-}
+button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "Arial"; font-size: 12px;}
+
+.textforma {display: flex}
 
 #v11{ background-color: #8868e2; cursor: pointer; margin-left: 100px; }
 #v10{ background-color: #f8b1c0; cursor: pointer;}
@@ -254,11 +253,16 @@ button, input, span, select,textarea {
 
  </div>
  <div id="unit_info">
+    
+
+<div class='textforma'>
+
+ <button id='prMot'>перевірка мотогодин</button>
+ <textarea id='unit_prMot'  rows="1" cols="50">John, JD , CL , NH ,CASE,JCB,Manitou,Scorpion</textarea>
  <button id='prNV'>перевірка навігації</button>
- <br>
- <button id='prMot'>перевірка мотогодин</button><textarea id='unit_prMot'  rows="1" cols="30">John, JD , CL , NH ,CASE,JCB,Manitou,Scorpion</textarea>
- <br>
- <button id='prDUT'>перевірка ДРП/GPS</button>
+    <button id='prDUT'>перевірка ДРП/GPS</button>
+</div>
+ 
  <table id="unit_table"></table>
  </div>
 
@@ -296,14 +300,14 @@ button, input, span, select,textarea {
      </div>
     <div id="monitoring">
         фільтр техніки(JD,Камаз,SCANIA)
-        <br>
+        <div class='textforma'>
         <textarea id='unit_monitoring'  rows="1" cols="50">John, JD , NH , CL ,CASE</textarea>
-        <br> 
+        <button id='monitoring_bt'>розрахунок</button> 
+        </div> 
         Автоповтор <input id='monitoring_gif' type="checkbox">
         Візуалізація місць роботи <input id='robviz_gif' type="checkbox">
         <br>
-        <button id='monitoring_bt'>розрахунок</button> 
-        <br> 
+
         <table id="monitoring_table"></table>
      </div> 
 
