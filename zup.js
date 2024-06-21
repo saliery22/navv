@@ -2598,6 +2598,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   if(Global_DATA[i].length<200)continue;
  let points = 0; 
  let spd = 0; 
+ let stoyanka = 0;
  let robota=0;
  let pereizd=0;
  let stroka=[];
@@ -2613,6 +2614,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    for (let ii = Global_DATA[i].length-2; ii>10; ii-=30){
    points = 0;
    spd=0;
+   stoyanka=0;
    if(!Global_DATA[i][ii][0])continue;
    if(!Global_DATA[i][ii-1][0])continue;
    if(!Global_DATA[i][ii+1][0])continue;
@@ -2629,8 +2631,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    if(ang1<-180)ang1=360+ang1;
    let ang2 = ang+90;
    if(ang2>180)ang2=ang2-360;
-   p1 = turf.destination(p0, 100,ang2, {units: 'meters'});
-   p2 = turf.destination(p0, 100,ang1, {units: 'meters'});
+   p1 = turf.destination(p0, 70,ang2, {units: 'meters'});
+   p2 = turf.destination(p0, 70,ang1, {units: 'meters'});
 
    let coord1 = turf.getCoord(p1);
    let coord2 = turf.getCoord(p2);
@@ -2640,23 +2642,37 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 
 
        for (let iii = ii-1; iii>0; iii--){
-       if(Global_DATA[i][iii][3][0]=='0'){spd--;continue;}
-	spd++;
+        if(stoyanka>1800 && ii-iii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
+       if(Global_DATA[i][iii][3][0]=='0'){ 
+        stoyanka+=(Global_DATA[i][iii+1][4]-Global_DATA[i][iii][4])/1000;
+        spd--;
+        continue; 
+      }
        if(ii<20|| ii<1 || ii-iii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
-       //if(wialon.util.Geometry.getDistance(y,x,yy,xx)<3){points--;}
-       if(wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx)<100){points++;}
-       if(wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx)<100){points++;}
+       if(wialon.util.Geometry.getDistance(y,x,yy,xx)<3){spd--;continue;}
+       stoyanka=0;
+       spd++;
+       if(wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx)<70){points++;}
+       if(wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx)<70){points++;}
        }
        //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
     if(points==0 && spd>0){pereizd++;robota=0;}
     if(points>10){robota++;pereizd=0;}
 
+      if(stoyanka==-1){
+      if(stroka.length>0){
+      if(stroka[stroka.length-1]!='сто'){
+      stroka.push('сто');
+      }
+      }
+      }
+
      if(pereizd==5){
      if(stroka.length>0){
-     if(stroka[stroka.length-1]=='роб'){
+     if(stroka[stroka.length-1]!='пер'){
      stroka.push('пер');
      }
      }else{
@@ -2665,7 +2681,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      if(robota==2){
      if(stroka.length>0){
-     if(stroka[stroka.length-1]=='пер'){
+     if(stroka[stroka.length-1]!='роб'){
      stroka.push('роб');
      if ($("#robviz_gif").is(":checked")) {
     let markerrr = L.marker([y,x]).addTo(map);
