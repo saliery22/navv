@@ -1373,7 +1373,7 @@ function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
           if (code) {msg(wialon.core.Errors.getErrorText(code)); ii++; UpdateGlobalData(t2,idrep,ii);return;} 
           for(let j in rows) { 
             if (typeof rows[j].c == "undefined") continue;
-            if (j>0 && rows[j].c[0] == rows[j-1].c[0] ) continue;
+            //if (j>0 && rows[j].c[0] == rows[j-1].c[0] ) continue;
             litry=0;
             if (it>0) litry=getTableValue(rows[j].c[it]); 
             datt= Date.parse(getTableValue(rows[j].c[1]));
