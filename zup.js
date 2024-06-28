@@ -2599,6 +2599,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  let points = 0; 
  let spd = 0; 
  let stoyanka = 0;
+ let sttime=$('#min_zup_mon').val()*60;
  let robota=0;
  let pereizd=0;
  let stroka=[];
@@ -2642,7 +2643,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
 
 
        for (let iii = ii-1; iii>0; iii--){
-        if(stoyanka>1800 && ii-iii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
+        if(stoyanka>sttime && ii-iii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
        if(Global_DATA[i][iii][3][0]=='0'){ 
         stoyanka+=(Global_DATA[i][iii+1][4]-Global_DATA[i][iii][4])/1000;
         spd--;
@@ -2681,8 +2682,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      if(robota==2){
      if(stroka.length>0){
-     if(stroka[stroka.length-1]!='роб'){
-     stroka.push('роб');
+      let nn = PointInField(y,x);
+     if(stroka[stroka.length-1]!='роб'+nn){
+     stroka.push('роб'+'<br>'+nn);
      if ($("#robviz_gif").is(":checked")) {
     let markerrr = L.marker([y,x]).addTo(map);
      markerrr.bindPopup(""+nametr+"");
@@ -2690,7 +2692,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      }
      }else{
-      stroka.push('роб');
+      let nn = PointInField(y,x);
+      stroka.push('роб'+'<br>'+nn);
       if ($("#robviz_gif").is(":checked")) {
       let markerrr = L.marker([y,x]).addTo(map);
        markerrr.bindPopup(""+nametr+"");
@@ -2707,15 +2710,15 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   let strr="";
  if(rows.length>0){
   for(let v = 0; v<rows.length; v++){
-  if(rows[v].cells[0].textContent==nametr){
+  if(rows[v].cells[0].textContent==nametr.split(' ')[0]+' '+nametr.split(' ')[1]+''+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]){
    let ind=stroka.length-(rows[v].cells.length-1);
 
-   if(ind<=0){
-   if(rows[v].cells[1].textContent!=stroka[0]){
-   rows[v].cells[1].textContent=stroka[0];
-   rows[v].cells[1].style.backgroundColor = "#f8b1c0";
-   }
-   }
+   //if(ind<=0){
+   //if(rows[v].cells[1].textContent!=stroka[0]){
+   //rows[v].cells[1].textContent=stroka[0];
+   //rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+  // }
+   //}
    for(let vv = ind-1; vv>=0; vv--){
     rows[v].insertCell(1);
     rows[v].cells[1].textContent=stroka[vv];
@@ -2725,17 +2728,32 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   }else{
     if(v==rows.length-1){
    for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
-    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
+    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr.split(' ')[0]+' '+nametr.split(' ')[1]+'<br>'+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]+"</td>"+strr+"</tr>");
        }
    }
   }
   }else{
   for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
-    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr+"</td>"+strr+"</tr>");
+    $("#monitoring_table").append("<tr id="+id+"><td>"+nametr.split(' ')[0]+' '+nametr.split(' ')[1]+'<br>'+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]+"</td>"+strr+"</tr>");
   }
  }
 }});
 }
+}
+function PointInField(y,x){
+
+  for (let i = 0; i < geozones.length; i++) {
+    let zonee = geozones[i].zone;
+    let name = zonee.n;
+    let point = zonee.p;
+    let ba=zonee.b;
+    //console.log(point);
+    if(wialon.util.Geometry.pointInShape(point, 0, x, y,ba)){
+      return name.split(' ')[0];
+    }
+ }
+ return 'невідомо';
+
 }
 
 function track_Monitoring(evt){
