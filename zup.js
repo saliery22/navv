@@ -2682,9 +2682,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      if(robota==2){
      if(stroka.length>0){
-      let nn = PointInField(y,x);
-     if(stroka[stroka.length-1]!='роб'+nn){
-     stroka.push('роб'+'<br>'+nn);
+      let nn = 'роб <br>' + PointInField(y,x);
+     if(stroka[stroka.length-1]!=nn){
+     stroka.push(nn);
      if ($("#robviz_gif").is(":checked")) {
     let markerrr = L.marker([y,x]).addTo(map);
      markerrr.bindPopup(""+nametr+"");
@@ -2692,8 +2692,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      }
      }else{
-      let nn = PointInField(y,x);
-      stroka.push('роб'+'<br>'+nn);
+      let nn = 'роб <br>' + PointInField(y,x);
+      stroka.push(nn);
       if ($("#robviz_gif").is(":checked")) {
       let markerrr = L.marker([y,x]).addTo(map);
        markerrr.bindPopup(""+nametr+"");
