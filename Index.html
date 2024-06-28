@@ -27,7 +27,7 @@
 #unit_info { width: 35%; height:750px; margin-left: 65%; overflow-y: auto; overflow-x: auto;}
 #zupinki { width: 20%; height:750px; margin-left: 80%; overflow-y: auto; overflow-x: auto;}
 #palne { width: 35%; height:750px; margin-left: 65%; overflow-y: auto; overflow-x: auto;}
-#monitoring { width: 35%; height:750px; margin-left: 65%; overflow-y: auto; overflow-x: auto;}
+#monitoring { width: 35%; height:750px; margin-left: 65%; overflow-y: scroll; overflow-x: scroll;}
 
 
 #grafik { width: 100%; border: 1px solid #c6c6c6;}
@@ -36,7 +36,7 @@
 #inftb td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 10px;}
 #unit_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 5px;}
 #palne_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 20px;}
-#monitoring_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 5px;}
+#monitoring_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 4px; white-space: nowrap;}
 #obrobkablok { max-height:250px; overflow-x: auto;border: 1px solid #c6c6c6;}
 #obrobka td{ border: 1px solid black;  padding: 1px 2px;}
 #obrobkatehnika td{  padding: 1px 5px;}
@@ -142,6 +142,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 #min_zup4{  width: 40px;}
 #min_zup5{  width: 40px;}
 #min_zup7{  width: 40px;}
+#min_zup_mon{  width: 40px;}
 
 
 
@@ -304,8 +305,11 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
         <textarea id='unit_monitoring'  rows="1" cols="50">John, JD , NH , CL ,CASE</textarea>
         <button id='monitoring_bt'>розрахунок</button> 
         </div> 
-        Автоповтор <input id='monitoring_gif' type="checkbox">
-        Візуалізація місць роботи <input id='robviz_gif' type="checkbox">
+        <input id='monitoring_gif' type="checkbox">  автоповтор
+        <br>
+        <input id='robviz_gif' type="checkbox">  візуалізація місць роботи
+        <br>
+        <input id='min_zup_mon' type='number' placeholder='30' value="30"> мінімальний час зупинки(хвилин)
         <br>
 
         <table id="monitoring_table"></table>
