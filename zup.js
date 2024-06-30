@@ -2721,7 +2721,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    //}
    for(let vv = ind-1; vv>=0; vv--){
     rows[v].insertCell(1);
-    rows[v].cells[1].textContent=stroka[vv];
+    rows[v].cells[1].innerHTML=stroka[vv];
     rows[v].cells[1].style.backgroundColor = "#f8b1c0";
    }
    break;
@@ -2759,8 +2759,11 @@ function PointInField(y,x){
 function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
    if(evt.target.cellIndex>0){
-   
-   evt.target.style.backgroundColor = 'transparent';
+   if(evt.target.style.backgroundColor == 'transparent'){
+   evt.target.style.backgroundColor = '#FFFF00';
+   }else{
+    evt.target.style.backgroundColor = 'transparent';
+   }
    }else{
    $("#lis0").chosen().val(evt.target.parentNode.id);
    $("#lis0").trigger("chosen:updated");
