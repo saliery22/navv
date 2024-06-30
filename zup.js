@@ -2720,9 +2720,11 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   // }
    //}
    for(let vv = ind-1; vv>=0; vv--){
+    if(rows[v].cells[1].innerHTML!=stroka[vv]){
     rows[v].insertCell(1);
     rows[v].cells[1].innerHTML=stroka[vv];
     rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+    } 
    }
    break;
   }else{
