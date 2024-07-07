@@ -1,4 +1,6 @@
 
+var TOKEN = '0999946a10477f4854a9e6f27fcbe842AD977D90ABF4F3464F534245442AA252FBBEFC3F';
+
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
@@ -41,7 +43,7 @@ function getUnitMarker(unit) {
   if (!unitPos) return null;
     
   if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
-  if(unit.getName().indexOf(' JD ')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0 || unit.getName().indexOf(' NH ')>0){imsaze = 24;} 
+  if(unit.getName().indexOf('JD')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0 || unit.getName().indexOf(' NH ')>0){imsaze = 24;} 
 
   marker = L.marker([unitPos.y, unitPos.x], {
     clickable: true,
@@ -656,6 +658,11 @@ bufer=[];
       min_zup=$('#min_zup5').val();
       Cikle2();
     });
+    $("#tr_zup").click(function() { 
+      maska_zup='John,JD,CL,NH,CASE';
+      min_zup=$('#min_zup6').val();
+      Cikle2();
+    });
 
     
     
@@ -702,10 +709,9 @@ basemaps.OSM.addTo(map);
   var dist1=10;
   var dist2=10;
   map.on('dblclick', function(e) {
-    if (!isUIActive) return;
-      
+    if (!isUIActive) return;   
+    
       var pos = e.latlng;
-      
       var raddddd;
 
 if (!$('#marrr').is(':hidden')) {
@@ -756,7 +762,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe842AD977D90ABF4F3464F534245442AA252FBBEFC3F|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -1373,7 +1395,7 @@ function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
           if (code) {msg(wialon.core.Errors.getErrorText(code)); ii++; UpdateGlobalData(t2,idrep,ii);return;} 
           for(let j in rows) { 
             if (typeof rows[j].c == "undefined") continue;
-            //if (j>0 && rows[j].c[0] == rows[j-1].c[0] ) continue;
+            //if (j>0 && getTableValue(rows[j].c[0]) == getTableValue(rows[j-1].c[0]) ) continue;
             litry=0;
             if (it>0) litry=getTableValue(rows[j].c[it]); 
             datt= Date.parse(getTableValue(rows[j].c[1]));
@@ -1790,7 +1812,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
+      if(nmm.indexOf('John')>0 || nmm.indexOf('JD')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1814,7 +1836,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v30'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf(' JD ')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0 ){
+      if(nmm.indexOf('John')>0 || nmm.indexOf('JD')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0 ){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -2724,7 +2746,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
     rows[v].insertCell(1);
     rows[v].cells[1].innerHTML=stroka[vv];
     rows[v].cells[1].style.backgroundColor = "#f8b1c0";
-    } 
+    }  
    }
    break;
   }else{
@@ -2750,6 +2772,7 @@ function PointInField(y,x){
     let point = zonee.p;
     let ba=zonee.b;
     //console.log(point);
+    if(name[0]=='2' || name[0]=='1' || name[0]=='5') continue;
     if(wialon.util.Geometry.pointInShape(point, 0, x, y,ba)){
       return name.split(' ')[0];
     }
@@ -2757,6 +2780,7 @@ function PointInField(y,x){
  return 'невідомо';
 
 }
+
 
 function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
@@ -2828,7 +2852,7 @@ let str =$('#unit_palne').val().split(',');
                 }
               }
             }
-
+            
             $("#palne_table").append("<tr class='fail_trak' id='"+unitslist[i].getId()+"," + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
 
           }
