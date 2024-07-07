@@ -141,6 +141,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 #min_zup3{  width: 40px;}
 #min_zup4{  width: 40px;}
 #min_zup5{  width: 40px;}
+#min_zup6{  width: 40px;}
 #min_zup7{  width: 40px;}
 #min_zup_mon{  width: 40px;}
 
@@ -259,7 +260,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 <div class='textforma'>
 
  <button id='prMot'>перевірка мотогодин</button>
- <textarea id='unit_prMot'  rows="1" cols="50">John, JD , CL , NH ,CASE,JCB,Manitou,Scorpion</textarea>
+ <textarea id='unit_prMot'  rows="1" cols="50">John,JD,CL,NH,CASE,JCB,Manitou,Scorpion</textarea>
  <button id='prNV'>перевірка навігації</button>
     <button id='prDUT'>перевірка ДРП/GPS</button>
 </div>
@@ -290,19 +291,21 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
     <input id='min_zup4' type='number' placeholder='60' value="60"> <button id='moloko_zup'>зупинки молоковозів</button> 
     <br>  
     <input id='min_zup5' type='number' placeholder='60' value="60"> <button id='pogr_zup'>зупинки погрузчиків</button> 
+     <br>  
+    <input id='min_zup6' type='number' placeholder='60' value="60"> <button id='tr_zup'>зупинки тракторів</button> 
     </div>
     
     <div id="palne">
         фільтр техніки(JD,Камаз,SCANIA)
         <br>
-        <textarea id='unit_palne'  rows="1" cols="60">John, JD , NH , CL ,CASE,JCB,Manitou,Scorpion</textarea>
+        <textarea id='unit_palne'  rows="1" cols="60">John,JD,NH,CL,CASE,JCB,Manitou,Scorpion</textarea>
         <br> 
         <table id="palne_table"></table>
      </div>
     <div id="monitoring">
         фільтр техніки(JD,Камаз,SCANIA)
         <div class='textforma'>
-        <textarea id='unit_monitoring'  rows="1" cols="50">John, JD , NH , CL ,CASE</textarea>
+        <textarea id='unit_monitoring'  rows="1" cols="50">John,JD,NH,CL,CASE</textarea>
         <button id='monitoring_bt'>розрахунок</button> 
         </div> 
         <input id='monitoring_gif' type="checkbox">  автоповтор
