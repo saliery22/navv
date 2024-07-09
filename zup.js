@@ -217,7 +217,7 @@ function initUIData() {
                  if(color1==color2){
                   plo+=zonee.ar;
                   kol++;
-                  if(namee==zonee.n.split('-')[0]){plo2+=zonee.ar; kol2++;}
+                  if(namee.split('-')[0]==zonee.n.split('-')[0]){plo2+=zonee.ar; kol2++;}
                 }
                  if(zonee.id==Vibranaya_zona.id){
                    let rovs = zonee.d.split("||");
