@@ -663,6 +663,11 @@ bufer=[];
       min_zup=$('#min_zup6').val();
       Cikle2();
     });
+   $("#nm_zup").click(function() { 
+      maska_zup='Найм';
+      min_zup=$('#min_zup7').val();
+      Cikle2();
+    });
 
     
     
