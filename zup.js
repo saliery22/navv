@@ -879,7 +879,7 @@ function show_track (time1,time2) {
 		"points": 1, // show points at places where messages were received: 0 - no, 1 - yes
 		"pointColor": color, // points color
 		"annotations": 0, //show annotations for points: 0 - no, 1 - yes
-        "flags": 128
+        "flags": 32
 	};
 	renderer.createMessagesLayer(params, callback);
 }
