@@ -169,7 +169,7 @@ function initUIData() {
            
            var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.3, fillColor: color});
           // geozona.bindPopup(zone.n);
-           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8});
+           geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8,sticky:true});
            geozona.zone = zone;
            geozones.push(geozona);   
 
@@ -543,7 +543,7 @@ bufer=[];
     
    map.setView(popupp.getLatLng(), 15); 
    popupp.openPopup();
-
+   navigator.clipboard.writeText(unit.getName());
      show_track ();     
      show_gr();
   }
