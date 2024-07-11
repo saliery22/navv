@@ -1459,7 +1459,7 @@ function position(t)  {
             //if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             if(rux == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 30){ if (Global_DATA[ii][i][5][0]=='' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(rux == 30){ if (Global_DATA[ii][i][5][0]!=null ) {markerrr.setOpacity(0);}}
             break;
           }
      }
