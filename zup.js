@@ -628,44 +628,52 @@ bufer=[];
       
       ObrabotkaPolya(texnika,$('#shirzahvata').val());
     });
-    $("#per_zup").click(function() { 
+     $("#per_zup").click(function() { 
       maska_zup=$('#unit_zup').val();
       min_zup=$('#min_zup').val();
+      if ($("#alone_zup").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#gruz_zup").click(function() { 
       maska_zup='Камаз,SCANIA,МАЗ';
       min_zup=$('#min_zup1').val();
+      if ($("#alone_zup1").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#benzovoz_zup").click(function() { 
       maska_zup='ВМ1613СР,ВМ1614СР,ВМ2893ЕН,ВМ3861ВО,ВМ3862ВО,ВМ4156ВС';
       min_zup=$('#min_zup2').val();
+      if ($("#alone_zup2").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#gaz_zup").click(function() { 
       maska_zup='ГАЗ';
       min_zup=$('#min_zup3').val();
+      if ($("#alone_zup3").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#moloko_zup").click(function() { 
       maska_zup='ВМ3204ЕВ,ВМ3372СТ,ВМ5913СІ';
       min_zup=$('#min_zup4').val();
+      if ($("#alone_zup4").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#pogr_zup").click(function() { 
       maska_zup='JCB,Manitou';
       min_zup=$('#min_zup5').val();
+      if ($("#alone_zup5").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
     $("#tr_zup").click(function() { 
       maska_zup='John,JD,CL,NH,CASE';
       min_zup=$('#min_zup6').val();
+      if ($("#alone_zup6").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
-   $("#nm_zup").click(function() { 
+    $("#nm_zup").click(function() { 
       maska_zup='Найм';
       min_zup=$('#min_zup7').val();
+      if ($("#alone_zup7").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
     });
 
@@ -1486,6 +1494,7 @@ var icl2 =-1;
 var idun2=0;
 let maska_zup='All';
 let min_zup=60;
+let alone = false;
 
 function Cikle2(){
  icl2+=1;
@@ -1651,6 +1660,7 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
                                   iconAnchor: [12, 24] // set icon center
                                   })
                                   }).addTo(map);
+	        if(alone){if(tehnika_poruch(data_zup[i][4],y,x,Date.parse(data_zup[i][1]))){mark.setIcon(L.icon({iconUrl: '333.png',iconSize:[24, 24],iconAnchor: [12, 24]}));}}
                 mark.bindPopup(data_zup[i][4]+'<br />'+data_zup[i][1]+'<br />'+data_zup[i][3]+'<br />'+data_zup[i][6]);
                 zup_mark_data.push(mark);
                  mark.on('click', function(e) {
@@ -2916,4 +2926,17 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
   
 }});
 }
+}
+function tehnika_poruch(name,y,x,time){ 
+  for(let i = 0; i<Global_DATA.length; i++){
+    if(name==Global_DATA[i][0][1]) continue;
+    for (let ii = Global_DATA[i].length-1; ii>=0; ii--){
+       if(time>Global_DATA[i][ii][4]){
+        let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+        let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+        if(wialon.util.Geometry.getDistance(y,x,yy,xx)<100){ return true; }else {break};
+      }
+    }
+  }
+  return false;
 }
