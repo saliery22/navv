@@ -925,7 +925,7 @@ function Marshrut(r1,r2){
 		
 
     $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
-    $('#'+idlist+'').append($('<option>').text('Найм').val('111'));
+    $('#'+idlist+'').append($('<option>').text('Найм').val());
     $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
     $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
     $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
@@ -1039,7 +1039,7 @@ function Cikle3(){
      }else{Cikle3();}
      
      }else{
-      if(mr_tehnika=='000'){
+      if(mr_tehnika=='111'){
        if(name.indexOf('Найм')>=0|| name.indexOf('найм')>=0|| name.indexOf('ТОВ')>=0|| name.indexOf('Фоп')>=0|| name.indexOf('ФОП')>=0){ 
         executeReport3(idun3);
        } else{Cikle3();}
