@@ -671,7 +671,7 @@ bufer=[];
       Cikle2();
     });
     $("#nm_zup").click(function() { 
-      maska_zup='Найм';
+      maska_zup='Найм,ФОП,ТОВ,Фоп';
       min_zup=$('#min_zup7').val();
       if ($("#alone_zup7").is(":checked")) {alone=true;}else{alone=false}
       Cikle2();
