@@ -1823,7 +1823,7 @@ mm = markerByUnit[idd];
       }
      
     if ($(this).attr("id")=='v13'){
-      if(nmm.indexOf('Нива')>=0 || nmm.indexOf('Газель')>=0 || nmm.indexOf('Лада')>=0 || nmm.indexOf('Lanos')>=0 || nmm.indexOf('Дастер')>=0 || nmm.indexOf('Stepway')>=0 || nmm.indexOf('ВАЗ')=>0 || nmm.indexOf('ФОРД')>0 || nmm.indexOf('Toyota')>0 || nmm.indexOf('Рено')>0 || nmm.indexOf('TOYOTA')>0 || nmm.indexOf('Skoda')>0|| nmm.indexOf('ЗАЗ ')>0){ 
+      if(nmm.indexOf('Нива')>=0 || nmm.indexOf('Газель')>=0 || nmm.indexOf('Лада')>=0 || nmm.indexOf('Lanos')>=0 || nmm.indexOf('Дастер')>=0 || nmm.indexOf('Stepway')>=0 || nmm.indexOf('ВАЗ')>=0 || nmm.indexOf('ФОРД')>=0 || nmm.indexOf('Toyota')>=0 || nmm.indexOf('Рено')>=0 || nmm.indexOf('TOYOTA')>=0 || nmm.indexOf('Skoda')>=0|| nmm.indexOf('ЗАЗ ')>=0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
