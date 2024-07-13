@@ -230,11 +230,11 @@ function initUIData() {
                  }
                 
               }
-              //$('#infoGEO').append("Назва    "+e.target._popup._content+"<br> Засіяно в регіоні  "+namee+" - "+kol2+"шт   "+(plo2/10000).toFixed(2)+"га <br> Всього  "+kol+"шт  "+(plo/10000).toFixed(2)+"га");
+              //$('#infoGEO').append("Назва    "+e.target._popup._content+"<br> Засіяно в регіоні  "+namee+" - "+kol2+"шт   "+(plo2/10000).toFixed(2)+"га <br> Всього  "+kol+"шт  "+(plo/10).toFixed(2)+"га");
              
            $('#inftb').append('<caption>'+namee+'</caption>');
-           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namee+"</td><td>"+kol2+"шт</td><td>"+(plo2/10000).toFixed(2)+"га</td></tr>");
-           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>всього</td><td>"+kol+"шт</td><td>"+(plo/10000).toFixed(2)+"га</td></tr>");
+           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namee+"</td><td>"+kol2+"шт</td><td>"+(plo2/10).toFixed(2)+"га</td></tr>");
+           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>всього</td><td>"+kol+"шт</td><td>"+(plo/10).toFixed(2)+"га</td></tr>");
           });
         
           });
@@ -294,7 +294,7 @@ var sdsa = unit.getPosition();
 if (sdsa){
     unitslist.push(unit);
     unitMarkers.push(unitMarker) ;  
-if (Date.parse($('#fromtime1').val())/1000 > unit.getPosition().t){rest_units.push(unit.getName());}
+if (Date.parse($('#fromtime1').val())/1 > unit.getPosition().t){rest_units.push(unit.getName());}
 }
 
   });
@@ -315,11 +315,11 @@ $(".livesearch").chosen({search_contains : true});
     var tableRow =document.querySelectorAll('#marshrut tr');
     var radddddd;
      for ( j = 1; j < tableRow.length; j++){
-       raddddddd =  L.circle([parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])], {stroke: false,  fillColor: '#0000FF', fillOpacity: 0.2,radius: tableRow[j].cells[6].textContent}).addTo(map);
+       raddddddd =  L.circle([parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])], {stroke: false,  fillColor: '#0FF', fillOpacity: 0.2,radius: tableRow[j].cells[6].textContent}).addTo(map);
        marshrutMarkers.push(raddddddd);
        raddddddd =  L.circle([parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])], {stroke: false,  fillColor: '#f03', fillOpacity: 0.2,radius: tableRow[j].cells[7].textContent}).addTo(map);
        marshrutMarkers.push(raddddddd);
-       var polyline = L.polyline([[parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])],[parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])]], {opacity: 0.3, color: '#0000FF'}).addTo(map);
+       var polyline = L.polyline([[parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])],[parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])]], {opacity: 0.3, color: '#0FF'}).addTo(map);
        marshrutMarkers.push(polyline); 
      } 
      
@@ -606,7 +606,7 @@ bufer=[];
     $('#monitoring_bt').click(Monitoring);
 
     $('#vchora').click(function() { 
-      let cur_day111 = new Date(Date.now()-86400000);
+      let cur_day111 = new Date(Date.now()-86400);
       let month = cur_day111.getMonth()+1;   
       let from111 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 00:00';
       let from222 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 23:58';
@@ -736,7 +736,7 @@ if (!$('#marrr').is(':hidden')) {
  if (cklikkk==2){
   dist1 =Math.round(wialon.util.Geometry.getDistance(pos.lat, pos.lng, markerstart.getLatLng().lat, markerstart.getLatLng().lng));
   if (dist1<50) {dist1=50;}
-  raddddd =  L.circle(markerstart.getLatLng(), {stroke: false, fillColor: '#0000FF', fillOpacity: 0.2,radius: dist1}).addTo(map);
+  raddddd =  L.circle(markerstart.getLatLng(), {stroke: false, fillColor: '#0FF', fillOpacity: 0.2,radius: dist1}).addTo(map);
    marshrutMarkers.push(raddddd);
     }
 
@@ -925,7 +925,7 @@ function Marshrut(r1,r2){
 		
 
     $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
-    $('#'+idlist+'').append($('<option>').text('Найм').val('айм'));
+    $('#'+idlist+'').append($('<option>').text('Найм').val('111'));
     $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
     $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
     $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
@@ -1039,10 +1039,16 @@ function Cikle3(){
      }else{Cikle3();}
      
      }else{
+      if(mr_tehnika=='000'){
+       if(name.indexOf('Найм')>=0|| name.indexOf('найм')>=0|| name.indexOf('ТОВ')>=0|| name.indexOf('Фоп')>=0|| name.indexOf('ФОП')>=0){ 
+        executeReport3(idun3);
+       } else{Cikle3();}
+      }else{
      if(name.indexOf(mr_tehnika)>=0){ 
           executeReport3(idun3);
 
      }else{Cikle3();}
+     }
      }
     
     
@@ -1949,7 +1955,7 @@ function fn_copy() {
          
      
          $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
-         $('#'+idlist+'').append($('<option>').text('Найм').val('айм'));
+         $('#'+idlist+'').append($('<option>').text('Найм').val('111'));
          $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
          $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
          $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
