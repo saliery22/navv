@@ -1838,7 +1838,7 @@ mm = markerByUnit[idd];
       }
       
         if ($(this).attr("id")=='v14'){
-      if(nmm.indexOf('Найм')>=0 || nmm.indexOf('найм')>=0){ 
+      if(nmm.indexOf('Найм')>=0 || nmm.indexOf('найм')>=0|| nmm.indexOf('Фоп')>=0|| nmm.indexOf('ФОП')>=0|| nmm.indexOf('ТОВ')>=0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
