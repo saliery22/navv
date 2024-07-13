@@ -1028,7 +1028,7 @@ function Cikle3(){
      var name =idun3.getName();
    
      if(mr_tehnika=='000'){
-     if(name.indexOf('Камаз')>0|| name.indexOf('SCANIA')>0){ 
+     if(name.indexOf('Камаз')>=0|| name.indexOf('SCANIA')>=0){ 
           
       if(name.indexOf('Шкурат')<0 && name.indexOf('Білоус')<0 && name.indexOf('Штацький')<0 && name.indexOf('Дробниця')<0 && name.indexOf('Писаренко')<0 && name.indexOf('Колотуша')<0){
 
@@ -1780,42 +1780,42 @@ mm = markerByUnit[idd];
      }
      
      if ($(this).attr("id")=='v2'){
-     if(nmm.indexOf('КАМАЗ')>0|| nmm.indexOf('Камаз')>0){ 
+     if(nmm.indexOf('КАМАЗ')>=0|| nmm.indexOf('Камаз')>=0){ 
      mm.setOpacity(1);
        mm.setZIndexOffset(1000);
        this.style.background = '#b2f5b4';
      }
      }  
      if ($(this).attr("id")=='v3'){
-     if(nmm.indexOf(' МАЗ')>0){ 
+     if(nmm.indexOf(' МАЗ')>=0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
        this.style.background = '#b2f5b4';
      }
      } 
      if ($(this).attr("id")=='v4'){
-     if(nmm.indexOf('SCANIA')>0){ 
+     if(nmm.indexOf('SCANIA')>=0){ 
        mm.setOpacity(1);
        mm.setZIndexOffset(1000);
        this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v5'){
-     if(nmm.indexOf('JCB')>0|| nmm.indexOf('Manitou')>0 || nmm.indexOf('Scorpion')>0){ 
+     if(nmm.indexOf('JCB')>=0|| nmm.indexOf('Manitou')>=0 || nmm.indexOf('Scorpion')>=0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
        this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v6'){
-     if(nmm.indexOf('ГАЗ')>0){ 
+     if(nmm.indexOf('ГАЗ')>=0){ 
       mm.setOpacity(1);
        mm.setZIndexOffset(1000);
        this.style.background = '#b2f5b4';
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf('JD')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0){
+      if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf(' МТЗ ')>=0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1823,7 +1823,7 @@ mm = markerByUnit[idd];
       }
      
     if ($(this).attr("id")=='v13'){
-      if(nmm.indexOf('Нива')>0 || nmm.indexOf('Газель')>0 || nmm.indexOf('Лада')>0 || nmm.indexOf('Lanos')>0 || nmm.indexOf('Дастер')>0 || nmm.indexOf('Stepway')>0 || nmm.indexOf('ВАЗ')>0 || nmm.indexOf('ФОРД')>0 || nmm.indexOf('Toyota')>0 || nmm.indexOf('Рено')>0 || nmm.indexOf('TOYOTA')>0 || nmm.indexOf('Skoda')>0|| nmm.indexOf('ЗАЗ ')>0){ 
+      if(nmm.indexOf('Нива')>=0 || nmm.indexOf('Газель')>=0 || nmm.indexOf('Лада')>=0 || nmm.indexOf('Lanos')>=0 || nmm.indexOf('Дастер')>=0 || nmm.indexOf('Stepway')>=0 || nmm.indexOf('ВАЗ')=>0 || nmm.indexOf('ФОРД')>0 || nmm.indexOf('Toyota')>0 || nmm.indexOf('Рено')>0 || nmm.indexOf('TOYOTA')>0 || nmm.indexOf('Skoda')>0|| nmm.indexOf('ЗАЗ ')>0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1831,7 +1831,7 @@ mm = markerByUnit[idd];
       }
       
         if ($(this).attr("id")=='v14'){
-      if(nmm.indexOf('Найм')>0 || nmm.indexOf('найм')>0){ 
+      if(nmm.indexOf('Найм')>=0 || nmm.indexOf('найм')>=0){ 
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1839,7 +1839,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v27'){
-      if(nmm.indexOf('CASE 4430')>0 || nmm.indexOf('R4045')>0|| nmm.indexOf('612R')>0){
+      if(nmm.indexOf('CASE 4430')>=0 || nmm.indexOf('R4045')>=0|| nmm.indexOf('612R')>=0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1847,7 +1847,7 @@ mm = markerByUnit[idd];
       }
 
      if ($(this).attr("id")=='v30'){
-      if(nmm.indexOf('John')>0 || nmm.indexOf('JD')>0 || nmm.indexOf(' CL ')>0|| nmm.indexOf('CASE')>0 || nmm.indexOf(' NH ')>0 ){
+      if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0 ){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
