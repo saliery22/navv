@@ -12,7 +12,6 @@ var rux=0;
 
 
 
-
 // for refreshing
 var currentPos = null, currentUnit = null;
 
@@ -543,7 +542,7 @@ bufer=[];
     
    map.setView(popupp.getLatLng(), 15); 
    popupp.openPopup();
-   navigator.clipboard.writeText(unit.getName());
+     navigator.clipboard.writeText(unit.getName());
      show_track ();     
      show_gr();
   }
@@ -580,6 +579,7 @@ bufer=[];
     $('#v9').click(chuse);
     $('#v12').click(chuse);
     $('#v13').click(chuse);
+    $('#v14').click(chuse);
 
     $('#v21').click(chuse);
     $('#v22').click(chuse);
@@ -628,7 +628,7 @@ bufer=[];
       
       ObrabotkaPolya(texnika,$('#shirzahvata').val());
     });
-     $("#per_zup").click(function() { 
+    $("#per_zup").click(function() { 
       maska_zup=$('#unit_zup').val();
       min_zup=$('#min_zup').val();
       if ($("#alone_zup").is(":checked")) {alone=true;}else{alone=false}
@@ -775,7 +775,23 @@ if (!$('#marrr').is(':hidden')) {
 
 let ps = prompt('');
 if(ps==55555){
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('o 5=\'a\';$(b).c(4(){2.1.7.6().d("e://f.9.h.i");2.1.7.6().g(5,"",4(0){k(0){3(2.1.l.m(0));n}3(\'ÐÐµÐ´Ð½Ð°Ð½Ð½Ñ Ð· ÐÐ»ÑÑÑÐ² - ÑÑÐ¿ÑÑÐ½Ð¾\');j();8()})});',25,25,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|ingps|0999946a10477f4854a9e6f27fcbe842AD977D90ABF4F3464F534245442AA252FBBEFC3F|document|ready|initSession|https|local3|loginToken|com|ua|initMap|if|Errors|getErrorText|return|var'.split('|'),0,{}))
+// execute when DOM ready
+$(document).ready(function () {
+  // init session
+
+  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua");
+  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+    function (code) { // login callback
+      // if error code - print error message
+      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
+      msg('Зеднання з Глухів - успішно');
+      initMap();
+      init(); // when login suceed then run init() function
+      
+      
+    }
+  );
+});
 }else{
   $('#marrr').hide();
   $('#option').hide();
@@ -925,6 +941,7 @@ function Marshrut(r1,r2){
 		
 
     $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
+    $('#'+idlist+'').append($('<option>').text('Найм').val('айм'));
     $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
     $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
     $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
@@ -1660,7 +1677,7 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
                                   iconAnchor: [12, 24] // set icon center
                                   })
                                   }).addTo(map);
-	        if(alone){if(tehnika_poruch(data_zup[i][4],y,x,Date.parse(data_zup[i][1]))){mark.setIcon(L.icon({iconUrl: '333.png',iconSize:[24, 24],iconAnchor: [12, 24]}));}}
+                if(alone){if(tehnika_poruch(data_zup[i][4],y,x,Date.parse(data_zup[i][1]))){mark.setIcon(L.icon({iconUrl: '333.png',iconSize:[24, 24],iconAnchor: [12, 24]}));}}
                 mark.bindPopup(data_zup[i][4]+'<br />'+data_zup[i][1]+'<br />'+data_zup[i][3]+'<br />'+data_zup[i][6]);
                 zup_mark_data.push(mark);
                  mark.on('click', function(e) {
@@ -1690,6 +1707,9 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
     }
    }
  }
+
+
+
  var svdata = JSON.parse(localStorage.getItem('arhivzup'));
  if(svdata)zup_hist=svdata;
   
@@ -1825,6 +1845,14 @@ mm = markerByUnit[idd];
         this.style.background = '#b2f5b4';
       }
       }
+      
+        if ($(this).attr("id")=='v14'){
+      if(nmm.indexOf('Найм')>0 || nmm.indexOf('найм')>0){ 
+       mm.setOpacity(1);
+        mm.setZIndexOffset(1000);
+        this.style.background = '#b2f5b4';
+      }
+      }
 
      if ($(this).attr("id")=='v27'){
       if(nmm.indexOf('CASE 4430')>0 || nmm.indexOf('R4045')>0|| nmm.indexOf('612R')>0){
@@ -1936,6 +1964,7 @@ function fn_copy() {
          
      
          $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
+         $('#'+idlist+'').append($('<option>').text('Найм').val('айм'));
          $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
          $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
          $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
@@ -2927,6 +2956,8 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
 }});
 }
 }
+
+
 function tehnika_poruch(name,y,x,time){ 
   for(let i = 0; i<Global_DATA.length; i++){
     if(name==Global_DATA[i][0][1]) continue;
