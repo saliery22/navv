@@ -19,7 +19,7 @@ var isUIActive = true;
 
 var cur_day111 = new Date();
 var month = cur_day111.getMonth()+1;   
-var from111 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 00:00';
+var from111 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 05:00';
 var from222 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' ' + cur_day111.getHours()+ ':' + cur_day111.getMinutes();
 
 
@@ -151,6 +151,7 @@ function initUIData() {
       for (let i = 0; i < geofences.length; i++) {
         cord=[];
          var zone = geofences[i];
+	if(zone.n[0]=='2' || zone.n[0]=='1' || zone.n[0]=='5') continue;
          var zonegr="";
            for (var key in gzgroop) {
             if(gzgroop[key].n[0]!='*' && gzgroop[key].n[0]!='#'){
