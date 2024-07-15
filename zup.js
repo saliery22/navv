@@ -926,7 +926,7 @@ function Marshrut(r1,r2){
 		
 
     $('#'+idlist+'').append($('<option>').text('Камази + Сканії').val('000'));
-    $('#'+idlist+'').append($('<option>').text('Найм').val());
+    $('#'+idlist+'').append($('<option>').text('Найм').val('111'));
     $('#'+idlist+'').append($('<option>').text('ГАЗи').val('ГАЗ'));
     $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
     $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
