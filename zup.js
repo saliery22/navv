@@ -2913,28 +2913,40 @@ $("#unit_table").empty();
 let str =$('#unit_prMot').val().split(',');
 for(let i = 0; i<Global_DATA.length; i++){
 let nametr = Global_DATA[i][0][1];
+let litry0=0;
+let prostoy0=0;
 let litry=0;
 let prostoy=0;
 str.forEach((element) => {if(nametr.indexOf(element)>=0){
+ litry0=0;
+ prostoy0=0;
  litry=0;
  prostoy=0;
  for (let ii = 0; ii<Global_DATA[i].length-11; ii++){
  if(!Global_DATA[i][ii][3])continue;
- if(!Global_DATA[i][ii+10][3])continue;
+ if(!Global_DATA[i][ii+4][3])continue;
  if(!Global_DATA[i][ii][4])continue;
- if(!Global_DATA[i][ii+10][4])continue;
+ if(!Global_DATA[i][ii+4][4])continue;
  if(!Global_DATA[i][ii][2])continue;
- if(!Global_DATA[i][ii+10][2])continue;
+ if(!Global_DATA[i][ii+4][2])continue;
  
  
-  if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+10][3][0]==0){
- let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2])/((Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/3600000);
+  if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+4][3][0]==0){
+ let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+4][2])/((Global_DATA[i][ii+4][4]-Global_DATA[i][ii][4])/3600000);
   if(ras<10 && ras>2){
-  litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+10][2];
-  prostoy+=(Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/1000;
-  ii+=9;
+  litry0+=Global_DATA[i][ii][2]-Global_DATA[i][ii+4][2];
+  prostoy0+=(Global_DATA[i][ii+4][4]-Global_DATA[i][ii][4])/1000;
+  ii+=3;
   
+  }else{
+    if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
+    litry0=0;
+    prostoy0=0;
   }
+  }else{
+    if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
+    litry0=0;
+    prostoy0=0;
   }
  }
  
@@ -2948,6 +2960,7 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
 }});
 }
 }
+
 
 
 function tehnika_poruch(name,y,x,time){ 
