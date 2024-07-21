@@ -2909,20 +2909,24 @@ function clearGarbage(garbage){
 
 function Motogod(){
 $("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>ЧАС</td><td>ЛІТРИ</td></tr>");
+  $("#unit_table").append("<tr><td>ТЗ</td><td>ЗУП</td><td>МОТ</td><td>ЛІТРИ</td><td>л/год</td></tr>");
 let str =$('#unit_prMot').val().split(',');
 for(let i = 0; i<Global_DATA.length; i++){
 let nametr = Global_DATA[i][0][1];
 let litry0=0;
 let prostoy0=0;
+let zupp0 =0;
 let litry=0;
 let prostoy=0;
+let zupp=0;
 str.forEach((element) => {if(nametr.indexOf(element)>=0){
  litry0=0;
  prostoy0=0;
+ zupp0=0;
  litry=0;
  prostoy=0;
- for (let ii = 0; ii<Global_DATA[i].length-11; ii++){
+ zupp=0;
+ for (let ii = 0; ii<Global_DATA[i].length-5; ii++){
  if(!Global_DATA[i][ii][3])continue;
  if(!Global_DATA[i][ii+4][3])continue;
  if(!Global_DATA[i][ii][4])continue;
@@ -2932,8 +2936,9 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  
  
   if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+4][3][0]==0){
+    zupp0+=(Global_DATA[i][ii+4][4]-Global_DATA[i][ii][4])/1000;
  let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+4][2])/((Global_DATA[i][ii+4][4]-Global_DATA[i][ii][4])/3600000);
-  if(ras<10 && ras>2){
+  if(ras<10 && ras>1){
   litry0+=Global_DATA[i][ii][2]-Global_DATA[i][ii+4][2];
   prostoy0+=(Global_DATA[i][ii+4][4]-Global_DATA[i][ii][4])/1000;
   ii+=3;
@@ -2942,25 +2947,33 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
     if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
     litry0=0;
     prostoy0=0;
+    ii+=3;
   }
   }else{
     if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
     litry0=0;
     prostoy0=0;
+    if(zupp0>300){zupp+=zupp0;}
+    zupp0=0;
+    ii+=3;
   }
  }
- 
+  let m0 = Math.trunc(zupp / 60) + '';
+  let h0 = Math.trunc(m0 / 60) + '';
+  m0=(m0 % 60) + '';
+
   let m = Math.trunc(prostoy / 60) + '';
   let h = Math.trunc(m / 60) + '';
   m=(m % 60) + '';
 
-  if(litry>0){$("#unit_table").append("<tr><td>"+nametr+"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td><td>"+ Math.round(litry) +"</td></tr>");
+  let lkm = (litry/prostoy*3600).toFixed(1);
+
+  if(zupp>0){$("#unit_table").append("<tr><td>"+nametr+"</td><td>"+h0.padStart(2, 0) + ':' + m0.padStart(2, 0) +"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td><td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>");
 }
   
 }});
 }
 }
-
 
 
 function tehnika_poruch(name,y,x,time){ 
