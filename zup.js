@@ -151,7 +151,7 @@ function initUIData() {
       for (let i = 0; i < geofences.length; i++) {
         cord=[];
          var zone = geofences[i];
-	if(zone.n[0]=='2' || zone.n[0]=='1' || zone.n[0]=='5') continue;
+	if(zone.n[2]=='к' || zone.n[3]=='к') continue;
          var zonegr="";
            for (var key in gzgroop) {
             if(gzgroop[key].n[0]!='*' && gzgroop[key].n[0]!='#'){
