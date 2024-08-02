@@ -316,11 +316,11 @@ $(".livesearch").chosen({search_contains : true});
     var tableRow =document.querySelectorAll('#marshrut tr');
     var radddddd;
      for ( j = 1; j < tableRow.length; j++){
-       raddddddd =  L.circle([parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])], {stroke: false,  fillColor: '#0FF', fillOpacity: 0.2,radius: tableRow[j].cells[6].textContent}).addTo(map);
+       raddddddd =  L.circle([parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])], {stroke: false,  fillColor: '#0000FF', fillOpacity: 0.2,radius: tableRow[j].cells[6].textContent}).addTo(map);
        marshrutMarkers.push(raddddddd);
        raddddddd =  L.circle([parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])], {stroke: false,  fillColor: '#f03', fillOpacity: 0.2,radius: tableRow[j].cells[7].textContent}).addTo(map);
        marshrutMarkers.push(raddddddd);
-       var polyline = L.polyline([[parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])],[parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])]], {opacity: 0.3, color: '#0FF'}).addTo(map);
+       var polyline = L.polyline([[parseFloat(tableRow[j].cells[2].textContent.split(',')[0]),parseFloat(tableRow[j].cells[2].textContent.split(',')[1])],[parseFloat(tableRow[j].cells[3].textContent.split(',')[0]),parseFloat(tableRow[j].cells[3].textContent.split(',')[1])]], {opacity: 0.3, color: '#0000FF'}).addTo(map);
        marshrutMarkers.push(polyline); 
      } 
      
@@ -607,9 +607,9 @@ bufer=[];
     $('#monitoring_bt').click(Monitoring);
 
     $('#vchora').click(function() { 
-      let cur_day111 = new Date(Date.now()-86400);
+      let cur_day111 = new Date(Date.now()-86400000);
       let month = cur_day111.getMonth()+1;   
-      let from111 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 00:00';
+      let from111 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 05:00';
       let from222 = cur_day111.getFullYear() + '-' + (month < 10 ? '0' : '') + month + '-' + cur_day111.getDate()+ ' 23:58';
       $('#fromtime1').val(from111);
       $('#fromtime2').val(from222);
@@ -737,7 +737,7 @@ if (!$('#marrr').is(':hidden')) {
  if (cklikkk==2){
   dist1 =Math.round(wialon.util.Geometry.getDistance(pos.lat, pos.lng, markerstart.getLatLng().lat, markerstart.getLatLng().lng));
   if (dist1<50) {dist1=50;}
-  raddddd =  L.circle(markerstart.getLatLng(), {stroke: false, fillColor: '#0FF', fillOpacity: 0.2,radius: dist1}).addTo(map);
+  raddddd =  L.circle(markerstart.getLatLng(), {stroke: false, fillColor: '#0000FF', fillOpacity: 0.2,radius: dist1}).addTo(map);
    marshrutMarkers.push(raddddd);
     }
 
