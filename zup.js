@@ -2820,7 +2820,7 @@ function track_Monitoring(evt){
   // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
    if(evt.target.cellIndex>0){
    if(evt.target.style.backgroundColor == 'transparent'){
-   evt.target.style.backgroundColor = '#FFFF00';
+   evt.target.style.backgroundColor = '#1E90FF';
    }else{
     evt.target.style.backgroundColor = 'transparent';
    }
