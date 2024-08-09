@@ -2642,6 +2642,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  let spd = 0; 
  let stoyanka = 0;
  let sttime=$('#min_zup_mon').val()*60;
+ let coll = "#98FB98";
  let robota=0;
  let pereizd=0;
  let stroka=[];
@@ -2765,19 +2766,32 @@ let rows = document.querySelectorAll('#monitoring_table tr');
     if(rows[v].cells[1].innerHTML!=stroka[vv]){
     rows[v].insertCell(1);
     rows[v].cells[1].innerHTML=stroka[vv];
-    rows[v].cells[1].style.backgroundColor = "#f8b1c0";
+    if(stroka[vv]=="пер"){coll = "#FFFF00";}
+    if(stroka[vv]=="роб <br>невідомо"){coll = "#f8b1c0";}
+    rows[v].cells[1].style.backgroundColor = coll;
     }  
    }
    break;
   }else{
-    if(v==rows.length-1){
-   for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+    if(v==rows.length-1){ 
+   for(let v = 0; v<stroka.length; v++){
+     coll = "#98FB98";
+     if(stroka[v]=="пер"){coll = "#FFFF00";}
+     if(stroka[v]=="роб <br>невідомо"){coll = "#f8b1c0";}
+     strr+= "<td bgcolor = '"+coll+"'>"+stroka[v]+"</td>";
+     }
     $("#monitoring_table").append("<tr id="+id+"><td>"+nametr.split(' ')[0]+' '+nametr.split(' ')[1]+'<br>'+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]+"</td>"+strr+"</tr>");
        }
    }
   }
   }else{
-  for(let v = 0; v<stroka.length; v++){strr+= "<td bgcolor = '#f8b1c0'>"+stroka[v]+"</td>";}
+  
+  for(let v = 0; v<stroka.length; v++){
+     coll = "#98FB98";
+     if(stroka[v]=="пер"){coll = "#FFFF00";}
+     if(stroka[v]=="роб <br>невідомо"){coll = "#f8b1c0";}
+     strr+= "<td bgcolor = '"+coll+"'>"+stroka[v]+"</td>";
+     }
     $("#monitoring_table").append("<tr id="+id+"><td>"+nametr.split(' ')[0]+' '+nametr.split(' ')[1]+'<br>'+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]+"</td>"+strr+"</tr>");
   }
  }
