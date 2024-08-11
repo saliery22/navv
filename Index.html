@@ -36,7 +36,7 @@
 #inftb td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 10px;}
 #unit_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 5px;}
 #palne_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 20px;}
-#monitoring_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 4px; white-space: nowrap;}
+#monitoring_table td{ border: 2px solid rgb(78, 78, 78);  padding: 2px 4px; white-space: nowrap;}
 #obrobkablok { max-height:250px; overflow-x: auto;border: 1px solid #c6c6c6;}
 #obrobka td{ border: 1px solid black;  padding: 1px 2px;}
 #obrobkatehnika td{  padding: 1px 5px;}
@@ -115,6 +115,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 
 .textforma {display: flex}
 
+#v15{ cursor: pointer; margin-left: 10px; }
 #v11{ background-color: #8868e2; cursor: pointer; margin-left: 100px; }
 #v10{ background-color: #f8b1c0; cursor: pointer;}
 #v8{ background-color: #b2f5b4; cursor: pointer;}
@@ -169,6 +170,8 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 <button id='v12'>Трактори</button> 
 <button id='v13'>Автомобілі</button> 
 <button id='v14'>Найм</button>
+
+<button id='v15'>Прих.неактивні</button>
 
 <button id='v11'>Показати/Закрити Графік</button>
 <button id='v18'>Очистити маркери</button>
@@ -262,10 +265,13 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 
  <button id='prMot'>перевірка мотогодин</button>
  <textarea id='unit_prMot'  rows="1" cols="50">John,JD,CL,NH,CASE,JCB,Manitou,Scorpion</textarea>
- <button id='prNV'>перевірка навігації</button>
-    <button id='prDUT'>перевірка ДРП/GPS</button>
 </div>
- 
+  <button id='prNV'>перевірка навігації</button>
+  <input id='no_activ' type="checkbox"checked />
+  не показувати техніку яка зависла більше 5 дней
+  <br>
+  <button id='prDUT'>перевірка ДРП/GPS</button>
+    
  <table id="unit_table"></table>
  </div>
 
@@ -350,7 +356,8 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 <button id='v27'>Оприскувачи</button> 
 <button id='v28'>Сівалки</button> 
 <button id='v29'>Комбайни</button>  
-<button id='v30'>Без агрегату</button>  
+<button id='v30'>Без агрегату</button> 
+
  
   <script src="zup.js"></script> 
 
