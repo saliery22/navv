@@ -581,6 +581,8 @@ bufer=[];
     $('#v12').click(chuse);
     $('#v13').click(chuse);
     $('#v14').click(chuse);
+    
+    $('#v15').click(Clrar_no_activ);
 
     $('#v21').click(chuse);
     $('#v22').click(chuse);
@@ -1883,7 +1885,14 @@ let now = new Date();
 
 }
 
-
+function Clrar_no_activ(){
+for(var i=0; i < allunits.length; i++){
+ if (Date.parse($('#fromtime2').val())/1000-432000> allunits[i].getPosition().t ){
+ let mm = markerByUnit[allunits[i].getId()];
+ mm.setOpacity(0);
+ }
+}
+}
 
 
 function fn_copy() {
@@ -2587,14 +2596,17 @@ function TestNavigation(data){
   let no_aktiv = [];
   let mark;
   for(var ii=0; ii < unitslist.length; ii++){
-
+    if (Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getPosition().t){ no_aktiv.push(unitslist[ii]); }
+    if ($("#no_activ").is(":checked")) {
+    if (Date.parse($('#fromtime2').val())/1000-432000> unitslist[ii].getPosition().t) continue;
+    }
     if (Date.parse($('#fromtime2').val())/1000-3600> unitslist[ii].getPosition().t && unitslist[ii].getPosition().s>0){
         $("#unit_table").append("<tr class='fail_trak' id='"+unitslist[ii].getId()+"," + unitslist[ii].getPosition().y+","+unitslist[ii].getPosition().x+ "'><td>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис у русі</td></tr>");
           mark = L.marker([unitslist[ii].getPosition().y, unitslist[ii].getPosition().x], {icon: L.icon({iconUrl: '777.png', draggable: true, iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
           mark.bindPopup(unitslist[ii].getName() +'<br />'+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+'<br />'+unitslist[ii].getPosition().s+' км/год');
           nav_mark_data.push(mark);
           }
-    if (Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getPosition().t){ no_aktiv.push(unitslist[ii]); }
+    
    
     
     }
