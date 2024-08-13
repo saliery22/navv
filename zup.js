@@ -2677,6 +2677,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
    let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
 
+   let y2 = parseFloat(Global_DATA[i][ii-3][0].split(',')[0]);
+   let x2 = parseFloat(Global_DATA[i][ii-3][0].split(',')[1]);
+
 
 
    let p0 = turf.point([x,y]);
@@ -2737,20 +2740,20 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      if(robota==2){
      if(stroka.length>0){
-      let nn = 'роб <br>' + PointInField(y,x);
+      let nn = 'роб <br>' + PointInField(y2,x2);
      if(stroka[stroka.length-1]!=nn){
      stroka.push(nn);
      if ($("#robviz_gif").is(":checked")) {
-    let markerrr = L.marker([y,x]).addTo(map);
+    let markerrr = L.marker([y2,x2]).addTo(map);
      markerrr.bindPopup(""+nametr+"");
      zup_mark_data.push(markerrr);
      }
      }
      }else{
-      let nn = 'роб <br>' + PointInField(y,x);
+      let nn = 'роб <br>' + PointInField(y2,x2);
       stroka.push(nn);
       if ($("#robviz_gif").is(":checked")) {
-      let markerrr = L.marker([y,x]).addTo(map);
+      let markerrr = L.marker([y2,x2]).addTo(map);
        markerrr.bindPopup(""+nametr+"");
        zup_mark_data.push(markerrr);
        }
@@ -2778,6 +2781,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
     if(rows[v].cells[1].innerHTML!=stroka[vv]){
     rows[v].insertCell(1);
     rows[v].cells[1].innerHTML=stroka[vv];
+    coll = "#98FB98";
     if(stroka[vv]=="пер"){coll = "#FFFF00";}
     if(stroka[vv]=="роб <br>невідомо"){coll = "#f8b1c0";}
     rows[v].cells[1].style.backgroundColor = coll;
