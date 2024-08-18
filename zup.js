@@ -2647,6 +2647,7 @@ function TestNavigation(data){
 //===================================================================
 
 function Monitoring(){
+
 let rows = document.querySelectorAll('#monitoring_table tr');
  for(let i = 0; i<Global_DATA.length; i++){
   if(Global_DATA[i].length<200)continue;
@@ -2677,8 +2678,8 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
    let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
 
-   let y2 = parseFloat(Global_DATA[i][ii-3][0].split(',')[0]);
-   let x2 = parseFloat(Global_DATA[i][ii-3][0].split(',')[1]);
+   let y2 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+   let x2 = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
 
 
 
@@ -2813,6 +2814,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  }
 }});
 }
+$('#men7').css({'background':'#fffd7e'});
 }
 function PointInField(y,x){
 
@@ -2833,7 +2835,6 @@ function PointInField(y,x){
 
 
 function track_Monitoring(evt){
-  // [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
    if(evt.target.cellIndex>0){
    if(evt.target.style.backgroundColor == 'transparent'){
    evt.target.style.backgroundColor = '#1E90FF';
@@ -2841,11 +2842,17 @@ function track_Monitoring(evt){
     evt.target.style.backgroundColor = 'transparent';
    }
    }else{
+   [...document.querySelectorAll("td")].forEach(e => {
+    if(e.cellIndex==0){e.style.backgroundColor = 'transparent';}
+   });
+   evt.target.style.backgroundColor = '#1E90FF';
    $("#lis0").chosen().val(evt.target.parentNode.id);
    $("#lis0").trigger("chosen:updated");
    layers[0]=0;
    show_track();
-   markerByUnit[evt.target.parentNode.id].openPopup();
+   let mar=markerByUnit[evt.target.parentNode.id];
+   mar.openPopup();
+   map.setView(mar.getLatLng(),10);
    }
      
  }
