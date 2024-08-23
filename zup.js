@@ -1435,7 +1435,20 @@ slider.oninput = function() {
     var interval = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*this.value;
     position(interval);
 }
-
+document.addEventListener('keydown', function(event) {
+	if(event.code == "KeyA"){
+    let t=Date.parse($('#f').text())-3000;
+    if(t<Date.parse($('#fromtime1').val()))t=Date.parse($('#fromtime1').val());
+    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+    position(t);
+  }
+  if(event.code == "KeyD"){
+    let t=Date.parse($('#f').text())+3000;
+    if(t>Date.parse($('#fromtime2').val()))t=Date.parse($('#fromtime2').val());
+    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+    position(t);
+  }
+});
 function position(t)  {
   var interval = t;
   var cur_day1111 = new Date(interval);
@@ -2852,7 +2865,7 @@ function track_Monitoring(evt){
    show_track();
    let mar=markerByUnit[evt.target.parentNode.id];
    mar.openPopup();
-   map.setView(mar.getLatLng(),10);
+   map.setView(mar.getLatLng(),14);
    }
      
  }
