@@ -1378,6 +1378,12 @@ function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
   let id_res=26227, id_unit = unit.getId(), ii=i;
   if(Global_DATA[ii]==undefined){Global_DATA.push([[id_unit,unit.getName(),Date.parse($('#fromtime1').val())/1000]])}
   let t1=Global_DATA[ii][0][2];
+  if($('#uni_data').val()!="All"){
+  let str =$('#uni_data').val().split(',');
+  let ok=0;
+  str.forEach((element) => {if(unit.getName().indexOf(element)>=0){ok=1}});
+  if(ok==0){ii++; UpdateGlobalData(t2,idrep,ii);return;}
+  }
   //if($("#gif").is(":checked")) {for (let iii=0; iii<list_zavatajennya.length; iii++){if(list_zavatajennya[iii]==id_unit){break;}if(list_zavatajennya[iii].length-1==iii){ii++; UpdateGlobalData(t2,idrep,ii);return;}}}
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!idrep){ msg("Select report template"); return;} // exit if no report template selected
