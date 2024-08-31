@@ -132,9 +132,10 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 
 #fff{float: right;  }
 #gif{float: right;  }
-#ff{ position: relative;left: 25%;}
-#f{  position: relative;left: 25%;}
+#ff{ position: relative;left: 15%;}
+#f{  position: relative;left: 15%;}
 #shirzahvata{  width: 40px;}
+#uni_data{  width: 25px;}
 
 #min_zup{  width: 40px;}
 #min_zup1{  width: 40px;}
@@ -332,7 +333,19 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
         <table id="monitoring_table"></table>
      </div> 
 
- <div><input id='fromtime1' type='text' placeholder='date1'><input id='fromtime2' type='text' placeholder='date2'><button id='eeew'>Завантажити</button><button id='vchora'>Вчора</button><span id="ff">Час:</span><span id="f"></span><span id="fff">Автоповтор</span><input id='gif' type="checkbox"></div>
+ <div>
+    
+    <input id='fromtime1' type='text' placeholder='date1'>
+    <input id='fromtime2' type='text' placeholder='date2'>
+    <input id='uni_data' type="text" onkeydown="this.style.width = ((this.value.length + 1) * 8) + 'px';" placeholder='All'value="All">
+    <button id='eeew'>Завантажити</button>
+    <!-- <button id='vchora'>Вчора</button> -->
+    <span id="ff">Час:</span>
+    <span id="f"></span>
+    <span id="fff">Автоповтор</span>
+    <input id='gif' type="checkbox">
+    
+</div>
 
  <div class="slidecontainer">
    <input type="range" min="1" max="2000" value="2000" class="slider" id="myRange">
