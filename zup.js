@@ -2714,14 +2714,15 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   
 
 
-       for (let iii = ii+1; iii<Global_DATA[i].length; iii++){
+       for (let iii = ii-250; iii<Global_DATA[i].length; iii++){
+        if(iii<=0)iii=1;
         if(stoyanka>sttime && iii-ii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
        if(Global_DATA[i][iii][3][0]=='0'){ 
         stoyanka+=(Global_DATA[i][iii][4]-Global_DATA[i][iii-1][4])/1000;
         spd--;
         continue; 
       }
-       if(iii-ii>500){break;}
+       if(iii-ii>250){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
        if(wialon.util.Geometry.getDistance(y,x,yy,xx)<3){spd--;continue;}
