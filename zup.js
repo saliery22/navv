@@ -2788,19 +2788,30 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   if(rows[v].cells[0].textContent==nametr.split(' ')[0]+' '+nametr.split(' ')[1]+''+Global_DATA[i][Global_DATA[i].length-1][5].split(' ')[0]){
    let ind=stroka.length-(rows[v].cells.length-1);
 
-   //if(ind<=0){
-   //if(rows[v].cells[1].textContent!=stroka[0]){
-   //rows[v].cells[1].textContent=stroka[0];
-   //rows[v].cells[1].style.backgroundColor = "#f8b1c0";
-  // }
-   //}
-   for(let vv = ind-1; vv>=0; vv--){
-    if(rows[v].cells[1].innerHTML!=stroka[vv]){
-    rows[v].insertCell(1);
-    rows[v].cells[1].innerHTML=stroka[vv];
+   if(ind<=0){
+   if(rows[v].cells[1].innerHTML!=stroka[stroka.length-1]){
+   rows[v].cells[1].innerHTML=stroka[stroka.length-1];
+   coll = "#98FB98";
+    if(stroka[stroka.length-1]=="пер"){coll = "#FFFF00";}
+    if(stroka[stroka.length-1]=="роб <br>невідомо"){coll = "#f8b1c0";}
+    rows[v].cells[1].style.backgroundColor = coll;
+   }
+   }
+   if(rows[v].cells[1].innerHTML!=stroka[rows[v].cells.length-2]){
+    rows[v].cells[1].innerHTML=stroka[rows[v].cells.length-2];
     coll = "#98FB98";
-    if(stroka[vv]=="пер"){coll = "#FFFF00";}
-    if(stroka[vv]=="роб <br>невідомо"){coll = "#f8b1c0";}
+     if(stroka[rows[v].cells.length-2]=="пер"){coll = "#FFFF00";}
+     if(stroka[rows[v].cells.length-2]=="роб <br>невідомо"){coll = "#f8b1c0";}
+     rows[v].cells[1].style.backgroundColor = coll;
+    }
+
+   for(let vv = ind-1; vv>=0; vv--){
+    if(rows[v].cells[1].innerHTML!=stroka[stroka.length-1-vv]){
+    rows[v].insertCell(1);
+    rows[v].cells[1].innerHTML=stroka[stroka.length-1-vv];
+    coll = "#98FB98";
+    if(stroka[stroka.length-1-vv]=="пер"){coll = "#FFFF00";}
+    if(stroka[stroka.length-1-vv]=="роб <br>невідомо"){coll = "#f8b1c0";}
     rows[v].cells[1].style.backgroundColor = coll;
     }  
    }
