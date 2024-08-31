@@ -2681,7 +2681,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
  stroka=[];
  
    
-   for (let ii = Global_DATA[i].length-2; ii>10; ii-=30){
+   for (let ii = 10; ii<Global_DATA[i].length-1; ii+=20){
    points = 0;
    spd=0;
    stoyanka=0;
@@ -2714,14 +2714,14 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   
 
 
-       for (let iii = ii-1; iii>0; iii--){
-        if(stoyanka>sttime && ii-iii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
+       for (let iii = ii+1; iii<Global_DATA[i].length; iii++){
+        if(stoyanka>sttime && iii-ii<100){ stoyanka=-1; points=-1;spd=-1;pereizd=0;robota=0; break; }
        if(Global_DATA[i][iii][3][0]=='0'){ 
-        stoyanka+=(Global_DATA[i][iii+1][4]-Global_DATA[i][iii][4])/1000;
+        stoyanka+=(Global_DATA[i][iii][4]-Global_DATA[i][iii-1][4])/1000;
         spd--;
         continue; 
       }
-       if(ii<20|| ii<1 || ii-iii>500){break;}
+       if(iii-ii>500){break;}
        let yy = parseFloat(Global_DATA[i][iii][0].split(',')[0]);
        let xx = parseFloat(Global_DATA[i][iii][0].split(',')[1]);
        if(wialon.util.Geometry.getDistance(y,x,yy,xx)<3){spd--;continue;}
@@ -2730,9 +2730,9 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        if(wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx)<70){points++;}
        if(wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx)<70){points++;}
        }
-       //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
+       let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
-    if(points==0 && spd>0){pereizd++;robota=0;}
+    if(points<3 && spd>0){pereizd++; robota=0;}
     if(points>10){robota++;pereizd=0;}
 
       if(stoyanka==-1){
@@ -2744,6 +2744,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
       }
 
      if(pereizd==5){
+      
      if(stroka.length>0){
      if(stroka[stroka.length-1]!='пер'){
      stroka.push('пер');
@@ -2753,6 +2754,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
      }
      }
      if(robota==2){
+      
      if(stroka.length>0){
       let nn = 'роб <br>' + PointInField(y2,x2);
      if(stroka[stroka.length-1]!=nn){
@@ -2804,7 +2806,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
    break;
   }else{
     if(v==rows.length-1){ 
-   for(let v = 0; v<stroka.length; v++){
+   for(let v = stroka.length-1; v>=0; v--){
      coll = "#98FB98";
      if(stroka[v]=="пер"){coll = "#FFFF00";}
      if(stroka[v]=="роб <br>невідомо"){coll = "#f8b1c0";}
@@ -2816,7 +2818,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
   }
   }else{
   
-  for(let v = 0; v<stroka.length; v++){
+  for(let v = stroka.length-1; v>=0; v--){
      coll = "#98FB98";
      if(stroka[v]=="пер"){coll = "#FFFF00";}
      if(stroka[v]=="роб <br>невідомо"){coll = "#f8b1c0";}
@@ -2845,6 +2847,7 @@ function PointInField(y,x){
  return 'невідомо';
 
 }
+
 
 
 function track_Monitoring(evt){
