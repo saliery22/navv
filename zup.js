@@ -561,6 +561,7 @@ bufer=[];
   $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
   $("#prMot").on("click", Motogod);
+  $("#prPos").on("click", rob_region);
 
 
   $('#goooo').click(fn_copy);
