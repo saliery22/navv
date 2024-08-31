@@ -2583,12 +2583,13 @@ function GetPoligonsUnions(poligons=[]){
 function track_TestNavigation(evt){
   [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
   this.style.backgroundColor = 'pink';
-   $("#lis0").chosen().val(this.id);     
+   $("#lis0").chosen().val(this.id.split(',')[0]);
    $("#lis0").trigger("chosen:updated");
-   map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],10); 
-    markerByUnit[this.id.split(',')[0]].openPopup();
-    $("#lis0").chosen().val(this.id.split(',')[0]);
-   $("#lis0").trigger("chosen:updated");
+   layers[0]=0;
+   show_track();
+   markerByUnit[this.id.split(',')[0]].openPopup();
+   map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13); 
+  
 }
 
 var nav_mark_data=[];
@@ -2609,17 +2610,17 @@ function TestNavigation(data){
   let no_aktiv = [];
   let mark;
   for(var ii=0; ii < unitslist.length; ii++){
-    if (Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getPosition().t){ no_aktiv.push(unitslist[ii]); }
+     if (Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getPosition().t){ no_aktiv.push(unitslist[ii]); }
     if ($("#no_activ").is(":checked")) {
     if (Date.parse($('#fromtime2').val())/1000-432000> unitslist[ii].getPosition().t) continue;
     }
     if (Date.parse($('#fromtime2').val())/1000-3600> unitslist[ii].getPosition().t && unitslist[ii].getPosition().s>0){
-        $("#unit_table").append("<tr class='fail_trak' id='"+unitslist[ii].getId()+"," + unitslist[ii].getPosition().y+","+unitslist[ii].getPosition().x+ "'><td>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис у русі</td></tr>");
+        $("#unit_table").append("<tr class='fail_trak' id='"+unitslist[ii].getId()+"," + unitslist[ii].getPosition().y+","+unitslist[ii].getPosition().x+ "'><td align='left'>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис у русі</td></tr>");
           mark = L.marker([unitslist[ii].getPosition().y, unitslist[ii].getPosition().x], {icon: L.icon({iconUrl: '777.png', draggable: true, iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
           mark.bindPopup(unitslist[ii].getName() +'<br />'+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+'<br />'+unitslist[ii].getPosition().s+' км/год');
           nav_mark_data.push(mark);
           }
-    
+ 
    
     
     }
@@ -2638,7 +2639,7 @@ function TestNavigation(data){
          if(data[i][ii][4]  && zapcarta != data[i][ii][4]){
           zapcarta = data[i][ii][4];
           no_aktiv.forEach((element) => {if(element.getName().indexOf(zapcarta)>=0){
-            $("#unit_table").append("<tr class='fail_trak' id='"+element.getId()+","  + element.getPosition().y+","+element.getPosition().x+ "'><td>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
+            $("#unit_table").append("<tr class='fail_trak' id='"+element.getId()+","  + element.getPosition().y+","+element.getPosition().x+ "'><td align='left'>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
             mark = L.marker([element.getPosition().y, element.getPosition().x], {icon: L.icon({iconUrl: '666.png',draggable: true,iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
             mark.bindPopup(element.getName() +'<br />'+wialon.util.DateTime.formatTime(element.getPosition().t));
             nav_mark_data.push(mark);
@@ -2653,7 +2654,7 @@ function TestNavigation(data){
         row++;
       }
       if(pos>2500) if(namee.indexOf('JD')>=0 || namee.indexOf(' CL ')>=0|| namee.indexOf('МТЗ')>=0||namee.indexOf('JCB')>=0|| namee.indexOf('Manitou')>=0 || namee.indexOf('Scorpion')>=0|| namee.indexOf('Камаз')>=0|| namee.indexOf('МАЗ')>=0 || namee.indexOf('SCANIA')>=0)$("#unit_table").append("<tr><td>"+namee+"</td><td>перевірте ДРП</td></tr>");
-      if(row-nav>row*0.5)$("#unit_table").append("<tr><td>"+namee+"</td><td>перевірте GPS</td></tr>");
+      if(row-nav>row*0.5)$("#unit_table").append("<tr><td align='left'>"+namee+"</td><td>перевірте GPS</td></tr>");
     }
 }
 
@@ -2861,7 +2862,6 @@ function PointInField(y,x){
 }
 
 
-
 function track_Monitoring(evt){
    if(evt.target.cellIndex>0){
    if(evt.target.style.backgroundColor == 'transparent'){
@@ -2938,7 +2938,7 @@ let str =$('#unit_palne').val().split(',');
               }
             }
             
-            $("#palne_table").append("<tr class='fail_trak' id='"+unitslist[i].getId()+"," + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
+            $("#palne_table").append("<tr class='fail_trak' id='"+unitslist[i].getId()+"," + lat+","+lon+ "'><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td align='left'>"+namet+"</td><td>"+agregat+"</td><td>"+drp+"</td><td>"+mesto+"</td></tr>");
 
           }
         } 
@@ -3033,7 +3033,7 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
 
   let lkm = (litry/prostoy*3600).toFixed(1);
 
-  if(zupp>0){$("#unit_table").append("<tr><td>"+nametr+"</td><td>"+h0.padStart(2, 0) + ':' + m0.padStart(2, 0) +"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td><td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>");
+  if(zupp>0){$("#unit_table").append("<tr><td align='left'>"+nametr+"</td><td>"+h0.padStart(2, 0) + ':' + m0.padStart(2, 0) +"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td><td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>");
 }
   
 }});
@@ -3054,3 +3054,42 @@ function tehnika_poruch(name,y,x,time){
   }
   return false;
 }
+
+function rob_region(){
+  $("#unit_table").empty();
+let str =$('#unit_prPos').val().split(',');
+let mesto="";
+for(let i = 0; i<geozonesgrup.length; i++){ 
+  mesto="";
+  let cord= geozonesgrup[i].toGeoJSON().features[0];
+  let buferpoly2 =[];
+  if(cord){
+    
+    cord.geometry.coordinates[0].forEach(function(item, arr) {
+      buferpoly2.push({x:item[1], y:item[0]}); 
+    });
+
+    for(let ii = 0; ii<Global_DATA.length; ii++){
+      let nametr = Global_DATA[ii][0][1];
+      if(Global_DATA[ii].length<100)  continue;
+      str.forEach((element) => {if(nametr.indexOf(element)>=0){
+        console.log(Global_DATA[ii].lenght)
+        let lat = parseFloat(Global_DATA[ii][Global_DATA[ii].length-1][0].split(',')[0]);
+        let lon = parseFloat(Global_DATA[ii][Global_DATA[ii].length-1][0].split(',')[1]);
+        if(wialon.util.Geometry.pointInShape(buferpoly2, 0, lat, lon)){
+         
+          if(mesto==""){
+            mesto=geozonesgrup[i]._tooltip._content;
+            $("#unit_table").append("<tr><td  bgcolor='#A9BCF5'><b>"+mesto+"</b></td></tr>");
+          }
+          $("#unit_table").append("<tr class='fail_trak' id='"+Global_DATA[ii][0][0]+"," + lat+","+lon+ "'><td align='left'>"+nametr+"</td><td>"+Global_DATA[ii][Global_DATA[ii].length-1][5].split(' ')[0]+"</td><td>"+Global_DATA[ii][Global_DATA[ii].length-1][2]+"</td><td>"+Global_DATA[ii][Global_DATA[ii].length-1][6]+"</td></tr>");
+         
+        }
+      }});
+    } 
+  }
+}
+
+ }
+
+
