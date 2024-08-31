@@ -2730,7 +2730,7 @@ let rows = document.querySelectorAll('#monitoring_table tr');
        if(wialon.util.Geometry.getDistance(coord1[1],coord1[0],yy,xx)<70){points++;}
        if(wialon.util.Geometry.getDistance(coord2[1],coord2[0],yy,xx)<70){points++;}
        }
-       let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
+       //let tooltipp = L.tooltip([y,x], {content: ""+points+"",permanent: true}).addTo(map);
       
     if(points<3 && spd>0){pereizd++; robota=0;}
     if(points>10){robota++;pereizd=0;}
