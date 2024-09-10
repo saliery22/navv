@@ -562,6 +562,7 @@ bufer=[];
   $("#monitoring_table").on("click", track_Monitoring);
   $("#prMot").on("click", Motogod);
   $("#prPos").on("click", rob_region);
+  $("#sliv_det").on("click", zlivy);
 
 
   $('#goooo').click(fn_copy);
@@ -3099,4 +3100,99 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
  }
 
+ function zlivy(){
+  $("#unit_table").empty();
+  $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>літри</td><td>тривалість</td></tr>");
 
+  let min_sliv=$('#min_sliv').val();
+  let t_pod=60;
+
+  for(let i = 0; i<Global_DATA.length; i++){
+    let nametr = Global_DATA[i][0][1];
+    if(nametr=='ДРП ККЗ'|| nametr=='ДРП Райгородок'|| nametr=='Бензин ККЗ Ультразвук'|| nametr=='РЕЗЕРВУАР ККЗ новий') continue;
+    let start=0;
+    let finish=0;
+    let interval0=0;
+    let interval1=0;
+    let zup1=0;
+    let zup2=0;
+    let litry=0;
+   
+    
+    for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
+      if(!Global_DATA[i][ii][3])continue;
+      if(!Global_DATA[i][ii+1][3])continue;
+      if(!Global_DATA[i][ii][4])continue;
+      if(!Global_DATA[i][ii+1][4])continue;
+      if(!Global_DATA[i][ii][2])continue;
+      if(!Global_DATA[i][ii+1][2])continue;
+      if(Global_DATA[i][ii][3][0]==0){
+        let rashod=(Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2])/((Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/3600000);
+        if(rashod<10 && rashod>-10 && litry==0){
+          zup1+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
+        }
+        if(rashod>50){
+          if(zup1>t_pod){
+            litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2];
+            if(start==0)start=Global_DATA[i][ii][1];
+            finish=Global_DATA[i][ii][1];
+            if(interval0==0)interval0=Global_DATA[i][ii][4];
+            interval1=Global_DATA[i][ii][4];
+            zup2=0;
+          }
+          if(zup2>5){
+            litry=0;
+            zup1=30;
+            zup2=0;
+            start=0;
+            finish=0;
+            interval0=0;
+            interval1=0;
+          }
+        }
+        if(rashod<10 && rashod>-10 && litry>0){
+          zup2+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
+          if(zup2>t_pod){
+            if(litry>min_sliv){
+              $("#unit_table").append("<tr><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
+              zup1=0;
+              zup2=0;
+              litry=0;
+              start=0;
+              finish=0;
+              interval0=0;
+              interval1=0;
+            }else{
+              zup1=30;
+              zup2=0;
+              litry=0;
+              start=0;
+              finish=0;
+              interval0=0;
+              interval1=0;
+            }
+          }
+        }
+        if(rashod<-20){
+          zup1=0;
+          zup2=0;
+          litry=0;
+          start=0;
+          finish=0;
+          interval0=0;
+          interval1=0;
+        }
+        
+      }else{
+        zup1=0;
+        zup2=0;
+        litry=0;
+        start=0;
+        finish=0;
+        interval0=0;
+        interval1=0;
+      }
+
+    }
+  }
+ }
