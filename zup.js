@@ -167,7 +167,7 @@ function initUIData() {
            }
            IDzonacord[zone.id]=cord;
            
-           var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.4, fillOpacity: 0.3, fillColor: color});
+           var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.5, fillOpacity: 0.4, fillColor: color});
           // geozona.bindPopup(zone.n);
            geozona.bindTooltip(zone.n +'<br />' +zonegr,{opacity:0.8,sticky:true});
            geozona.zone = zone;
@@ -2647,25 +2647,28 @@ function TestNavigation(data){
          if(data[i][ii][4]  && zapcarta != data[i][ii][4]){
           zapcarta = data[i][ii][4];
           no_aktiv.forEach((element) => {if(element.getName().indexOf(zapcarta)>=0){
-            $("#unit_table").append("<tr class='fail_trak' id='"+element.getId()+","  + element.getPosition().y+","+element.getPosition().x+ "'><td align='left'>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
-            mark = L.marker([element.getPosition().y, element.getPosition().x], {icon: L.icon({iconUrl: '666.png',draggable: true,iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
-            mark.bindPopup(element.getName() +'<br />'+wialon.util.DateTime.formatTime(element.getPosition().t));
-            nav_mark_data.push(mark);
+            if(element.getName().indexOf('Резерв')>=0 ||element.getName().indexOf('резерв')>=0||element.getName().indexOf('Знято')>=0||element.getName().indexOf('знято')>=0){
+            }else{
+              $("#unit_table").append("<tr class='fail_trak' id='"+element.getId()+","  + element.getPosition().y+","+element.getPosition().x+ "'><td align='left'>"+element.getName()+"</td><td>"+data[i][ii][1]+"</td><td>"+ namee +"</td><td>заправлявся - дані не передає</td></tr>");
+              mark = L.marker([element.getPosition().y, element.getPosition().x], {icon: L.icon({iconUrl: '666.png',draggable: true,iconSize:   [24, 24],iconAnchor: [12, 24] })}).addTo(map);
+              mark.bindPopup(element.getName() +'<br />'+wialon.util.DateTime.formatTime(element.getPosition().t));
+              nav_mark_data.push(mark);
+            }
           }});
          }
         }
+        if(namee.indexOf('Резерв')>=0 ||namee.indexOf('резерв')>=0||namee.indexOf('Знято')>=0||namee.indexOf('знято')>=0)continue;
        if (data[i][ii-1][0])if (data[i][ii][0]!=data[i][ii-1][0])pos++;
-       if (data[i][ii-1][5])if (data[i][ii][5]!=data[i][ii-1][5])pos-=5;
+       if (data[i][ii-1][5])if (data[i][ii][5]!=data[i][ii-1][5])pos-=7;
        if (pos<0)pos=0;
        if (pos>2500)continue;
        if (data[i][ii][0])nav++;
         row++;
       }
-      if(pos>2500) if(namee.indexOf('JD')>=0 || namee.indexOf(' CL ')>=0|| namee.indexOf('МТЗ')>=0||namee.indexOf('JCB')>=0|| namee.indexOf('Manitou')>=0 || namee.indexOf('Scorpion')>=0|| namee.indexOf('Камаз')>=0|| namee.indexOf('МАЗ')>=0 || namee.indexOf('SCANIA')>=0)$("#unit_table").append("<tr><td>"+namee+"</td><td>перевірте ДРП</td></tr>");
+      if(pos>600) if(namee.indexOf('CASE')>=0 ||namee.indexOf('NH')>=0 ||namee.indexOf('John')>=0 ||namee.indexOf('JD')>=0 || namee.indexOf('CL')>=0|| namee.indexOf('МТЗ')>=0||namee.indexOf('JCB')>=0|| namee.indexOf('Manitou')>=0 || namee.indexOf('Scorpion')>=0|| namee.indexOf('Камаз')>=0|| namee.indexOf('МАЗ')>=0 || namee.indexOf('SCANIA')>=0)$("#unit_table").append("<tr><td align='left'>"+namee+"</td><td>перевірте ДРП</td></tr>");
       if(row-nav>row*0.5)$("#unit_table").append("<tr><td align='left'>"+namee+"</td><td>перевірте GPS</td></tr>");
     }
 }
-
 //===================================================================
 
 function Monitoring(){
