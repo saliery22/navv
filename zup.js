@@ -560,6 +560,7 @@ bufer=[];
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
   $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
+  $("#unit_table").on("click", ".sliv_trak", track_Sliv);
   $("#prMot").on("click", Motogod);
   $("#prPos").on("click", rob_region);
   $("#sliv_det").on("click", zlivy);
@@ -2053,6 +2054,16 @@ if ($('#grafik').is(':hidden')) {
   
   function show_gr() {
     var unid =  $("#lis0").chosen().val();
+    if ($('#grafik').is(':hidden')) {
+      $('#grafik').show();
+      $('#map').css('height', '470px');
+      $('#marrr').css('height', '470px');
+      $('#option').css('height', '470px');
+      $('#unit_info').css('height', '470px');
+      $('#zupinki').css('height', '470px');
+      $('#palne').css('height', '470px');
+      $('#monitoring').css('height', '470px');
+    }
     if ($('#grafik').is(':hidden')==false){
       data_graf = [];
       executeReport6(unid);
@@ -3112,6 +3123,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
   for(let i = 0; i<Global_DATA.length; i++){
     let nametr = Global_DATA[i][0][1];
+    let id = Global_DATA[i][0][0];
     if(nametr=='ДРП ККЗ'|| nametr=='ДРП Райгородок'|| nametr=='Бензин ККЗ Ультразвук'|| nametr=='РЕЗЕРВУАР ККЗ новий') continue;
     let start=0;
     let finish=0;
@@ -3120,7 +3132,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
     let zup1=0;
     let zup2=0;
     let litry=0;
-   
+ 
     
     for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
       if(!Global_DATA[i][ii][3])continue;
@@ -3131,16 +3143,16 @@ for(let i = 0; i<geozonesgrup.length; i++){
       if(!Global_DATA[i][ii+1][2])continue;
       if(Global_DATA[i][ii][3][0]==0){
         let rashod=(Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2])/((Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/3600000);
-        if(rashod<10 && rashod>-10 && litry==0){
+        if(rashod<10 && rashod>-5 && litry==0){
           zup1+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
         }
         if(rashod>50){
           if(zup1>t_pod){
             litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2];
             if(start==0)start=Global_DATA[i][ii][1];
-            finish=Global_DATA[i][ii][1];
+            finish=Global_DATA[i][ii+1][1];
             if(interval0==0)interval0=Global_DATA[i][ii][4];
-            interval1=Global_DATA[i][ii][4];
+            interval1=Global_DATA[i][ii+1][4];
             zup2=0;
           }
           if(zup2>5){
@@ -3153,11 +3165,11 @@ for(let i = 0; i<geozonesgrup.length; i++){
             interval1=0;
           }
         }
-        if(rashod<10 && rashod>-10 && litry>0){
+        if(rashod<10 && rashod>-5 && litry>0){
           zup2+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
           if(zup2>t_pod){
             if(litry>min_sliv){
-              $("#unit_table").append("<tr><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
+              $("#unit_table").append("<tr class='sliv_trak' id='"+id+"," + parseFloat(Global_DATA[i][ii][0].split(',')[0])+","+parseFloat(Global_DATA[i][ii][0].split(',')[1])+ "'><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
               zup1=0;
               zup2=0;
               litry=0;
@@ -3176,7 +3188,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
             }
           }
         }
-        if(rashod<-20){
+        if(rashod<-10){
           zup1=0;
           zup2=0;
           litry=0;
@@ -3199,3 +3211,22 @@ for(let i = 0; i<geozonesgrup.length; i++){
     }
   }
  }
+
+
+
+   
+   function track_Sliv(evt){
+    [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
+    this.style.backgroundColor = 'pink';
+    let row = evt.target.parentNode; // get row with data by target parentNode
+    let data=row.cells[1].textContent;
+    slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+     position(Date.parse(data));
+     console.log(this.id.split(',')[0])
+     $("#lis0").chosen().val(this.id.split(',')[0]);
+     $("#lis0").trigger("chosen:updated");
+     markerByUnit[this.id.split(',')[0]].openPopup();
+     map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13); 
+     show_gr();
+    
+  }
