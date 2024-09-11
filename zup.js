@@ -2052,19 +2052,11 @@ if ($('#grafik').is(':hidden')) {
     }
  
   
-  function show_gr() {
+  function show_gr(a,b) {
+    s1=a;
+    s2=b;
     var unid =  $("#lis0").chosen().val();
-    if ($('#grafik').is(':hidden')) {
-      $('#grafik').show();
-      $('#map').css('height', '470px');
-      $('#marrr').css('height', '470px');
-      $('#option').css('height', '470px');
-      $('#unit_info').css('height', '470px');
-      $('#zupinki').css('height', '470px');
-      $('#palne').css('height', '470px');
-      $('#monitoring').css('height', '470px');
-    }
-    if ($('#grafik').is(':hidden')==false){
+        if ($('#grafik').is(':hidden')==false){
       data_graf = [];
       executeReport6(unid);
     }
@@ -2156,13 +2148,16 @@ if ($('#grafik').is(':hidden')) {
   // Callback that creates and populates a data table,
   // instantiates the pie chart, passes in the data and
   // draws it.
-  var t1 = 0;
+var t1 = 0;
   var v1 = 0;
+  let s1,s2;
   
 function drawChart() {
-
 var dashboard = new google.visualization.Dashboard(
     document.getElementById('grafik'));
+
+  let rangge=10800000;
+  if(s1!=undefined && s2!=undefined)rangge=1080000;
 
 var control = new google.visualization.ControlWrapper({
   'controlType': 'ChartRangeFilter',
@@ -2197,7 +2192,7 @@ var control = new google.visualization.ControlWrapper({
     }
   },
   // Initial range: 2012-02-09 to 2012-03-20.
-  'state': {'range': {'start': new Date(Date.parse(output.innerHTML)-10800000), 'end': new Date(Date.parse(output.innerHTML)+10800000)}}
+  'state': {'range': {'start': new Date(Date.parse(output.innerHTML)-rangge), 'end': new Date(Date.parse(output.innerHTML)+rangge)}}
 });
 var chart = new google.visualization.ChartWrapper({
   'chartType': 'AreaChart',
@@ -2259,6 +2254,13 @@ a[0]=date;
 a[4]=null;
 
 
+if(s1!=undefined && s2!=undefined){
+  if (Date.parse(data_graf[i][1])>=Date.parse(s1) && Date.parse(data_graf[i][1])<=Date.parse(s2)){ 
+    a[4]='point { size: 4; shape-type: circle; fill-color: #FF0000; opacity: 1}';
+    }
+}
+
+
 
 data.addRows([a]);
 }
@@ -2302,6 +2304,7 @@ v1=0;
 }
 
 }
+
 
 
 
@@ -3215,18 +3218,29 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
 
    
+   
    function track_Sliv(evt){
     [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
     this.style.backgroundColor = 'pink';
     let row = evt.target.parentNode; // get row with data by target parentNode
     let data=row.cells[1].textContent;
+    let data2=row.cells[2].textContent;
     slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
      position(Date.parse(data));
-     console.log(this.id.split(',')[0])
      $("#lis0").chosen().val(this.id.split(',')[0]);
      $("#lis0").trigger("chosen:updated");
      markerByUnit[this.id.split(',')[0]].openPopup();
-     map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13); 
-     show_gr();
+     map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13);
+     if ($('#grafik').is(':hidden')) {
+      $('#grafik').show();
+      $('#map').css('height', '470px');
+      $('#marrr').css('height', '470px');
+      $('#option').css('height', '470px');
+      $('#unit_info').css('height', '470px');
+      $('#zupinki').css('height', '470px');
+      $('#palne').css('height', '470px');
+      $('#monitoring').css('height', '470px');
+    } 
+     show_gr(data,data2);
     
   }
