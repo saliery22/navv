@@ -3098,7 +3098,6 @@ for(let i = 0; i<geozonesgrup.length; i++){
       let nametr = Global_DATA[ii][0][1];
       if(Global_DATA[ii].length<100)  continue;
       str.forEach((element) => {if(nametr.indexOf(element)>=0){
-        console.log(Global_DATA[ii].lenght)
         let lat = parseFloat(Global_DATA[ii][Global_DATA[ii].length-1][0].split(',')[0]);
         let lon = parseFloat(Global_DATA[ii][Global_DATA[ii].length-1][0].split(',')[1]);
         if(wialon.util.Geometry.pointInShape(buferpoly2, 0, lat, lon)){
