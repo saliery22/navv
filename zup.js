@@ -2888,7 +2888,8 @@ function PointInField(y,x){
 
 
 function track_Monitoring(evt){
-   if(evt.target.cellIndex>0){
+  
+   if(evt.target.cellIndex>0){ 
    if(evt.target.style.backgroundColor == 'transparent'){
    evt.target.style.backgroundColor = '#1E90FF';
    }else{
@@ -2898,7 +2899,7 @@ function track_Monitoring(evt){
    [...document.querySelectorAll("td")].forEach(e => {
     if(e.cellIndex==0){e.style.backgroundColor = 'transparent';}
    });
-   evt.target.style.backgroundColor = '#1E90FF';
+   if(evt.target.style.backgroundColor == 'transparent')evt.target.style.backgroundColor = '#1E90FF';
    $("#lis0").chosen().val(evt.target.parentNode.id);
    $("#lis0").trigger("chosen:updated");
    layers[0]=0;
@@ -3116,6 +3117,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
  }
 
+
  function zlivy(){
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>літри</td><td>тривалість</td></tr>");
@@ -3123,7 +3125,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
   let min_sliv=$('#min_sliv').val();
   let t_pod=60;
 
-  for(let i = 0; i<Global_DATA.length; i++){
+  for(let i = 1; i<Global_DATA.length; i++){
     let nametr = Global_DATA[i][0][1];
     let id = Global_DATA[i][0][0];
     if(nametr=='ДРП ККЗ'|| nametr=='ДРП Райгородок'|| nametr=='Бензин ККЗ Ультразвук'|| nametr=='РЕЗЕРВУАР ККЗ новий') continue;
@@ -3134,6 +3136,8 @@ for(let i = 0; i<geozonesgrup.length; i++){
     let zup1=0;
     let zup2=0;
     let litry=0;
+    let litry0=0;
+    let litry1=0;
  
     
     for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
@@ -3145,10 +3149,11 @@ for(let i = 0; i<geozonesgrup.length; i++){
       if(!Global_DATA[i][ii+1][2])continue;
       if(Global_DATA[i][ii][3][0]==0){
         let rashod=(Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2])/((Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/3600000);
-        if(rashod<10 && rashod>-5 && litry==0){
+        if(rashod<25 && rashod>-25 && litry==0){
           zup1+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
+          if(litry0==0)litry0=Global_DATA[i][ii][2];
         }
-        if(rashod>50){
+        if(rashod>100){
           if(zup1>t_pod){
             litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2];
             if(start==0)start=Global_DATA[i][ii][1];
@@ -3158,19 +3163,15 @@ for(let i = 0; i<geozonesgrup.length; i++){
             zup2=0;
           }
           if(zup2>5){
-            litry=0;
             zup1=30;
             zup2=0;
-            start=0;
-            finish=0;
-            interval0=0;
-            interval1=0;
           }
         }
-        if(rashod<10 && rashod>-5 && litry>0){
+        if(rashod<25 && rashod>-25 && litry>0){
           zup2+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
           if(zup2>t_pod){
-            if(litry>min_sliv){
+            litry1=litry0-Global_DATA[i][ii][2];
+            if(litry>min_sliv && litry1>min_sliv){
               $("#unit_table").append("<tr class='sliv_trak' id='"+id+"," + parseFloat(Global_DATA[i][ii][0].split(',')[0])+","+parseFloat(Global_DATA[i][ii][0].split(',')[1])+ "'><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
               zup1=0;
               zup2=0;
@@ -3179,6 +3180,8 @@ for(let i = 0; i<geozonesgrup.length; i++){
               finish=0;
               interval0=0;
               interval1=0;
+              litry0=0;
+              litry1=0;
             }else{
               zup1=30;
               zup2=0;
@@ -3187,10 +3190,12 @@ for(let i = 0; i<geozonesgrup.length; i++){
               finish=0;
               interval0=0;
               interval1=0;
+              litry0=0;
+              litry1=0;
             }
           }
         }
-        if(rashod<-10){
+        if(rashod<-50){
           zup1=0;
           zup2=0;
           litry=0;
@@ -3198,6 +3203,8 @@ for(let i = 0; i<geozonesgrup.length; i++){
           finish=0;
           interval0=0;
           interval1=0;
+          litry0=0;
+          litry1=0;
         }
         
       }else{
@@ -3208,6 +3215,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
         finish=0;
         interval0=0;
         interval1=0;
+        litry0=0;
       }
 
     }
@@ -3216,7 +3224,6 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
 
 
-   
    
    function track_Sliv(evt){
     [...document.querySelectorAll("tr")].forEach(e => e.style.backgroundColor = '');
