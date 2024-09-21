@@ -3236,7 +3236,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
      $("#lis0").chosen().val(this.id.split(',')[0]);
      $("#lis0").trigger("chosen:updated");
      markerByUnit[this.id.split(',')[0]].openPopup();
-     map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13);
+    
      if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
       $('#map').css('height', '470px');
@@ -3248,5 +3248,5 @@ for(let i = 0; i<geozonesgrup.length; i++){
       $('#monitoring').css('height', '470px');
     } 
      show_gr(data,data2);
-    
+     map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13);
   }
