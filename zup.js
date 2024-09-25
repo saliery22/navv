@@ -3017,43 +3017,43 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  litry=0;
  prostoy=0;
  zupp=0;
- for (let ii = 0; ii<Global_DATA[i].length-8; ii++){
+ for (let ii = 0; ii<Global_DATA[i].length-7; ii++){
 
 
  if(!Global_DATA[i][ii][3])continue;
- if(!Global_DATA[i][ii+7][3])continue;
+ if(!Global_DATA[i][ii+6][3])continue;
  if(!Global_DATA[i][ii][4])continue;
- if(!Global_DATA[i][ii+7][4])continue;
+ if(!Global_DATA[i][ii+6][4])continue;
  if(!Global_DATA[i][ii][2])continue;
- if(!Global_DATA[i][ii+7][2])continue;
+ if(!Global_DATA[i][ii+6][2])continue;
  
  
-  if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+7][3][0]==0){
-    zupp0+=(Global_DATA[i][ii+7][4]-Global_DATA[i][ii][4])/1000;
- let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+7][2])/((Global_DATA[i][ii+7][4]-Global_DATA[i][ii][4])/3600000);
+  if(Global_DATA[i][ii][3][0]==0 && Global_DATA[i][ii+6][3][0]==0){
+    zupp0+=(Global_DATA[i][ii+6][4]-Global_DATA[i][ii][4])/1000;
+ let ras =(Global_DATA[i][ii][2]-Global_DATA[i][ii+6][2])/((Global_DATA[i][ii+6][4]-Global_DATA[i][ii][4])/3600000);
   if(ras<15 && ras>1){
-  litry0+=Global_DATA[i][ii][2]-Global_DATA[i][ii+7][2];
-  prostoy0+=(Global_DATA[i][ii+7][4]-Global_DATA[i][ii][4])/1000;
+  litry0+=Global_DATA[i][ii][2]-Global_DATA[i][ii+6][2];
+  prostoy0+=(Global_DATA[i][ii+6][4]-Global_DATA[i][ii][4])/1000;
   ii+=6;
   
   }else{
-    if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
+    if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
     litry0=0;
     prostoy0=0;
-    ii+=6;
+    ii+=5;
   }
   }else{
-    if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
+    if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
     litry0=0;
     prostoy0=0;
     zupp+=zupp0;
     zupp0=0;
-    ii+=6;
+    ii+=5;
   }
  
  }
 
- if(prostoy0>300){litry+=litry0;prostoy+=prostoy0;}
+ if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
  zupp+=zupp0;
 
   let m0 = Math.trunc(zupp / 60) + '';
@@ -3072,6 +3072,7 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
 }});
 }
 }
+
 
 function tehnika_poruch(name,y,x,time){ 
   for(let i = 0; i<Global_DATA.length; i++){
