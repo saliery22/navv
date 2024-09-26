@@ -1,6 +1,5 @@
 
 
-
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
@@ -9,6 +8,11 @@ var cklikkk=0;
 var markerstart =0;
 var markerend =0;
 var rux=0;
+let zvit1=0;
+let zvit2=0;
+let zvit3=0;
+let zvit4=0;
+let RES_ID=26227;// 20030 "11_ККЗ"  26227 "KKZ_Gluhiv"
 
 
 
@@ -126,7 +130,17 @@ function init() { // Execute after login succeed
       } else {
         areUnitsLoaded = true;
         msg('Техніка завнтажена - успішно');
-        
+        var res = session.getItem(RES_ID);
+        var templ = res.getReports(); // get reports templates for resource
+	      for(var i in templ){
+		    if (templ[i].ct != "avl_unit") continue; // skip non-unit report templates
+		    // add report template to select list
+		     //console.log(templ[i].id +"     "+ templ[i].n+ + '\n' );
+         if(templ[i].n=="яx001") {zvit1=templ[i].id; msg('звіт зливи      1/4 завінтажено');}
+         if(templ[i].n=="яx002") {zvit2=templ[i].id; msg('звіт трасування 2/4 завінтажено');}
+         if(templ[i].n=="яx003") {zvit3=templ[i].id; msg('звіт зупинки    3/4 завінтажено');}
+         if(templ[i].n=="яx004") {zvit4=templ[i].id; msg('звіт підсумок   4/4 завінтажено');}
+	      }
         // add received data to the UI, setup UI events
         initUIData();
       }
@@ -151,7 +165,7 @@ function initUIData() {
       for (let i = 0; i < geofences.length; i++) {
         cord=[];
          var zone = geofences[i];
-	if(zone.n[2]=='к' || zone.n[3]=='к') continue;
+         if(zone.n[2]=='к' || zone.n[3]=='к') continue;
          var zonegr="";
            for (var key in gzgroop) {
             if(gzgroop[key].n[0]!='*' && gzgroop[key].n[0]!='#'){
@@ -215,9 +229,9 @@ function initUIData() {
                  var zonee = geofences[i];
                  var color2 = "#" + wialon.util.String.sprintf("%08x", zonee.c).substr(2);
                  if(color1==color2){
-                  plo+=zonee.ar/1000;
+                  plo+=zonee.ar;
                   kol++;
-                  if(namee.split('-')[0]==zonee.n.split('-')[0]){plo2+=zonee.ar/1000; kol2++;}
+                  if(namee.split('-')[0]==zonee.n.split('-')[0]){plo2+=zonee.ar; kol2++;}
                 }
                  if(zonee.id==Vibranaya_zona.id){
                    let rovs = zonee.d.split("||");
@@ -231,11 +245,11 @@ function initUIData() {
                  }
                 
               }
-              //$('#infoGEO').append("Назва    "+e.target._popup._content+"<br> Засіяно в регіоні  "+namee+" - "+kol2+"шт   "+(plo2/10000).toFixed(2)+"га <br> Всього  "+kol+"шт  "+(plo/10).toFixed(2)+"га");
+              //$('#infoGEO').append("Назва    "+e.target._popup._content+"<br> Засіяно в регіоні  "+namee+" - "+kol2+"шт   "+(plo2/10000).toFixed(2)+"га <br> Всього  "+kol+"шт  "+(plo/10000).toFixed(2)+"га");
              
            $('#inftb').append('<caption>'+namee+'</caption>');
-           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namee+"</td><td>"+kol2+"шт</td><td>"+(plo2/10).toFixed(2)+"га</td></tr>");
-           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>всього</td><td>"+kol+"шт</td><td>"+(plo/10).toFixed(2)+"га</td></tr>");
+           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>"+namee+"</td><td>"+kol2+"шт</td><td>"+(plo2/10000).toFixed(2)+"га</td></tr>");
+           $("#inftb").append("<tr><td BGCOLOR = "+ color1 +" >&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>всього</td><td>"+kol+"шт</td><td>"+(plo/10000).toFixed(2)+"га</td></tr>");
           });
         
           });
@@ -295,7 +309,7 @@ var sdsa = unit.getPosition();
 if (sdsa){
     unitslist.push(unit);
     unitMarkers.push(unitMarker) ;  
-if (Date.parse($('#fromtime1').val())/1 > unit.getPosition().t){rest_units.push(unit.getName());}
+if (Date.parse($('#fromtime1').val())/1000 > unit.getPosition().t){rest_units.push(unit.getName());}
 }
 
   });
@@ -552,7 +566,7 @@ bufer=[];
   $('#add').click(Marshrut); // by button
   $("#marshrut").on("click", ".close_btn", delete_track); //click, when need delete current track
   $("#marshrut").on("click", ".run_btn", load_marshrut); //click, when need delete current track
-  $('#eeew').click(function() { UpdateGlobalData(0,7,0);});
+  $('#eeew').click(function() { UpdateGlobalData(0,zvit2,0);});
   
   $("#marshrut").on("click", ".marr", vibormarshruta);
   $("#zvit").on("click", ".mar_trak", track_marshruta);
@@ -564,6 +578,7 @@ bufer=[];
   $("#prMot").on("click", Motogod);
   $("#prPos").on("click", rob_region);
   $("#sliv_det").on("click", zlivy);
+  
 
 
   $('#goooo').click(fn_copy);
@@ -1071,7 +1086,7 @@ function Cikle3(){
 }
 function executeReport3(id){ // execute selected report
     // get data from corresponding fields
-  var id_res=26227, id_templ=7, id_unit=id.getId(), time=$("#interval").val(),idddd=id;
+  var id_res=RES_ID, id_templ=zvit2, id_unit=id.getId(), time=$("#interval").val(),idddd=id;
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!id_templ){ msg("Select report template"); return;} // exit if no report template selected
 	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
@@ -1263,7 +1278,7 @@ function Cikle5(){
 }
 function executeReport5(){ // execute selected report
     // get data from corresponding fields
-  var id_res=26227, id_templ=12, id_unit=mar_zupinki[icl5][2];
+  var id_res=RES_ID, id_templ=zvit4, id_unit=mar_zupinki[icl5][2];
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!id_templ){ msg("Select report template"); return;} // exit if no report template selected
 	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
@@ -1349,7 +1364,7 @@ function track_marshruta(evt){
 
 //=================Data===================================================================================
 Global_DATA=[];
-function UpdateGlobalData(t2=0,idrep=7,i=0){
+function UpdateGlobalData(t2=0,idrep=zvit2,i=0){
     if(i==0){
      $('#eeew').prop("disabled", true);
      if($('#fromtime1').val()!=from111 || $('#fromtime2').val()!=from222){
@@ -1377,7 +1392,7 @@ function UpdateGlobalData(t2=0,idrep=7,i=0){
 
 let list_zavatajennya=[];
 function CollectGlobalData(t2,idrep,i,unit){ // execute selected report
-  let id_res=26227, id_unit = unit.getId(), ii=i;
+  let id_res=RES_ID, id_unit = unit.getId(), ii=i;
   if(Global_DATA[ii]==undefined){Global_DATA.push([[id_unit,unit.getName(),Date.parse($('#fromtime1').val())/1000]])}
   let t1=Global_DATA[ii][0][2];
   if($('#uni_data').val()!="All"){
@@ -1444,6 +1459,7 @@ slider.oninput = function() {
     var interval = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*this.value;
     position(interval);
 }
+
 document.addEventListener('keydown', function(event) {
 	if(event.code == "KeyA"){
     let t=Date.parse($('#f').text())-3000;
@@ -1458,6 +1474,7 @@ document.addEventListener('keydown', function(event) {
     position(t);
   }
 });
+
 function position(t)  {
   var interval = t;
   var cur_day1111 = new Date(interval);
@@ -1511,7 +1528,7 @@ if($("#gif").is(":checked")) {
     if (tik >= 1999) {tik =1800;slider.value=tik;}
     if (sec > 3000) {
     sec =0;
-    UpdateGlobalData(0,7,0);
+    UpdateGlobalData(0,zvit2,0);
     }
     if (sec == 1000 && $("#monitoring_gif").is(":checked")) {Monitoring();}
     var interval = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*tik;
@@ -1551,7 +1568,7 @@ function Cikle2(){
 }
 function executeReport2(id){ // execute selected report
     // get data from corresponding fields
-  var id_res=26227, id_templ=8, id_unit=id.getId(), time=$("#interval").val(),idddd=id;
+  var id_res=RES_ID, id_templ=zvit3, id_unit=id.getId(), time=$("#interval").val(),idddd=id;
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!id_templ){ msg("Select report template"); return;} // exit if no report template selected
 	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
@@ -1847,7 +1864,7 @@ mm = markerByUnit[idd];
      }
      }
      if ($(this).attr("id")=='v12'){
-      if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf(' МТЗ ')>=0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0){
+      if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf(' МТЗ ')>0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0){
        mm.setOpacity(1);
         mm.setZIndexOffset(1000);
         this.style.background = '#b2f5b4';
@@ -1885,8 +1902,21 @@ mm = markerByUnit[idd];
         this.style.background = '#b2f5b4';
       }
       }
+      
+      
 }
 }
+
+
+function Clrar_no_activ(){
+for(var i=0; i < allunits.length; i++){
+ if (Date.parse($('#fromtime2').val())/1000-432000> allunits[i].getPosition().t ){
+ let mm = markerByUnit[allunits[i].getId()];
+ mm.setOpacity(0);
+ }
+}
+}
+
 
 function Gozone_History() {
 let now = new Date();
@@ -1907,14 +1937,7 @@ let now = new Date();
 
 }
 
-function Clrar_no_activ(){
-for(var i=0; i < allunits.length; i++){
- if (Date.parse($('#fromtime2').val())/1000-432000> allunits[i].getPosition().t ){
- let mm = markerByUnit[allunits[i].getId()];
- mm.setOpacity(0);
- }
-}
-}
+
 
 
 function fn_copy() {
@@ -2070,7 +2093,7 @@ if ($('#grafik').is(':hidden')) {
   
   function executeReport6(id){ // execute selected report
       // get data from corresponding fields
-    var id_res=26227, id_templ=7, id_unit=id;
+    var id_res=RES_ID, id_templ=zvit2, id_unit=id;
     var sess = wialon.core.Session.getInstance(); // get instance of current Session
     var res = sess.getItem(id_res); // get resource by id
     var to = Date.parse($('#fromtime2').val())/1000; // get current server time (end time of report time interval)
@@ -2148,7 +2171,7 @@ if ($('#grafik').is(':hidden')) {
   // Callback that creates and populates a data table,
   // instantiates the pie chart, passes in the data and
   // draws it.
-var t1 = 0;
+  var t1 = 0;
   var v1 = 0;
   let s1,s2;
   
@@ -2307,7 +2330,6 @@ v1=0;
 
 
 
-
 //=================zapros otchota===================================================================================
 
 function SendDataReportInCallback(t1=0,t2=0,maska='All',idrep=7,data=[],i=0,calbek){
@@ -2337,7 +2359,7 @@ function SendDataReportInCallback(t1=0,t2=0,maska='All',idrep=7,data=[],i=0,calb
 function CollectDataReport(t1,t2,maska,idrep,olddata,i,unit,calbek){ // execute selected report
     // get data from corresponding fields
      //msg(unit.getName());
-  let id_res=26227, id_unit = unit.getId(), ii=i;
+  let id_res=RES_ID, id_unit = unit.getId(), ii=i;
 	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
 	if(!idrep){ msg("Select report template"); return;} // exit if no report template selected
 	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
@@ -2683,6 +2705,7 @@ function TestNavigation(data){
       if(row-nav>row*0.5)$("#unit_table").append("<tr><td align='left'>"+namee+"</td><td>перевірте GPS</td></tr>");
     }
 }
+
 //===================================================================
 
 function Monitoring(){
@@ -3243,7 +3266,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
      $("#lis0").chosen().val(this.id.split(',')[0]);
      $("#lis0").trigger("chosen:updated");
      markerByUnit[this.id.split(',')[0]].openPopup();
-    
+     
      if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
       $('#map').css('height', '470px');
@@ -3256,4 +3279,5 @@ for(let i = 0; i<geozonesgrup.length; i++){
     } 
      show_gr(data,data2);
      map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13);
+    
   }
