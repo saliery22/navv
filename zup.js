@@ -1173,7 +1173,7 @@ var intj=0;
 var intervall3=0;
 mar_zupinki=[];
 var y,x,yy,xx,dis;
-for(var i=1; i < data_zup.length; i++){ 
+for(var i=0; i < data_zup.length; i++){ 
 if(i>0){
   if(data_zup[i][5]!=data_zup[i-1][5]){
   name=0;
