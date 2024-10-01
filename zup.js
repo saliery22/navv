@@ -1174,18 +1174,19 @@ var intervall3=0;
 mar_zupinki=[];
 var y,x,yy,xx,dis;
 for(var i=1; i < data_zup.length; i++){ 
-if(data_zup[i][5]!=data_zup[i-1][5]){
-name=0;
-id=0;
-start=0;
-stop=0;
-intervall1=0;
-intervall2=0;
-intj=0;
-intervall3=0;
-pereyezd=0;
+if(i>0){
+  if(data_zup[i][5]!=data_zup[i-1][5]){
+  name=0;
+  id=0;
+  start=0;
+  stop=0;
+  intervall1=0;
+  intervall2=0;
+  intj=0;
+  intervall3=0;
+  pereyezd=0;
 
-
+  }
 }
 if( data_zup[i][3]>30){
      y = parseFloat(data_zup[i][0].split(',')[0]);
