@@ -1038,124 +1038,47 @@ Cikle3();
 var icl3 =-1;
 var idun3=0;
 function Cikle3(){
+  data_zup = [];
+  for(let i = 0; i<Global_DATA.length; i++){
+    let nametr = Global_DATA[i][0][1];
+    let id = Global_DATA[i][0][0];
 
- icl3+=1;
-  if(icl3==0){msg('ЗАЧЕКАЙТЕ -завантаження');data_zup = [];}
- $('button').prop("disabled", true);
- 
-   if(icl3< unitslist.length){
-  
-     idun3 = unitslist[icl3];
-     var name =idun3.getName();
-   
-     if(mr_tehnika=='000'){
-     if(name.indexOf('Камаз')>=0|| name.indexOf('SCANIA')>=0){ 
-          
-      if(name.indexOf('Шкурат')<0 && name.indexOf('Білоус')<0 && name.indexOf('Штацький')<0 && name.indexOf('Дробниця')<0 && name.indexOf('Писаренко')<0 && name.indexOf('Колотуша')<0){
-
-        executeReport3(idun3);
-      } else{Cikle3();}
-      
-
-     }else{Cikle3();}
-     
-     }else{
-      if(mr_tehnika=='111'){
-       if(name.indexOf('Найм')>=0|| name.indexOf('найм')>=0|| name.indexOf('ТОВ')>=0|| name.indexOf('Фоп')>=0|| name.indexOf('ФОП')>=0){ 
-        executeReport3(idun3);
-       } else{Cikle3();}
+    if(mr_tehnika=='000'){
+      if(nametr.indexOf('Камаз')>=0|| nametr.indexOf('SCANIA')>=0){   
+       if(nametr.indexOf('Шкурат')<0 && nametr.indexOf('Білоус')<0 && nametr.indexOf('Штацький')<0 && nametr.indexOf('Дробниця')<0 && nametr.indexOf('Писаренко')<0 && nametr.indexOf('Колотуша')<0){ 
+       } else{continue;}}else{continue;}
       }else{
-     if(name.indexOf(mr_tehnika)>=0){ 
-          executeReport3(idun3);
-
-     }else{Cikle3();}
-     }
-     }
-    
-    
-    }else{
-    icl3=-1;
-
-    $('button').prop("disabled", false);
-    msg('ЗАВЕРШЕНО');
-     poezdki();
-    
+        if(mr_tehnika=='111'){
+         if(nametr.indexOf('Найм')>=0|| nametr.indexOf('найм')>=0|| nametr.indexOf('ТОВ')>=0|| nametr.indexOf('Фоп')>=0|| nametr.indexOf('ФОП')>=0){ 
+         } else{continue;}
+        }else{
+       if(nametr.indexOf(mr_tehnika)>=0){ 
+       }else{continue;}
+       }
+       }  
+       var start=0;
+       var cord=0;
+       var interval=0;
+    for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
+      if(!Global_DATA[i][ii][3])continue;
+      if(!Global_DATA[i][ii][0])continue;
+      if(!Global_DATA[i][ii][1])continue;
+          if(start==0 && Global_DATA[i][ii][3][0]==0){start=Global_DATA[i][ii][1], cord=Global_DATA[i][ii][0];}
+          if(start!=0 && Global_DATA[i][ii][3][0]!=0){
+          interval = (Date.parse(Global_DATA[i][ii][1])/1000)-(Date.parse(start)/1000);
+          if(cord==""){cord=Global_DATA[i][ii][0];}
+          data_zup.push([cord,start,Global_DATA[i][ii][1],interval,nametr,id,Global_DATA[i][ii][6]]);
+          start=0;
+          }
+          if(start!=0 && ii==Global_DATA[i].length-1){
+            interval = (Date.parse(Global_DATA[i][ii][1])/1000)-(Date.parse(start)/1000);
+            data_zup.push([cord,start,Global_DATA[i][ii][1],interval,nametr,id,Global_DATA[i][ii][6]]);
+          start=0;
+          }
     }
-    
-
-}
-function executeReport3(id){ // execute selected report
-    // get data from corresponding fields
-  var id_res=RES_ID, id_templ=zvit2, id_unit=id.getId(), time=$("#interval").val(),idddd=id;
-	if(!id_res){ msg("Select resource"); return;} // exit if no resource selected
-	if(!id_templ){ msg("Select report template"); return;} // exit if no report template selected
-	if(!id_unit){ msg("Select unit"); return;} // exit if no unit selected
-
-	var sess = wialon.core.Session.getInstance(); // get instance of current Session
-	var res = sess.getItem(id_res); // get resource by id
-	var to = Date.parse($('#fromtime2').val())/1000; // get current server time (end time of report time interval)
-  var nam = sess.getItem(id_unit).getName();
-	var from = Date.parse($('#fromtime1').val())/1000; // calculate start time of report
-	// specify time interval object
-	var interval = { "from": from, "to": to, "flags": wialon.item.MReport.intervalFlag.absolute };
-	var template = res.getReport(id_templ); // get report template by id
-	$("#exec_btn").prop("disabled", true); // disable button (to prevent multiclick while execute)
-
-	res.execReport(template, id_unit, 0, interval, // execute selected report
-		function(code, data) { // execReport template
-			$("#exec_btn").prop("disabled", false); // enable button
-			if(code){ msg(wialon.core.Errors.getErrorText(code)); Cikle3();return; } // exit if error code
-			if(!data.getTables().length){ // exit if no tables obtained
-			 Cikle3();return; }
-			else showReportResult3(data,idddd); // show report result
-	});
-}
-var data_zup = [];
-
-function showReportResult3(result,name){ // show result after report execute
-	var tables = result.getTables(); // get report tables
-	if (!tables)  {Cikle3(); return;} // exit if no tables
-
-   
-	for(var i=0; i < tables.length; i++){ // cycle on tables
-		// html contains information about one table
-		var html = [];
-    var start=0;
-    var cord=0;
-    var interval=0;
-		
-		 //data_unit = [[],[]];
-		
-		
-		result.getTableRows(i, 0, tables[i].rows, // get Table rows
-			qx.lang.Function.bind( function(html, code, rows) { // getTableRows callback
-				if (code) {msg(wialon.core.Errors.getErrorText(code));  Cikle3(); return;} // exit if error code
-				for(var j in rows) { // cycle on table rows
-					if (typeof rows[j].c == "undefined") continue; // skip empty rows
-					
-          if(start==0 && getTableValue(rows[j].c[2])=='0 км/ч'){start=getTableValue(rows[j].c[1]), cord=getTableValue(rows[j].c[0]);}
-          if(start!=0 && getTableValue(rows[j].c[2])!='0 км/ч'){
-          interval = (Date.parse(getTableValue(rows[j].c[1]))/1000)-(Date.parse(start)/1000);
-          //msg(cord+' '+start+' '+getTableValue(rows[j].c[1])+' '+interval+' '+name.getName()+' '+name.getId()); 
-          if(cord==""){cord=getTableValue(rows[j].c[0]);}
-          data_zup.push([cord,start,getTableValue(rows[j].c[1]),interval,name.getName(),name.getId(),getTableValue(rows[j].c[3])]);
-          start=0;
-          }
-          if(start!=0 && j==rows.length-1){
-          interval = (Date.parse(getTableValue(rows[j].c[1]))/1000)-(Date.parse(start)/1000);
-          data_zup.push([cord,start,getTableValue(rows[j].c[1]),interval,name.getName(),name.getId()]);
-          start=0;
-          }
-          
-       // msg(name.getName());
-         
-				}
-         Cikle3();      				
-			}, this, html)
-		);
-	}
-   
-}
+  }
+  poezdki();
+ }
 
 var mar_zupinki=[];
 function poezdki(){
