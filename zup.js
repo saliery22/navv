@@ -3079,7 +3079,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
   let min_sliv=$('#min_sliv').val();
   let t_pod=60;
 
-  for(let i = 1; i<Global_DATA.length; i++){
+  for(let i = 0; i<Global_DATA.length; i++){
     let nametr = Global_DATA[i][0][1];
     let id = Global_DATA[i][0][0];
     if(nametr=='ДРП ККЗ'|| nametr=='ДРП Райгородок'|| nametr=='Бензин ККЗ Ультразвук'|| nametr=='РЕЗЕРВУАР ККЗ новий') continue;
