@@ -1108,8 +1108,20 @@ if(i>0){
   intj=0;
   intervall3=0;
   pereyezd=0;
-
   }
+}else{
+  if(data_zup[i][5]!=data_zup[i+1][5]){
+    name=0;
+    id=0;
+    start=0;
+    stop=0;
+    intervall1=0;
+    intervall2=0;
+    intj=0;
+    intervall3=0;
+    pereyezd=0;
+  
+    }
 }
 if( data_zup[i][3]>30){
      y = parseFloat(data_zup[i][0].split(',')[0]);
@@ -1176,7 +1188,6 @@ if( data_zup[i][3]>30){
 
 if(mar_zupinki.length>0){Cikle5();}
 }
-
 var icl5 =-1;
 var idun5=0;
 var data_zvit = [];
