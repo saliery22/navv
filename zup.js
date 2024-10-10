@@ -3119,7 +3119,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
           if(litry0==0)litry0=Global_DATA[i][ii][2];
         }
         if(rashod>100){
-          if(zup1>t_pod){
+          if(zup1>=t_pod){
             litry+=Global_DATA[i][ii][2]-Global_DATA[i][ii+1][2];
             if(start==0)start=Global_DATA[i][ii][1];
             finish=Global_DATA[i][ii+1][1];
@@ -3134,7 +3134,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
         }
         if(rashod<25 && rashod>-25 && litry>0){
           zup2+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
-          if(zup2>t_pod){
+          if(zup2>=t_pod){
             litry1=litry0-Global_DATA[i][ii][2];
             if(litry>min_sliv && litry1>min_sliv){
               $("#unit_table").append("<tr class='sliv_trak' id='"+id+"," + parseFloat(Global_DATA[i][ii][0].split(',')[0])+","+parseFloat(Global_DATA[i][ii][0].split(',')[1])+ "'><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
