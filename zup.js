@@ -2876,7 +2876,6 @@ let buferpoly=[];
 
 function RemainsFuel(e){
 //let cir = L.circle(e.latlng, {radius: 2000}).addTo(map);
-let str =$('#unit_palne').val().split(',');
  bufer.push(e.latlng);
  buferpoly.push({x:e.latlng.lat, y:e.latlng.lng}); 
  if(bufer.length>1){
@@ -2888,6 +2887,11 @@ let str =$('#unit_palne').val().split(',');
   let color='#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
   let polygon = L.polygon(bufer, {color: color}).addTo(map);
   garbagepoly.push(polygon);
+
+
+  if ($("#zv_palne").is(":checked")) {
+    $("#palne_table").append("<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>-----------</td><td>--------</td><td>--------</td><td>---------</td></tr>");
+    let str =$('#unit_palne').val().split(',');
     for(let i = 0; i<unitslist.length; i++){
       let namet = unitslist[i].getName();
       str.forEach((element) => {if(namet.indexOf(element)>=0){
@@ -2929,10 +2933,48 @@ let str =$('#unit_palne').val().split(',');
       }});
         
     }
+  }
+
+    if ($("#zv_geozup").is(":checked")) {
+      $("#palne_table").append("<tr><td>&nbsp&nbsp&nbsp&nbsp&nbsp</td><td>ТЗ</td><td>вїзд</td><td>виїзд</td><td>простій/год</td></tr>");
+    let str =$('#unit_geozup').val().split(',');
+    for(let i = 0; i<Global_DATA.length; i++){
+      let nametr = Global_DATA[i][0][1];
+      let prostoy=0;
+      let start=0;
+      str.forEach((element) => {if(nametr.indexOf(element)>=0){
+       prostoy=0;
+       start=0;
+       for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
+       if(!Global_DATA[i][ii][0])continue;
+       if(!Global_DATA[i][ii][4])continue;
+       if(!Global_DATA[i][ii+1][4])continue;
+       if(!Global_DATA[i][ii][0])continue;
+       let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+       let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+        if(wialon.util.Geometry.pointInShape(buferpoly, 0, y, x)){
+          if(start==0)start=Global_DATA[i][ii][1];
+          if(Global_DATA[i][ii][3][0]==0){prostoy+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000;}
+        }else{ 
+          if(start!=0){
+            let m = Math.trunc(prostoy / 60) + '';
+            let h = Math.trunc(m / 60) + '';
+            m=(m % 60) + '';
+          $("#palne_table").append("<tr><td bgcolor ="+color+">&nbsp&nbsp&nbsp&nbsp&nbsp</td><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+Global_DATA[i][ii][1]+"</td><td>"+h.padStart(2, 0) + ':' + m.padStart(2, 0) +"</td></tr>");
+          prostoy=0;
+          start=0;
+        }
+      }
+       
+       }
+      }});
+    }
+
+  }
+
 
 
  }
-
  clearGarbage(garbage);
  bufer=[];
  buferpoly=[];
