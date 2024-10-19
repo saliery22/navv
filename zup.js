@@ -1070,7 +1070,7 @@ function Cikle3(){
           data_zup.push([cord,start,Global_DATA[i][ii][1],interval,nametr,id,Global_DATA[i][ii][6]]);
           start=0;
           }
-          if(start!=0 && ii==Global_DATA[i].length-1){
+          if(start!=0 && ii==Global_DATA[i].length-2){
             interval = (Date.parse(Global_DATA[i][ii][1])/1000)-(Date.parse(start)/1000);
             data_zup.push([cord,start,Global_DATA[i][ii][1],interval,nametr,id,Global_DATA[i][ii][6]]);
           start=0;
