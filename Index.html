@@ -45,10 +45,13 @@
 #log { float: left; width: 30%; border: 1px solid #c6c6c6; max-height:50px; overflow-y: auto; margin: 0px 0px 10px 0px;}
 #marshrut { min-width: 100%; border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
 #zvittt{ border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
+#zvitttt{ border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
 body{ font-family: "Arial"; font-size: 12px; background: #f8f7f7;}
 
 #zvit td{ border: 1px solid black;  padding: 3px 10px;}
 #zvit th{ border: 1px solid black;  padding: 3px 10px;}
+#zvitt td{ border: 1px solid black;  padding: 3px 10px;}
+#zvitt th{ border: 1px solid black;  padding: 3px 10px;}
 .wrap{ max-height:150px; overflow-y: auto; }
 
 thead {  border: 0px; height:30px; }
@@ -132,6 +135,8 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 
 #fff{float: right;  }
 #gif{float: right;  }
+#geo_data{float: right;  }
+#geo_serch{float: right;  }
 #ff{ position: relative;left: 15%;}
 #f{  position: relative;left: 15%;}
 #shirzahvata{  width: 40px;}
@@ -231,6 +236,15 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 <button id='gooo1'>  зберігти маршрути </button>
 <button id='gooo2'> завантажити маршрути  </button>
 <button id='goooo'> копіювати таблицю в буфер </button>
+<table id='zvitttt' ><thead><tr>
+    <td>Номер ТЗ</td>
+    <td>заїзд</td>
+    <td>тривалість</td>
+    <td>віїзд</td>
+    <td>робота</td>
+  </tr></thead>
+  <tbody id='zvitt'></tbody>
+  </table>
  </div>      
  <div id="option">  
    оберіть геозону на мапі
@@ -271,6 +285,10 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
  <button id='prPos'>роботи по регіонах</button>
  <textarea id='unit_prPos'  rows="1" cols="50">John,JD,CL,NH,CASE</textarea>
 </div>
+<div class='textforma'>
+    <button id='marsh_bt'>маршрути авто</button>
+   <textarea id='unit_marsh'  rows="2" cols="80">ВМ0229АF,ВМ1280СТ,ВМ1640АТ,ВМ1641ВЕ,ВМ1953ВС,ВМ1988ВС,ВМ2559ВК,ВМ3454ЕЕ,ВМ4110АА,ВМ4466АО,ВМ4524АА,ВМ4632АА,ВМ5203ВВ,ВМ5326ВМ,ВМ5607Е,ВМ5629Е,ВМ5645Е,ВМ5647Е,ВМ5887E,ВМ7393ВВ,ВМ7912Е,ВМ7913Е,ВМ7914,ВМ7915Е,ВМ7916Е,ВМ7921Е,ВМ7922Е,ВМ7925Е,ВМ8607Е,ВМ8610ЕН,ВМ8684ЕН,ВМ8692ЕН,ВМ8693ЕН,ВМ9595А,ВМ9708ВЕ,ВМ9987С</textarea>
+   </div>
   <button id='prNV'>перевірка навігації</button>
   <input id='no_activ' type="checkbox"checked />
   не показувати техніку яка зависла більше 5 дней
@@ -278,6 +296,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
   <br>  
   <button id='sliv_det'>перевірка зливів</button>
    мінімальний злив л<input id='min_sliv' type='number' placeholder='3' value="3">
+   <br>
  <table id="unit_table"></table>
  </div>
 
@@ -328,7 +347,7 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
         </div> 
         <input id='monitoring_gif' type="checkbox">  автоповтор
         <br>
-        <input id='robviz_gif' type="checkbox">  візуалізація місць роботи
+        <input id='robviz_gif' type="checkbox">  візуалізація роботи по за геозоною
         <br>
         <input id='min_zup_mon' type='number' placeholder='60' value="60"> мінімальний час зупинки(хвилин)
         <br>
@@ -377,6 +396,8 @@ button, input, span, select,textarea {margin: 3px 0px 0px 3px;   font-family: "A
 <button id='v29'>Комбайни</button>  
 <button id='v30'>Без агрегату</button> 
 
+<button id='geo_serch'>>></button>
+<input id='geo_data' type="text" onkeydown="this.style.width = ((this.value.length + 1) * 8) + 'px';" placeholder='Пошук міста'value="Пошук міста">
  
   <script src="zup.js"></script> 
 
