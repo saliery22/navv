@@ -814,22 +814,7 @@ if (!$('#marrr').is(':hidden')) {
 //let ps = prompt('');
 //if(ps==55555){
 // execute when DOM ready
-$(document).ready(function () {
-  // init session
-  let TOKEN = "0999946a10477f4854a9e6f27fcbe84254859095D46A41A09CEBC38700F19ADB105CAB95"
-  wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua",null,0x800);
-  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
-    function (code) { // login callback
-      // if error code - print error message
-      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
-      msg('Зеднання з Глухів - успішно');
-      initMap();
-      init(); // when login suceed then run init() function
-      
-      
-    }
-  );
-});
+eval(function(a,b,c){if(a||c){while(a--)b=b.replace(new RegExp(a,'g'),c[a]);}return b;}(21,'$(6).18(7 (){15 3="0"; 20.5.2.9().14("10: 20.5.2.9().16(3, "", 7 (4){11 (4){ 17(20.5.1.8(4)); 19;}17(\'Зеднання з Глухів-успішно\'); 13(); 12();});});','0999946a10477f4854a9e6f27fcbe84254859095D46A41A09CEBC38700F19ADB105CAB95,Errors,Session,TOKEN,code,core,document,function,getErrorText,getInstance,https,if,init,initMap,initSession,let,loginToken,msg,ready,return,wialon'.split(',')));
 //  $('#marrr').hide();
 //  $('#option').hide();
 //  $('#unit_info').hide();
