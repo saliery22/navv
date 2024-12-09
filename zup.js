@@ -3693,7 +3693,7 @@ async function marshrut_avto(){
     let adres0='';
      for(let i = 0; i<Global_DATA.length; i++){ 
       points = 0;
-      stoyanka = 0;
+      stoyanka = 500;
       km = 0;
       start="";
       end="";
