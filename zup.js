@@ -814,9 +814,7 @@ if (!$('#marrr').is(':hidden')) {
 //let ps = prompt('');
 //if(ps==55555){
 // execute when DOM ready
-$(document).ready(function () {
-eval(function(a,b,c){if(a||c){while(a--)b=b.replace(new RegExp(a,'g'),c[a]);}return b;}(19,' 17 3=\'0\'; 18.5.2.8().13("9: 18.5.2.8().14(3, "", 6 (4){10 (4){ 15(18.5.1.7(4)); 16;}15(\'Зеднання з Глухів-успішно\'); 12(); 11();});','0999946a10477f4854a9e6f27fcbe8424E7222985DA6B8C3366AABB4B94147D6C5BAE69F,Errors,Session,TOKEN,code,core,function,getErrorText,getInstance,https,if,init,initMap,initSession,loginToken,msg,return,var,wialon'.split(',')));
-});
+eval(function(a,b,c){if(a||c){while(a--)b=b.replace(new RegExp(a,'g'),c[a]);}return b;}(21,'$(6).17(7 (){19 3=\'0\'; 20.5.2.9().14("10: 20.5.2.9().15(3, "", 7 (4){11 (4){ 16(20.5.1.8(4)); 18;}16(\'Зеднання з Глухів-успішно\'); 13(); 12();});});','0999946a10477f4854a9e6f27fcbe8424E7222985DA6B8C3366AABB4B94147D6C5BAE69F,Errors,Session,TOKEN,code,core,document,function,getErrorText,getInstance,https,if,init,initMap,initSession,loginToken,msg,ready,return,var,wialon'.split(',')));
 //  $('#option').hide();
 //  $('#unit_info').hide();
 //  $('#zupinki').hide();
