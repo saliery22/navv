@@ -3637,7 +3637,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
             t0=0;
             if(litry>0)pole_data0.push([litry-zapravka,Global_DATA[i][j][1]]);
           }
-          if(jy0 && jx0 && jy1 && jx1)L.polyline([[jy0, jx0],[jy1, jx1]], {color: 'red'}).addTo(map);
+          //if(jy0 && jx0 && jy1 && jx1)L.polyline([[jy0, jx0],[jy1, jx1]], {color: 'red'}).addTo(map);
          } 
 
          let kz=0;
