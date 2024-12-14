@@ -576,7 +576,14 @@ bufer=[];
   $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
   $("#unit_table").on("click", ".sliv_trak", track_Sliv);
-  $("#prMot").on("click", Motogod);
+
+  $('#prMot').click(function() { 
+    $("#unit_table").empty();
+    let html = Motogod($('#unit_prMot').val());
+    $("#unit_table").append(html);
+  });
+
+ 
   $("#prPos").on("click", rob_region);
   $("#sliv_det").on("click", zlivy);
   
@@ -3308,6 +3315,28 @@ function RemainsFuel(e){
 
   }
 
+  if ($("#zv_moto").is(":checked")) { 
+    
+    let str =$('#unit_moto').val().split(',');
+    let str2='';
+    for(let i = 0; i<unitslist.length; i++){
+      let namet = unitslist[i].getName();
+      str.forEach((element) => {if(namet.indexOf(element)>=0){
+        let markerr= markerByUnit[unitslist[i].getId()];
+        if(markerr){
+         let lat = markerr.getLatLng().lat;
+         let lon = markerr.getLatLng().lng;
+          if(wialon.util.Geometry.pointInShape(buferpoly, 0, lat, lon)){
+            str2+=namet+',';
+          }
+        } 
+      }});   
+    }
+    
+      $("#palne_table").empty();
+      let html = Motogod(str2.slice(0, -1));
+      $("#palne_table").append(html);
+  }
 
 
  }
@@ -3335,10 +3364,15 @@ function clearGarbage(garbage){
     }
 }
 
-function Motogod(){
-$("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>робота год</td><td>робота км</td><td>переїзд год</td><td>переїзд км</td><td>робота в полі год</td><td>робота в полі км</td><td>простій год</td><td>простій мот-год</td><td>простій літри</td><td>простій л/год</td></tr>");
-let str =$('#unit_prMot').val().split(',');
+let stan=[[51.55109167453309,33.34894127728944,373,'ККЗ'],
+[51.4932345615444,33.40017453599349,460,'Буйвалове'],
+[51.622424409240104,33.0929363543844,436,'Райгородок ферма'],
+[51.745262906172094,33.7985328417313,179,'стан Слоут'],
+[51.51692830745467,32.98792806762675,198,'стан Карильське'],
+];
+function Motogod(filtr){
+let str =filtr.split(',');
+let html0="<tr><td>ТЗ</td><td>робота год</td><td>робота км</td><td>робота л</td><td>переїзд год</td><td>переїзд км</td><td>переїзд л</td><td>робота в полі год</td><td>робота в полі км</td><td>робота в полі л</td><td>простій год</td><td>простій на стані год</td><td>простій по за станом год</td><td>простій мот-год</td><td>простій літри</td><td>простій л/год</td></tr>";
 for(let i = 0; i<Global_DATA.length; i++){
 let nametr = Global_DATA[i][0][1];
 let litry0=0;
@@ -3348,12 +3382,21 @@ let litry=0;
 let prostoy=0;
 let zupp=0;
 let stoyanka=0;
+let stoyanka_stan=0;
+let stoyanka_pole=0;
 let rob_km=0;
 let rob_sec=0;
+let rob_lit=0;
 let pereysd_km=0;
 let pereysd_sec=0;
+let pereysd_lit=0;
 let pole_km=0;
 let pole_sec=0;
+let pole_lit=0;
+
+let pereysd_data0=[];
+let pole_data0=[];
+
 str.forEach((element) => {if(nametr.indexOf(element)>=0){
  litry0=0;
  prostoy0=0;
@@ -3361,7 +3404,7 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  litry=0;
  prostoy=0;
  zupp=0;
- for (let ii = 0; ii<Global_DATA[i].length-7; ii++){
+ for (let ii = 1; ii<Global_DATA[i].length-7; ii++){
 
 
  if(!Global_DATA[i][ii][3])continue;
@@ -3397,83 +3440,327 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  
  }
 
- for (let ii = 0; ii<Global_DATA[i].length-1; ii++){
-  if(!Global_DATA[i][ii][3])continue;
-  if(!Global_DATA[i][ii+1][3])continue;
-  if(!Global_DATA[i][ii][0])continue;
-  if(!Global_DATA[i][ii+1][0])continue;
-  if(!Global_DATA[i][ii][2])continue;
-  if(!Global_DATA[i][ii+1][2])continue;
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  if(Global_DATA[i][ii][3][0]==0){
-    stoyanka+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000;
-  }else{
-    let ttt=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000;
-    let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
-    let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-    let yy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
-    let xx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
-    let km=wialon.util.Geometry.getDistance(yy,xx,y,x);
+let sy=0;
+let sx=0;
+let ssy=0;
+let ssx=0;
+let kmx=0;
+let kmy=0;
+let i0=0;
 
-    rob_sec+=ttt;
-    rob_km+=km;
+let rob=0;
+let per=0;
 
-    let pole = PointInField(y,x);
 
-    if(pole && pole[2]=='-'){
-      pole = PointInField(yy,xx);
-      if(pole && pole[2]=='-'){
-        pole_sec+=ttt;
-        pole_km+=km;
-      }else{
-        pereysd_sec+=ttt;
-        pereysd_km+=km;
-      }
-     
-    }else{
-     pereysd_sec+=ttt;
-     pereysd_km+=km;
+for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){      
+    if(ii<2)continue;
+    if(ii>Global_DATA[i].length-2)continue;
+    if(!Global_DATA[i][ii-1][0])continue;
+    if(!Global_DATA[i][ii][0])continue;
+    if(!Global_DATA[i][ii+1][0])continue;
+
+    if(Global_DATA[i][ii][3][0]=='0'){ 
+      stoyanka+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000;
+    let yyy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+    let xxx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+            for (let j = 0; j<stan.length; j++){
+              if(wialon.util.Geometry.getDistance(yyy,xxx,stan[j][0],stan[j][1])<stan[j][2]){stoyanka_stan+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000;}
+            }
+
     }
-  }
+    
+    let y0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[0]);
+    let x0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[1]);
+    let y1 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+    let x1 = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+    let y2 = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
+    let x2 = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
 
- }
+    let point0 = turf.point([x0, y0]);
+    let point1 = turf.point([x1, y1]);
+    let point2 = turf.point([x2, y2]);
+    let bearing0 = 0;
+    let bearing1 = 0;
+    if(wialon.util.Geometry.getDistance(y0,x0,y1,x1)>wialon.util.Geometry.getDistance(y1,x1,y2,x2)){
+     bearing0 = turf.bearing(point0, point1);
+     bearing1 = turf.bearing(point0, point2);
+    }else{
+     bearing0 = turf.bearing(point2, point1);
+     bearing1 = turf.bearing(point2, point0);
+    }
+    
+    if(Math.abs(bearing0-bearing1)<10 || Math.abs(bearing0-bearing1)>350){ 
+      //L.polyline([[y0, x0],[y2, x2]], {color: 'red'}).addTo(map);
+      if(sy==0){sy=y0;i0=ii-1;}
+      if(sx==0)sx=x0; 
 
- if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
- zupp+=zupp0;
+    }else{
+      //L.polyline([[y0, x0],[y2, x2]], {color: 'red'}).addTo(map);
+      if(sy!=0 && wialon.util.Geometry.getDistance(sy,sx,y1,x1)>50){
+        if(ssy!=0 && wialon.util.Geometry.getDistance(ssy,ssx,y1,x1)<300){
+          if(ii-i0>20)robota();
+        }else{
+          if(ii-i0<100){ 
+            let l = i0+(ii-i0)/2;
+            //let y100 = parseFloat(Global_DATA[i][l.toFixed()][0].split(',')[0]);
+            //let x100 = parseFloat(Global_DATA[i][l.toFixed()][0].split(',')[1]);
+            let y200 = parseFloat(((sy+y1)/2).toFixed(6));
+            let x200 = parseFloat(((sx+x1)/2).toFixed(6));
 
- let html="<tr><td align='left'>"+nametr+"</td>";
+            
+            let point=0;
+            for (let n = i0-100; n<ii+100; n++){
+              if(n>2 && n<Global_DATA[i].length-1){
+                if(n<i0 || n>ii){
+                let y = parseFloat(Global_DATA[i][n][0].split(',')[0]);
+                let x = parseFloat(Global_DATA[i][n][0].split(',')[1]);
+                if(wialon.util.Geometry.getDistance(y200,x200,y,x)<100){point++;}
+                }
+              }  
+            }
+            //L.circle([y200, x200], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 100}).bindPopup(""+point+"").addTo(map);
+
+            if(point>5){
+              if(ii-i0>20) robota();
+            }else{
+              if(ii-i0>20)pereyesd();
+            }   
+          }else{
+            if(ii-i0>20)pereyesd();
+          } 
+        }
+        ssy=sy;
+        ssx=sx;
+        
+      }
+      sy=0;
+      sx=0;
+      i0=0;
+    }
+
+    function robota(){
+      kmx=0;
+      kmy=0;
+      if(rob==0){rob=i0;}
+      if(per>0){
+        //console.log(nametr,"pereyezd",Global_DATA[i][per][1],Global_DATA[i][i0][1])
+        let zapravka=0;
+        let t0=0;
+        let z0=0
+        for (let j = per; j<i0; j++){
+          let jy0 = parseFloat(Global_DATA[i][j][0].split(',')[0]);
+          let jx0 = parseFloat(Global_DATA[i][j][0].split(',')[1]);
+          let jy1 = parseFloat(Global_DATA[i][j+1][0].split(',')[0]);
+          let jx1 = parseFloat(Global_DATA[i][j+1][0].split(',')[1]);
+          let ttt=(Global_DATA[i][j+1][4]-Global_DATA[i][j][4])/1000;
+          let km=wialon.util.Geometry.getDistance(jy0,jx0,jy1,jx1);
+          let litry=parseFloat(Global_DATA[i][j][2]);
+          if(Global_DATA[i][j][3][0]=='0'){ 
+            if(t0==0)t0=Global_DATA[i][j][4]/1000;
+            if(pereysd_data0.length>0){z0=litry - pereysd_data0[pereysd_data0.length-1][0]-zapravka;}
+          }else{
+            if(km)pereysd_km+=km;
+            pereysd_sec+=ttt;
+            if(z0<50){z0=0;}
+            if(Global_DATA[i][j][4]/1000-t0<300){z0=0;}
+            zapravka+=z0;
+            z0=0;
+            t0=0;
+            if(litry>0)pereysd_data0.push([litry-zapravka,Global_DATA[i][j][1]]);
+          }
+          //if(jy0 && jx0 && jy1 && jx1 )L.polyline([[jy0, jx0],[jy1, jx1]], {color: '#55ff33'}).addTo(map);
+         } 
+         let kz=0;
+         let zapr=0;
+         let kz2=0;
+         let zapr2=0;
+         for (let n = 1; n<11; n++){
+          if(per-n>2){
+            let lll = parseFloat(Global_DATA[i][per-n][2]);
+            let lll0 = parseFloat(Global_DATA[i][per-n-1][2]);
+            if(Global_DATA[i][per-n][3][0]=='0' && Global_DATA[i][per-n-1][3][0]=='0'){
+              if(lll>lll0){kz+=lll-lll0;}else{
+                if(kz>50)zapr=kz;
+                if(lll>0)pereysd_data0.unshift([lll+zapr,Global_DATA[i][per-n][1]]);
+              }
+            }else{
+              if(lll>0)pereysd_data0.unshift([lll+zapr,Global_DATA[i][per-n][1]]);
+            }
+          }
+          if(i0+n<Global_DATA[i].length-2){
+            let lll = parseFloat(Global_DATA[i][i0+n][2]);
+            let lll0 = parseFloat(Global_DATA[i][i0+n+1][2]);
+            if(Global_DATA[i][i0+n][3][0]=='0'&& Global_DATA[i][i0+n+1][3][0]=='0'){
+              if(lll<lll0){kz2+=lll0-lll;}else{
+                if(kz2>50)zapr2=kz2;
+                if(lll>0)pereysd_data0.push([lll+zapr2-zapravka,Global_DATA[i][i0+n][1]]);
+              }
+            }else{
+              if(lll>0)pereysd_data0.push([lll+zapr2-zapravka,Global_DATA[i][i0+n][1]]);
+            }
+          }
+        }
+         pereysd_lit+=linearRegression(pereysd_data0);
+         pereysd_data0=[];
+      }
+      per=0;
+
+    }
+    function pereyesd(){
+      if(kmx==0){kmx=sx;kmy=sy;}
+      if(per==0){per=i0;}
+      if(rob>0){
+        //console.log(nametr,"robota",Global_DATA[i][rob][1],Global_DATA[i][i0][1])
+        let zapravka=0;
+        let t0=0;
+        let z0=0;
+        for (let j = rob; j<i0; j++){
+          let jy0 = parseFloat(Global_DATA[i][j][0].split(',')[0]);
+          let jx0 = parseFloat(Global_DATA[i][j][0].split(',')[1]);
+          let jy1 = parseFloat(Global_DATA[i][j+1][0].split(',')[0]);
+          let jx1 = parseFloat(Global_DATA[i][j+1][0].split(',')[1]);
+          let ttt=(Global_DATA[i][j+1][4]-Global_DATA[i][j][4])/1000;
+          let km=wialon.util.Geometry.getDistance(jy0,jx0,jy1,jx1);
+          let litry=parseFloat(Global_DATA[i][j][2]);
+          if(Global_DATA[i][j][3][0]=='0'){ 
+            if(t0==0)t0=Global_DATA[i][j][4]/1000;
+            if(pole_data0.length>0){z0=litry - pole_data0[pole_data0.length-1][0]-zapravka;}
+          }else{
+            if(km)pole_km+=km;
+            pole_sec+=ttt; 
+            if(z0<50){z0=0;}
+            if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
+            zapravka+=z0;
+            z0=0;
+            t0=0;
+            if(litry>0)pole_data0.push([litry-zapravka,Global_DATA[i][j][1]]);
+          }
+          if(jy0 && jx0 && jy1 && jx1)L.polyline([[jy0, jx0],[jy1, jx1]], {color: 'red'}).addTo(map);
+         } 
+
+         let kz=0;
+         let zapr=0;
+         let kz2=0;
+         let zapr2=0;
+         for (let n = 1; n<11; n++){
+          if(rob-n>2){
+            let lll = parseFloat(Global_DATA[i][rob-n][2]);
+            let lll0 = parseFloat(Global_DATA[i][rob-n-1][2]);
+            if(Global_DATA[i][rob-n][3][0]=='0' && Global_DATA[i][rob-n-1][3][0]=='0'){
+              if(lll>lll0){kz+=lll-lll0;}else{
+                if(kz>50)zapr=kz;
+                if(lll>0)pole_data0.unshift([lll+zapr,Global_DATA[i][rob-n][1]]);
+              }
+            }else{
+              if(lll>0)pole_data0.unshift([lll+zapr,Global_DATA[i][rob-n][1]]);
+            }
+          }
+          if(i0+n<Global_DATA[i].length-2){
+            let lll = parseFloat(Global_DATA[i][i0+n][2]);
+            let lll0 = parseFloat(Global_DATA[i][i0+n+1][2]);
+            if(Global_DATA[i][i0+n][3][0]=='0'&& Global_DATA[i][i0+n+1][3][0]=='0'){
+              if(lll<lll0){kz2+=lll0-lll;}else{
+                if(kz2>50)zapr2=kz2;
+                if(lll>0)pole_data0.push([lll+zapr2-zapravka,Global_DATA[i][i0+n][1]]);
+              }
+            }else{
+              if(lll>0)pole_data0.push([lll+zapr2-zapravka,Global_DATA[i][i0+n][1]]);
+            }
+          }
+        }
+         pole_lit+=linearRegression(pole_data0);
+         pole_data0=[];
+        }
+      rob=0;
+    }
+}
+
+
+if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
+zupp+=zupp0;
+
+stoyanka_pole=stoyanka-stoyanka_stan;
+
+
+if(rob>0){pereyesd();}
+if(per>0){robota();}
+
+ rob_km=pereysd_km+pole_km;
+ rob_lit=pereysd_lit+pole_lit;;
+ rob_sec=pereysd_sec+pole_sec;
+
+
+ let html="<tr><td align='left' nowrap>"+nametr+"</td>";
+
   let m = Math.trunc(rob_sec / 60) + '';
   let h = Math.trunc(m / 60) + '';
-  m=(m % 60) + '';
-  html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(rob_km/1000).toFixed() +"</td>";
+ m=(m % 60) + '';
+ html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(rob_km/1000).toFixed() +"</td><td>"+(rob_lit).toFixed(2) +"</td>";
 
-   m = Math.trunc(pereysd_sec / 60) + '';
-   h = Math.trunc(m / 60) + '';
-  m=(m % 60) + '';
-  html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(pereysd_km/1000).toFixed() +"</td>";
+  m = Math.trunc(pereysd_sec / 60) + '';
+  h = Math.trunc(m / 60) + '';
+m=(m % 60) + '';
+html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(pereysd_km/1000).toFixed() +"</td><td>"+(pereysd_lit).toFixed(2) +"</td>";
 
-  m = Math.trunc(pole_sec / 60) + '';
+ m = Math.trunc(pole_sec / 60) + '';
+ h = Math.trunc(m / 60) + '';
+m=(m % 60) + '';
+html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(pole_km/1000).toFixed() +"</td><td>"+(pole_lit).toFixed(2) +"</td>";
+
+  m = Math.trunc(stoyanka / 60) + '';
   h = Math.trunc(m / 60) + '';
  m=(m % 60) + '';
- html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>"+(pole_km/1000).toFixed() +"</td>";
+ html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
 
-   m = Math.trunc(stoyanka / 60) + '';
-   h = Math.trunc(m / 60) + '';
+ m = Math.trunc(stoyanka_stan / 60) + '';
+  h = Math.trunc(m / 60) + '';
+ m=(m % 60) + '';
+ html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
+
+ m = Math.trunc(stoyanka_pole / 60) + '';
+ h = Math.trunc(m / 60) + '';
+m=(m % 60) + '';
+html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
+
+  m = Math.trunc(prostoy / 60) + '';
+  h = Math.trunc(m / 60) + '';
   m=(m % 60) + '';
   html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
-   m = Math.trunc(prostoy / 60) + '';
-   h = Math.trunc(m / 60) + '';
-   m=(m % 60) + '';
-   html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
-  let lkm = (litry/prostoy*3600).toFixed(1);
-  html+="<td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>";
-  if(zupp>0){$("#unit_table").append(html);
-}
-  
+ let lkm = (litry/prostoy*3600).toFixed(1);
+ html+="<td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>";
+
+ if(stoyanka>0)html0+=html;
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }});
 }
+
+return html0;
 }
 
+function linearRegression(data){
+  var a = 0;
+  var b = 0;
+  var k = 30;
+  var result = 0;
+  
+  if(data.length<k*1.5)return result;
+  for( var i=0; i<k; i++){
+    a+=data[i][0];
+    b+=data[data.length-1-i][0];
+  }
+  a=a/k;
+  b=b/k;
+
+  result = a-b;
+  //console.log(a,data[0][1])
+  //console.log(b,data[data.length-1][1])
+  //console.log(result)
+  return result;
+
+}
 
 function tehnika_poruch(name,y,x,time){ 
   for(let i = 0; i<Global_DATA.length; i++){
