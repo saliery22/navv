@@ -3500,32 +3500,32 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
       //L.polyline([[y0, x0],[y2, x2]], {color: 'red'}).addTo(map);
       if(sy!=0 && wialon.util.Geometry.getDistance(sy,sx,y1,x1)>50){
         if(ssy!=0 && wialon.util.Geometry.getDistance(ssy,ssx,y1,x1)<300){
-          if(ii-i0>20)robota();
+          if(ii-i0>2)robota();
         }else{
-          if(ii-i0<100){ 
+          if(ii-i0<150){ 
             let l = i0+(ii-i0)/2;
             //let y100 = parseFloat(Global_DATA[i][l.toFixed()][0].split(',')[0]);
             //let x100 = parseFloat(Global_DATA[i][l.toFixed()][0].split(',')[1]);
             let y200 = parseFloat(((sy+y1)/2).toFixed(6));
             let x200 = parseFloat(((sx+x1)/2).toFixed(6));
-
+           
             
             let point=0;
-            for (let n = i0-100; n<ii+100; n++){
+            for (let n = i0-200; n<ii+200; n++){
               if(n>2 && n<Global_DATA[i].length-1){
                 if(n<i0 || n>ii){
                 let y = parseFloat(Global_DATA[i][n][0].split(',')[0]);
                 let x = parseFloat(Global_DATA[i][n][0].split(',')[1]);
-                if(wialon.util.Geometry.getDistance(y200,x200,y,x)<100){point++;}
+                if(wialon.util.Geometry.getDistance(y200,x200,y,x)<150){point++;}
                 }
               }  
             }
             //L.circle([y200, x200], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 100}).bindPopup(""+point+"").addTo(map);
 
             if(point>5){
-              if(ii-i0>20) robota();
+              if(ii-i0>10) robota();
             }else{
-              if(ii-i0>20)pereyesd();
+              if(ii-i0>10)pereyesd();
             }   
           }else{
             if(ii-i0>20)pereyesd();
@@ -3564,7 +3564,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
             if(km)pereysd_km+=km;
             pereysd_sec+=ttt;
             if(z0<50){z0=0;}
-            if(Global_DATA[i][j][4]/1000-t0<300){z0=0;}
+            if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
             zapravka+=z0;
             z0=0;
             t0=0;
@@ -3603,6 +3603,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           }
         }
          pereysd_lit+=linearRegression(pereysd_data0);
+
          pereysd_data0=[];
       }
       per=0;
