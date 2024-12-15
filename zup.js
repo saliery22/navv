@@ -4051,7 +4051,10 @@ async function marshrut_avto(){
             if(ii>Global_DATA[i].length-11)continue;
             if(stoyanka==0)continue;
             if(!Global_DATA[i][ii-20][0])continue;
+            if(!Global_DATA[i][ii-10][0])continue;
             if(!Global_DATA[i][ii+10][0])continue;
+            let y00 = parseFloat(Global_DATA[i][ii-10][0].split(',')[0]);
+            let x00 = parseFloat(Global_DATA[i][ii-10][0].split(',')[1]);
             let y0 = parseFloat(Global_DATA[i][ii-20][0].split(',')[0]);
             let x0 = parseFloat(Global_DATA[i][ii-20][0].split(',')[1]);
             let y1 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
@@ -4059,16 +4062,24 @@ async function marshrut_avto(){
             let y2 = parseFloat(Global_DATA[i][ii+10][0].split(',')[0]);
             let x2 = parseFloat(Global_DATA[i][ii+10][0].split(',')[1]);
 
+            let point00 = turf.point([x00, y00]);
             let point0 = turf.point([x0, y0]);
             let point1 = turf.point([x1, y1]);
             let point2 = turf.point([x2, y2]);
             let bearing0 = turf.bearing(point1, point0);
             let bearing1 = turf.bearing(point1, point2);
+            let bearing3 = turf.bearing(point1, point00);
             //L.polyline([[y0, x0],[y1, x1]], {color: 'red'}).addTo(map);
             //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
-            if(Math.abs(bearing0-bearing1)<30 || Math.abs(bearing0-bearing1)>330){ 
+            if(Math.abs(bearing3-bearing1)<30 || Math.abs(bearing3-bearing1)>330){
+              bearing3=1;
+              if(wialon.util.Geometry.getDistance(y00,x00,y1,x1)<5){bearing3=0;}
+            }else{bearing3=0;}
+            
+            if(Math.abs(bearing0-bearing1)<30 || Math.abs(bearing0-bearing1)>330 || bearing3==1){ 
               //L.polyline([[y0, x0],[y1, x1]], {color: 'red'}).addTo(map);
               //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
+              
                for (let j = 0; j<stor.length; j++){
                 if(wialon.util.Geometry.getDistance(y1,x1,stor[j][0],stor[j][1])<stor[j][2]){
                   adres=stor[j][3];
@@ -4136,7 +4147,6 @@ async function marshrut_avto(){
     }
     msg('Завантажено зівт маршрутів авто');
     }
-
     function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms)); }  
     function Serch_GEO(adres) { 
         wialon.util.Gis.searchByString(adres,0,1, function(code, data) {
