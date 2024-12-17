@@ -2354,88 +2354,22 @@ if ($('#grafik').is(':hidden')) {
   function show_gr(a,b) {
     s1=a;
     s2=b;
-    var unid =  $("#lis0").chosen().val();
+    var unid =  parseInt($("#lis0").chosen().val());
         if ($('#grafik').is(':hidden')==false){
-      data_graf = [];
-      executeReport6(unid);
-    }
-  }
-
-  
-  
-   
-    
- 
-  
-  function executeReport6(id){ // execute selected report
-      // get data from corresponding fields
-    var id_res=RES_ID, id_templ=zvit2, id_unit=id;
-    var sess = wialon.core.Session.getInstance(); // get instance of current Session
-    var res = sess.getItem(id_res); // get resource by id
-    var to = Date.parse($('#fromtime2').val())/1000; // get current server time (end time of report time interval)
-    var from = Date.parse($('#fromtime1').val())/1000;
-  
-    
-    // calculate start time of report
-    // specify time interval object
-    var interval = { "from": from, "to": to, "flags": wialon.item.MReport.intervalFlag.absolute };  
-    var template = res.getReport(id_templ); // get report template by id
-  
-  
-   
-   
-    res.execReport(template, id_unit, 0, interval, // execute selected report
-      function(code, data) { // execReport template
-        
-           
-         
-         if(code){ msg(wialon.core.Errors.getErrorText(code)); drawChart(); return; } // exit if error code
-        if(!data.getTables().length){ // exit if no tables obtained
-          drawChart(); return; }
-        else showReportResult6(data); // show report result
-        
-    });
-  
-  
-  }
-  var data_graf = [];
-  function showReportResult6(result){ // show result after report execute
-    
-    var tables = result.getTables(); // get report tables
-    if (!tables) return; // exit if no tables
-    for(var i=0; i < tables.length; i++){ // cycle on tables
-      // html contains information about one table
-      var html = [];
-      var it = 0;
-      var litry=0;
-      var headers = tables[i].header; // get table headers
-      for (var j=4; j<headers.length; j++) {if (headers[j].indexOf('Топливо')>=0 || headers[j].indexOf('Паливо')>=0){it=j;}}
-
-      var iii = 0;
-      data_graf = [];
-      result.getTableRows(i, 0, tables[i].rows, // get Table rows
-        qx.lang.Function.bind( function(html, code, rows) { // getTableRows callback
-          if (code) {msg(wialon.core.Errors.getErrorText(code)); drawChart(); return;} // exit if error code
-          for(var j in rows) { // cycle on table rows
-            if (typeof rows[j].c == "undefined") continue; // skip empty rows
-            litry=0;
-            if (it>0) litry=getTableValue(rows[j].c[it]); 
-  
-            data_graf[iii]=[getTableValue(rows[j].c[0]),getTableValue(rows[j].c[1]),litry,getTableValue(rows[j].c[2])];
-           
-            iii+=1;
-           
-  
+          let data_graf = [];
+          for(let i = 0; i<Global_DATA.length; i++){ 
+            let idd = Global_DATA[i][0][0];
+            if(idd==unid){
+              for (let ii = 1; ii<Global_DATA[i].length-1; ii+=1){
+                data_graf.push([Global_DATA[i][ii][0],Global_DATA[i][ii][1],Global_DATA[i][ii][2],Global_DATA[i][ii][3]]);
+              } 
+              break;
+            }   
           }
-          
-        drawChart();
-        }, this, html)
-      );
-    
+          drawChart(data_graf);
     }
-   
   }
-  
+
 
 
   // Load the Visualization API and the corechart package.
@@ -2451,7 +2385,7 @@ if ($('#grafik').is(':hidden')) {
   var v1 = 0;
   let s1,s2;
   
-function drawChart() {
+function drawChart(data_graf) {
 var dashboard = new google.visualization.Dashboard(
     document.getElementById('grafik'));
 
@@ -3452,6 +3386,7 @@ let i0=0;
 
 let rob=0;
 let per=0;
+let grafik=[];
 
 
 for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){      
@@ -3471,6 +3406,8 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
 
     }
     
+    
+
     let y0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[0]);
     let x0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[1]);
     let y1 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
@@ -3548,7 +3485,10 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
         //console.log(nametr,"pereyezd",Global_DATA[i][per][1],Global_DATA[i][i0][1])
         let zapravka=0;
         let t0=0;
-        let z0=0
+        let z0=0;
+        let l0=10000000;
+        let l1=0;
+        let n0=0;
         for (let j = per; j<i0; j++){
           let jy0 = parseFloat(Global_DATA[i][j][0].split(',')[0]);
           let jx0 = parseFloat(Global_DATA[i][j][0].split(',')[1]);
@@ -3558,16 +3498,24 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           let km=wialon.util.Geometry.getDistance(jy0,jx0,jy1,jx1);
           let litry=parseFloat(Global_DATA[i][j][2]);
           if(Global_DATA[i][j][3][0]=='0'){ 
+            n0++;
             if(t0==0)t0=Global_DATA[i][j][4]/1000;
-            if(pereysd_data0.length>0){z0=litry - pereysd_data0[pereysd_data0.length-1][0]-zapravka;}
+            if(l1==0)l1=parseFloat(Global_DATA[i][j][2])-zapravka;
+            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2])-zapravka;
+            if(pereysd_data0.length>0){z0=litry - l0;}
           }else{
             if(km)pereysd_km+=km;
-            pereysd_sec+=ttt;
-            if(z0<50){z0=0;}
+            pereysd_sec+=ttt; 
+            if(z0<90){z0=0;}
             if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
+            if(z0>0){z0=litry - l1;}
             zapravka+=z0;
+            if(z0>=90)console.log(z0);
             z0=0;
             t0=0;
+            l0=10000000;
+            l1=0;
+            n0=0;
             if(litry>0)pereysd_data0.push([litry-zapravka,Global_DATA[i][j][1]]);
           }
           //if(jy0 && jx0 && jy1 && jx1 )L.polyline([[jy0, jx0],[jy1, jx1]], {color: '#55ff33'}).addTo(map);
@@ -3603,7 +3551,6 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           }
         }
          pereysd_lit+=linearRegression(pereysd_data0);
-
          pereysd_data0=[];
       }
       per=0;
@@ -3617,6 +3564,9 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
         let zapravka=0;
         let t0=0;
         let z0=0;
+        let l0=10000000;
+        let l1=0;
+        let n0=0;
         for (let j = rob; j<i0; j++){
           let jy0 = parseFloat(Global_DATA[i][j][0].split(',')[0]);
           let jx0 = parseFloat(Global_DATA[i][j][0].split(',')[1]);
@@ -3626,16 +3576,24 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           let km=wialon.util.Geometry.getDistance(jy0,jx0,jy1,jx1);
           let litry=parseFloat(Global_DATA[i][j][2]);
           if(Global_DATA[i][j][3][0]=='0'){ 
+            n0++;
             if(t0==0)t0=Global_DATA[i][j][4]/1000;
-            if(pole_data0.length>0){z0=litry - pole_data0[pole_data0.length-1][0]-zapravka;}
+            if(l1==0)l1=parseFloat(Global_DATA[i][j][2])-zapravka;
+            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2])-zapravka;
+            if(pole_data0.length>0){z0=litry - l0;}
           }else{
             if(km)pole_km+=km;
             pole_sec+=ttt; 
-            if(z0<50){z0=0;}
+            if(z0<90){z0=0;}
             if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
+            if(z0>0){z0=litry - l1;}
             zapravka+=z0;
+            if(z0>=90)console.log(z0);
             z0=0;
             t0=0;
+            l0=10000000;
+            l1=0;
+            n0=0;
             if(litry>0)pole_data0.push([litry-zapravka,Global_DATA[i][j][1]]);
           }
           //if(jy0 && jx0 && jy1 && jx1)L.polyline([[jy0, jx0],[jy1, jx1]], {color: 'red'}).addTo(map);
@@ -4148,6 +4106,7 @@ async function marshrut_avto(){
     }
     msg('Завантажено зівт маршрутів авто');
     }
+
     function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms)); }  
     function Serch_GEO(adres) { 
         wialon.util.Gis.searchByString(adres,0,1, function(code, data) {
