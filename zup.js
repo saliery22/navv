@@ -3510,7 +3510,6 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
             if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
             if(z0>0){z0=litry - l1;}
             zapravka+=z0;
-            if(z0>=90)console.log(z0);
             z0=0;
             t0=0;
             l0=10000000;
@@ -3588,7 +3587,6 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
             if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
             if(z0>0){z0=litry - l1;}
             zapravka+=z0;
-            if(z0>=90)console.log(z0);
             z0=0;
             t0=0;
             l0=10000000;
