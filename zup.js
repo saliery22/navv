@@ -3478,7 +3478,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
       i0=0;
     }
 
-    function robota(){
+   function robota(){
       kmx=0;
       kmy=0;
       if(rob==0){rob=i0;}
@@ -3487,6 +3487,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
         let zapravka=0;
         let t0=0;
         let z0=0;
+        let z1=0;
         let l0=10000000;
         let l1=0;
         let n0=0;
@@ -3501,17 +3502,17 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           if(Global_DATA[i][j][3][0]=='0'){ 
             n0++;
             if(t0==0)t0=Global_DATA[i][j][4]/1000;
-            if(l1==0)l1=parseFloat(Global_DATA[i][j][2])-zapravka;
-            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2])-zapravka;
-            if(pereysd_data0.length>0){z0=litry - l0;}
+            if(l1==0)l1=parseFloat(Global_DATA[i][j][2]);
+            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2]);
+            if(pereysd_data0.length>0){z0=litry-l0; z1=litry-l1;}
           }else{
             if(km)pereysd_km+=km;
             pereysd_sec+=ttt; 
-            if(z0<90){z0=0;}
-            if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
-            if(z0>0){z0=litry - l1;}
-            zapravka+=z0;
+            if(z0<90){z1=0;}
+            if(Global_DATA[i][j][4]/1000-t0<150){z1=0;}
+            zapravka+=z1;
             z0=0;
+            z1=0;
             t0=0;
             l0=10000000;
             l1=0;
@@ -3564,6 +3565,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
         let zapravka=0;
         let t0=0;
         let z0=0;
+        let z1=0;
         let l0=10000000;
         let l1=0;
         let n0=0;
@@ -3578,17 +3580,17 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           if(Global_DATA[i][j][3][0]=='0'){ 
             n0++;
             if(t0==0)t0=Global_DATA[i][j][4]/1000;
-            if(l1==0)l1=parseFloat(Global_DATA[i][j][2])-zapravka;
-            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2])-zapravka;
-            if(pole_data0.length>0){z0=litry - l0;}
+            if(l1==0)l1=parseFloat(Global_DATA[i][j][2]);
+            if(l0==10000000 && n0>5)l0=parseFloat(Global_DATA[i][j][2]);
+            if(pole_data0.length>0){z0=litry-l0; z1=litry-l1;}
           }else{
             if(km)pole_km+=km;
             pole_sec+=ttt; 
-            if(z0<90){z0=0;}
-            if(Global_DATA[i][j][4]/1000-t0<150){z0=0;}
-            if(z0>0){z0=litry - l1;}
-            zapravka+=z0;
+            if(z0<90){z1=0;}
+            if(Global_DATA[i][j][4]/1000-t0<150){z1=0;}
+            zapravka+=z1;
             z0=0;
+            z1=0;
             t0=0;
             l0=10000000;
             l1=0;
@@ -3634,6 +3636,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
       rob=0;
     }
 }
+
 
 
 if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
