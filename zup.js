@@ -3508,7 +3508,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           }else{
             if(km)pereysd_km+=km;
             pereysd_sec+=ttt; 
-            if(z0<90){z1=0;}
+            if(z0<50){z1=0;}
             if(Global_DATA[i][j][4]/1000-t0<150){z1=0;}
             zapravka+=z1;
             z0=0;
@@ -3586,7 +3586,7 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
           }else{
             if(km)pole_km+=km;
             pole_sec+=ttt; 
-            if(z0<90){z1=0;}
+            if(z0<50){z1=0;}
             if(Global_DATA[i][j][4]/1000-t0<150){z1=0;}
             zapravka+=z1;
             z0=0;
