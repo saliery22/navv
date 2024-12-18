@@ -3268,6 +3268,7 @@ function RemainsFuel(e){
     }
     
       $("#palne_table").empty();
+      if(str2=='') return;
       let html = Motogod(str2.slice(0, -1));
       $("#palne_table").append(html);
   }
