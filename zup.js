@@ -4013,7 +4013,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
           zup2+=(Global_DATA[i][ii+1][4]-Global_DATA[i][ii][4])/1000; 
           if(zup2>=t_pod){
             litry1=litry0-Global_DATA[i][ii][2];
-            if(litry>min_sliv && litry1>min_sliv){
+            if(litry>min_sliv/2 && litry1>min_sliv){
               $("#unit_table").append("<tr class='sliv_trak' id='"+id+"," + parseFloat(Global_DATA[i][ii][0].split(',')[0])+","+parseFloat(Global_DATA[i][ii][0].split(',')[1])+ "'><td align='left'>"+nametr+"</td><td>"+start+"</td><td>"+finish+"</td><td>"+litry.toFixed(1)+"л </td><td>"+(interval1-interval0)/1000+" сек </td></tr>");
               zup1=0;
               zup2=0;
