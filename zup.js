@@ -153,6 +153,7 @@ function init() { // Execute after login succeed
 
 // will be called after updateDataFlags success
 let geozonepoint = [];
+let geozonepointTurf = [];
 let geozones = [];
 let geozonesgrup = [];
 let IDzonacord=[];
@@ -193,6 +194,7 @@ function initUIData() {
            
            
            geozonepoint.length =0;
+           geozonepointTurf.length =0;
            Vibranaya_zona = this.zone;
            $('#hidezone').click(function() { map.removeLayer(e.target);});
            clearGEO();
@@ -256,9 +258,13 @@ function initUIData() {
                 let lat =point[i].lat;
                 let lng =point[i].lng;
                 geozonepoint.push({x:lat, y:lng}); 
-                if(i == geozonepoint.length-1 && geozonepoint[0]!=geozonepoint[i])geozonepoint.push(geozonepoint[0]); 
+                geozonepointTurf.push([lng,lat]);
                 ramka.push([lat, lng]);
-                if(i == point.length-1 && ramka[0]!=ramka[i])ramka.push(ramka[0]); 
+                if(i == point.length-1 && geozonepoint[0]!=geozonepoint[i]){
+                  geozonepoint.push(geozonepoint[0]); 
+                  geozonepointTurf.push(geozonepointTurf[0]);
+                  ramka.push(ramka[0]);
+                }
                 }
                 let polilane = L.polyline(ramka, {color: 'blue'}).addTo(map);
                 geo_layer.push(polilane);
@@ -2670,6 +2676,8 @@ function Naryady(data=[],maska='JD'){
    if(unit==false)continue;
    let splines =[];
    let spline=[];
+   let p_start=[];
+   let p_end=[];
    let newspline=false;
    splines.push([data[i][0][0],data[i][0][1]]);
     for (let ii = 1; ii < data[i].length; ii++) {
@@ -2684,22 +2692,34 @@ function Naryady(data=[],maska='JD'){
           if(wialon.util.Geometry.pointInShape(geozonepoint, 0, lat, lon)){
             spline.push([lon,lat]); 
             newspline=false;
-          }else newspline=true;
+          }else {
+            newspline=true;
+            p_end=[lon,lat];
+          }
        //}
        }
       }else{
         if(wialon.util.Geometry.pointInShape(geozonepoint, 0, lat, lon)){
           spline.push([lon,lat]); 
           newspline=false;
-        }else newspline=true;
+        }else {
+          newspline=true;
+          p_start=[lon,lat];
+        }
       }
 
       if(newspline==true || data[i].length-1 ==ii){
         if(spline.length>0) {
-          if(spline.length>1)splines.push(spline);
+          if(spline.length>1){
+            if(p_start.length>0)spline.unshift(p_start);
+            if(p_end.length>0)spline.push(p_end);
+            splines.push(spline);
+          }
           //var linestring1 = turf.lineString(spline);
           //var polyline = L.geoJSON(linestring1).addTo(map);
           spline=[];
+          p_start=[];
+          p_end=[];
           newspline=false;
           if(texnika.indexOf(data[i][0][1])<0){
             texnika.push(data[i][0][1]);
@@ -2818,16 +2838,23 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
 
   } 
 
+
+      let turfPole =turf.polygon([geozonepointTurf]);
       let area = GetPoligonsArea(polis);
       let areaU =area;
+      let areaI =0;
       let union =polis[0];
       if(polis.length>1){
         union =turf.union(turf.featureCollection(polis));
         areaU = (turf.area(union)/10000).toFixed(2);
+        union = turf.intersect(turf.featureCollection([union, turfPole]));
+        areaI = (areaU -turf.area(union)/10000).toFixed(2);
       }
+
       let color='#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
       let polylinee = L.geoJSON(union,{ style: function (feature) { return {color: color, fillOpacity: 0.7, weight: 1};}}).addTo(map);
         geo_layer.push(polylinee); 
+
         if(union){
           if(union.geometry.type=="Polygon"){
             UnionPolis.push(union);
@@ -2843,9 +2870,9 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
       for ( j = 0; j < tableRow.length; j++){
         if(tableRow[j].cells[1].textContent==traktor){
           tableRow[j].cells[0].style.backgroundColor = color;
-          tableRow[j].cells[2].textContent=area;
-          tableRow[j].cells[3].textContent=(area-areaU).toFixed(2);
-          tableRow[j].cells[4].textContent=areaU;
+          tableRow[j].cells[2].textContent=(area-areaI).toFixed(2);
+          tableRow[j].cells[3].textContent=(area-areaU-areaI).toFixed(2);
+          tableRow[j].cells[4].textContent=(areaU-areaI).toFixed(2);
         }
       } 
     }
@@ -2940,7 +2967,7 @@ $('#robota_polya_BT').click(function (){
       let m = Math.trunc(polya_mot[key] / 60) + '';
       let h = Math.trunc(m / 60) + '';
       m=(m % 60) + '';
-      $("#robota_polya_tb").append("<tr><td align='left'>"+key+"</td><td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>-----</td><td>-----</td><td>Х</td></tr>");
+      $("#robota_polya_tb").append("<tr><td align='left'>"+key+"</td><td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td><td>-----</td><td>-----</td><td>&#10060</td></tr>");
     }
   }
 });
@@ -2966,6 +2993,7 @@ $("#robota_polya_tb").on("click", function (evt){
       let x=geozones[i]._bounds._northEast.lng;
       map.setView([y,x],14);
            geozonepoint.length =0;
+           geozonepointTurf.length =0;
            clearGEO();
         $('#obrobka').empty();
         $('#obrobkatehnika').empty();
@@ -2973,13 +3001,17 @@ $("#robota_polya_tb").on("click", function (evt){
         let point = geozones[i]._latlngs[0];
         let ramka=[];
         for (let i = 0; i < point.length; i++) {
-        let lat =point[i].lat;
-        let lng =point[i].lng;
-        geozonepoint.push({x:lat, y:lng}); 
-        if(i == geozonepoint.length-1 && geozonepoint[0]!=geozonepoint[i])geozonepoint.push(geozonepoint[0]); 
-        ramka.push([lat, lng]);
-        if(i == point.length-1 && ramka[0]!=ramka[i])ramka.push(ramka[0]); 
-        }
+          let lat =point[i].lat;
+          let lng =point[i].lng;
+          geozonepoint.push({x:lat, y:lng}); 
+          geozonepointTurf.push([lng,lat]);
+          ramka.push([lat, lng]);
+          if(i == point.length-1 && geozonepoint[0]!=geozonepoint[i]){
+            geozonepoint.push(geozonepoint[0]); 
+            geozonepointTurf.push(geozonepointTurf[0]);
+            ramka.push(ramka[0]);
+          }
+          }
         let polilane = L.polyline(ramka, {color: 'blue'}).addTo(map);
         geo_layer.push(polilane);
         break;
