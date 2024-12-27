@@ -2847,12 +2847,13 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
       if(polis.length>1){
         union =turf.union(turf.featureCollection(polis));
         areaU = (turf.area(union)/10000).toFixed(2);
-        union = turf.intersect(turf.featureCollection([union, turfPole]));
-        areaI = (areaU -turf.area(union)/10000).toFixed(2);
       }
 
+	union = turf.intersect(turf.featureCollection([union, turfPole]));
+        areaI = (areaU -turf.area(union)/10000).toFixed(2);
+	   
       let color='#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
-      let polylinee = L.geoJSON(union,{ style: function (feature) { return {color: color, fillOpacity: 0.7, weight: 1};}}).addTo(map);
+      let polylinee = L.geoJSON(union,{ style: function (feature) { return {color: color, fillOpacity: 0.5, weight: 1};}}).addTo(map);
         geo_layer.push(polylinee); 
 
         if(union){
