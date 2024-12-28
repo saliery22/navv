@@ -4179,10 +4179,22 @@ async function marshrut_avto(){
       }
       
        for (let ii = 1; ii<Global_DATA[i].length-1; ii+=1){
-
+   
        if(parseInt(Global_DATA[i][ii][3])<4){ 
         if((Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4])/1000)stoyanka+=(Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4])/1000; 
-       }else{
+       }
+       if(!Global_DATA[i][ii][0])continue;
+       if(!Global_DATA[i][ii-1][0])continue;
+       if(!Global_DATA[i][ii+1][0])continue;
+       if(parseInt(Global_DATA[i][ii][3])>0){
+        let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+        let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+        let yyy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
+        let xxx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
+        km+=(wialon.util.Geometry.getDistance(yy,xx,yyy,xxx))/1000;
+       }
+
+       if(parseInt(Global_DATA[i][ii][3])>=4){
         if(!Global_DATA[i][ii][0])continue;
         if(!Global_DATA[i][ii-1][0])continue;
         if(!Global_DATA[i][ii+1][0])continue;
@@ -4333,16 +4345,7 @@ async function marshrut_avto(){
         }
 
        }
-       if(!Global_DATA[i][ii][0])continue;
-       if(!Global_DATA[i][ii-1][0])continue;
-       if(!Global_DATA[i][ii+1][0])continue;
-       if(parseInt(Global_DATA[i][ii][3])>0){
-        let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
-        let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-        let yyy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
-        let xxx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
-        km+=(wialon.util.Geometry.getDistance(yy,xx,yyy,xxx))/1000;
-       }
+ 
      }
      if(km.toFixed()>0)$("#unit_table").append("<tr class='fail_trak' id='"+id+"," + lat+","+lon+ "'><td align='left'>"+nametr+"</td><td>"+start.slice(11, 16) +"</td><td>"+end.slice(11, 16) +"</td><td>"+html.slice(0, -1) +"</td><td>"+ km.toFixed()+"</td></tr>");
     }
