@@ -4230,7 +4230,7 @@ async function marshrut_avto(){
               }
             }
           }else{
-            if(ii<21)continue;
+            if(ii<31)continue;
             if(ii>Global_DATA[i].length-11)continue;
             if(stoyanka==0)continue;
             if(!Global_DATA[i][ii-30][0])continue;
