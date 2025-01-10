@@ -4384,11 +4384,23 @@ async function marshrut_avto(){
           if (stop>300000) {
             let y = parseFloat(data[0][st][0].split(',')[0]);
             let x = parseFloat(data[0][st][0].split(',')[1]);
-            $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
-               if (data.category =="shop"){
-               let mar = L.tooltip([y,x], {content: "магазин - "+data.name+"",permanent: true, opacity:0.9, direction: 'top'}).addTo(map);
-                zup_mark_data.push(mar);
-               }
+                  $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
+              let type=0;
+               if (data.category =="shop")type="магазин"
+               if (data.type =="hospital")type="лікарня"
+               if (data.type =="pharmacy")type="аптека"
+               if (data.type =="car_wash")type="автомийка"
+               if (data.type =="kindergarten")type="садок"
+               if (data.type =="supermarket")type="супермаркет"
+               if (data.type =="parking")type="парковка"
+               if (data.type =="hotel")type="готель"
+               if (data.type =="fitness_centre")type="спортзал"
+               if (data.type =="dentist")type="дантист"
+               if (data.type =="university")type="університет"
+               if (type !=0){
+                let mar = L.tooltip([y,x], {content: ""+type+" - "+data.name+"",permanent: true, opacity:0.9, direction: 'top'}).addTo(map);
+                 zup_mark_data.push(mar);
+                }
               });
                await sleep(2000);  
            
