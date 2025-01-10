@@ -33,7 +33,7 @@ var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 $('#fromtime1').val(from111);
 $('#fromtime2').val(from222);
-
+$('#log_time_inp').val(new Date().toJSON().slice(0,10));
 
 
 
@@ -296,6 +296,18 @@ function initUIData() {
       layerControl.addOverlay(lgeozonee, "Регіони");
     
 
+      let log_zone=[];
+
+      for (let i = 0; i < stor.length; i++) {
+        let poly =L.tooltip([stor[i][0],stor[i][1]], {content: ""+stor[i][3]+"",permanent: true, opacity:0.7, direction: 'top'});
+        log_zone.push(poly);
+       
+     }
+
+
+      let lgeozoneee = L.layerGroup(log_zone);
+      layerControl.addOverlay(lgeozoneee, "Логістика");
+
   });
 
 
@@ -372,7 +384,7 @@ $(".livesearch").chosen({search_contains : true});
   $('#option').hide();
   $('#unit_info').hide();
   $('#zupinki').hide();
-  $('#palne').hide();
+  $('#logistika').hide();
   $('#monitoring').hide();
   clearGEO();
   $('#men3').css({'background':'#e9e9e9'});
@@ -382,6 +394,7 @@ $(".livesearch").chosen({search_contains : true});
   $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
+  clearGarbage(marshrut_garbage);
   bufer=[];
   });
  $('#men3').click(function() { 
@@ -404,7 +417,7 @@ $('#marrr').hide();
 $('#unit_info').hide();
 $('#inftb').empty();
 $('#zupinki').hide();
-$('#palne').hide();
+$('#logistika').hide();
 $('#monitoring').hide();
 clearGEO(); 
 $('#men1').css({'background':'#e9e9e9'});
@@ -414,6 +427,7 @@ $('#men6').css({'background':'#e9e9e9'});
 $('#men7').css({'background':'#e9e9e9'});
 clearGarbage(garbage);
 clearGarbage(garbagepoly);
+clearGarbage(marshrut_garbage);
 clearGarbage(marshrutMarkers);
 $('#jurnal').hide();
 $('#jurnal_upd').hide();
@@ -441,7 +455,7 @@ bufer=[];
     $('#marrr').hide();
     $('#option').hide();
     $('#zupinki').hide();
-    $('#palne').hide();
+    $('#logistika').hide();
     $('#monitoring').hide();
     clearGEO(); 
     $('#men3').css({'background':'#e9e9e9'});
@@ -451,6 +465,7 @@ bufer=[];
     $('#men7').css({'background':'#e9e9e9'});
     clearGarbage(garbage);
     clearGarbage(garbagepoly);
+    clearGarbage(marshrut_garbage);
     clearGarbage(marshrutMarkers);
     bufer=[];
  });
@@ -472,7 +487,7 @@ bufer=[];
   $('#marrr').hide();
   $('#option').hide();
   $('#unit_info').hide();
-  $('#palne').hide();
+  $('#logistika').hide();
   $('#monitoring').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
@@ -482,22 +497,23 @@ bufer=[];
   $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
+  clearGarbage(marshrut_garbage);
   clearGarbage(marshrutMarkers);
   bufer=[];
 });
 
  $('#men6').click(function() { 
-  if ($('#palne').is(':hidden')) {
-    $('#palne').show();
-    $('#map').css('width', '65%');
+  if ($('#logistika').is(':hidden')) {
+    $('#logistika').show();
+    $('#map').css('width', '50%');
     this.style.background = '#b2f5b4';
       $('.leaflet-container').css('cursor','crosshair');
       markerstart.setLatLng([0,0]); 
       markerend.setLatLng([0,0]);
     cklikkk=0;
-    $("#palne_table").empty();
+    $("#logistika_tb").empty();
   }else{
-   $('#palne').hide();
+   $('#logistika').hide();
    $('#map').css('width', '100%');
    this.style.background = '#e9e9e9';
    $('.leaflet-container').css('cursor','');
@@ -515,6 +531,7 @@ bufer=[];
   $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
+  clearGarbage(marshrut_garbage);
   clearGarbage(marshrutMarkers);
   bufer=[];
 });
@@ -538,7 +555,7 @@ bufer=[];
   $('#option').hide();
   $('#unit_info').hide();
   $('#zupinki').hide();
-  $('#palne').hide();
+  $('#logistika').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
   $('#men1').css({'background':'#e9e9e9'});
@@ -547,6 +564,7 @@ bufer=[];
   $('#men6').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
   clearGarbage(garbagepoly);
+  clearGarbage(marshrut_garbage);
   clearGarbage(marshrutMarkers);
 
 });
@@ -555,7 +573,7 @@ bufer=[];
  $('#option').hide();
  $('#unit_info').hide();
  $('#zupinki').hide();
- $('#palne').hide();
+ $('#logistika').hide();
  $('#monitoring').hide();
 
 // Unit choosed from <select>
@@ -600,7 +618,6 @@ bufer=[];
   $("#zvit").on("click", ".mar_trak", track_marshruta);
   $("#obrobkatehnika").on("click", ".geo_trak", track_geomarshruta);
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
-  $("#palne_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
   $("#unit_table").on("click", ".sliv_trak", track_Sliv);
 
@@ -775,7 +792,7 @@ basemaps.OSM.addTo(map);
      
       //wialon.util.Gis.getLocations([{lat: pos.lat, lon: pos.lng}], function(code, data) {
       //  if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
-       // if (data) {let adr =data[0].split(' '); console.log(adr[adr.length-1]); }});
+      //  if (data) {let adr =data[0].split(', '); console.log(adr); console.log(adr[adr.length-1].replace(/[0-9]| km from |\./g, '')); }});
 
        //wialon.util.Gis.searchByString('Глухів',0,1, function(code, data) {
        // if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
@@ -823,9 +840,8 @@ if (!$('#marrr').is(':hidden')) {
 
 
  map.on('click', function(e) { 
- if($('#zz1').is(':visible') || $('#zz2').is(':visible') || $('#zz3').is(':visible')) {
- RemainsFuel(e); 
- }
+ if($('#zz1').is(':visible') || $('#zz2').is(':visible') || $('#zz3').is(':visible')) { RemainsFuel(e); }
+ if($('#log_marh_tb').is(':visible') ) { add_point(e); }
  });
 
 }
@@ -834,6 +850,13 @@ if (!$('#marrr').is(':hidden')) {
 //if(ps==55555){
 // execute when DOM ready
 eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('$(q).p(4(){o 5=\'n\';2.1.7.6().m("l://k.j.i.h",g,f);2.1.7.6().e(5,"",4(0){d(0){3(2.1.c.b(0));a}3(\'Зеднання з Глухів - успішно\');9();8()})});',27,27,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|initMap|return|getErrorText|Errors|if|loginToken|0x800|null|ua|com|ingps|local3|https|initSession|0999946a10477f4854a9e6f27fcbe842A247D1374A465F550351447C6D99FB325422B89D|var|ready|document'.split('|'),0,{}))
+//  $('#option').hide();
+//  $('#unit_info').hide();
+//  $('#zupinki').hide();
+//  $('#map').hide();
+//}
+//}else{
+//  $('#marrr').hide();
 //  $('#option').hide();
 //  $('#unit_info').hide();
 //  $('#zupinki').hide();
@@ -2328,6 +2351,7 @@ function fn_copy() {
          $('#'+idlist+'').append($('<option>').text('Камази').val('Камаз'));
          $('#'+idlist+'').append($('<option>').text('Сканії').val('SCANIA'));
           $('#'+idlist+'').append($('<option>').text('МАЗи').val(' МАЗ'));
+          
      unitslist.forEach(function(unit) {          
          // Add option
       
@@ -2372,7 +2396,7 @@ if ($('#grafik').is(':hidden')) {
   $('#option').css('height', '470px');
   $('#unit_info').css('height', '470px');
   $('#zupinki').css('height', '470px');
-  $('#palne').css('height', '470px');
+  $('#logistika').css('height', '470px');
   $('#monitoring').css('height', '470px');
   this.style.background = '#b2f5b4';
   show_gr();
@@ -2383,7 +2407,7 @@ if ($('#grafik').is(':hidden')) {
    $('#option').css('height', '750px');
   $('#unit_info').css('height', '750px');
   $('#zupinki').css('height', '750px');
-  $('#palne').css('height', '750px');
+  $('#logistika').css('height', '750px');
   $('#monitoring').css('height', '750px');
   this.style.background = '#e9e9e9';
 }
@@ -2849,9 +2873,9 @@ function ObrabotkaPolya(spisok=[],zaxvat=10){
         areaU = (turf.area(union)/10000).toFixed(2);
       }
 
-	union = turf.intersect(turf.featureCollection([union, turfPole]));
-        areaI = (areaU -turf.area(union)/10000).toFixed(2);
-	   
+      union = turf.intersect(turf.featureCollection([union, turfPole]));
+      areaI = (areaU -turf.area(union)/10000).toFixed(2);
+
       let color='#'+(Math.random() * 0x1000000 | 0x1000000).toString(16).slice(1);
       let polylinee = L.geoJSON(union,{ style: function (feature) { return {color: color, fillOpacity: 0.5, weight: 1};}}).addTo(map);
         geo_layer.push(polylinee); 
@@ -2998,7 +3022,7 @@ $("#robota_polya_tb").on("click", function (evt){
            clearGEO();
         $('#obrobka').empty();
         $('#obrobkatehnika').empty();
-        $('#getary_pole').text(name)
+        $('#getary_pole').text(name);
         let point = geozones[i]._latlngs[0];
         let ramka=[];
         for (let i = 0; i < point.length; i++) {
@@ -3046,7 +3070,7 @@ function TestNavigation(data){
     $('#marrr').hide();
     $('#option').hide();
     $('#zupinki').hide();
-    $('#palne').hide();
+    $('#logistika').hide();
     $('#men3').css({'background':'#e9e9e9'});
     $('#men1').css({'background':'#e9e9e9'});
     
@@ -4123,24 +4147,14 @@ for(let i = 0; i<geozonesgrup.length; i++){
       $('#option').css('height', '470px');
       $('#unit_info').css('height', '470px');
       $('#zupinki').css('height', '470px');
-      $('#palne').css('height', '470px');
+      $('#logistika').css('height', '470px');
       $('#monitoring').css('height', '470px');
     } 
      show_gr(data,data2);
      map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])+0.001],13);
     
   }
-  let stor=[[51.55109167453309,33.34894127728944,373,'ККЗ'],
-            [51.55228434066979,33.386545266234265,4197,'Кролевець'],
-            [51.4932345615444,33.40017453599349,460,'Буйвалове'],
-            [51.622424409240104,33.0929363543844,436,'Райгородок ферма'],
-            [50.4492015637774,30.522985309694278,23152,'Київ'],
-            [51.6774937843498,33.912505721196304,3297,'Глухів'],
-            [51.412857770427244,33.67605192358615,1567,'Литвиновичі'],
-            [51.4825837218785,33.5581076862021,1332,'Локня'],
-            [51.745262906172094,33.7985328417313,179,'стан Слоут'],
-            [51.76140736845421,33.794152274694625,2640,'Слоут']
-           ];
+
 async function marshrut_avto(){
   msg('Розпочато зівт маршрутів авто ЗАЧЕКАЙТЕ');
     $("#unit_table").empty();
@@ -4218,7 +4232,7 @@ async function marshrut_avto(){
                 adres='00000000';
                 wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
                   if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                  if (data) {let adr =data[0].split(' '); adres =adr[adr.length-1];}});
+                  if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
                 await sleep(500); 
                 if(adres0!=adres){
                   html+=" "+adres+" -";
@@ -4297,7 +4311,7 @@ async function marshrut_avto(){
                   adres='00000000';
                   wialon.util.Gis.getLocations([{lat: y1, lon: x1}], function(code, data) {
                     if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                    if (data) {let adr =data[0].split(' '); adres =adr[adr.length-1];}});
+                    if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
                   await sleep(500); 
                   if(adres0!=adres){
                     html+=" "+adres+" -";
@@ -4331,7 +4345,7 @@ async function marshrut_avto(){
               adres='00000000';
               wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
                 if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                if (data) {let adr =data[0].split(' '); adres =adr[adr.length-1];}});
+                if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
               await sleep(500); 
               if(adres0!=adres){
                 html+=" "+adres+" -";
@@ -4353,6 +4367,45 @@ async function marshrut_avto(){
     msg('Завантажено зівт маршрутів авто');
     }
 
+    async function magazin(data) { 
+      msg('ЗАЧЕКАЙТЕ зівт зупинок біля магазинів');
+      let stop=0;
+      let st=0;
+      for(let i=2;i<data[0].length;i++){
+        if(!data[0][i-1][2])continue;
+        if(!data[0][i][2])continue;
+        if(!data[0][i][0])continue;
+        
+        if( parseInt(data[0][i][2])==0){
+          let t = Date.parse(data[0][i][1])-Date.parse(data[0][i-1][1]);
+          stop+=t;
+          if (st==0)st=i;
+        }else{
+          if (stop>300000) {
+            let y = parseFloat(data[0][st][0].split(',')[0]);
+            let x = parseFloat(data[0][st][0].split(',')[1]);
+            $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
+               if (data.category =="shop"){
+               let mar = L.tooltip([y,x], {content: "магазин - "+data.name+"",permanent: true, opacity:0.9, direction: 'top'}).addTo(map);
+                zup_mark_data.push(mar);
+               }
+              });
+               await sleep(2000);  
+           
+          }
+          stop=0;
+          st=0;
+        }
+       
+      }
+      msg('ЗАВЕРШЕНО зівт зупинок біля магазинів');
+    }
+    $("#magaz").on("click", function (){
+      let n=$('#magaz_unit').val();
+     if(!n)return;
+      SendDataReportInCallback(0,0,n,zvit2,[],0,magazin);
+      return;
+    });
     function sleep(ms) {return new Promise(resolve => setTimeout(resolve, ms)); }  
     function Serch_GEO(adres) { 
         wialon.util.Gis.searchByString(adres,0,1, function(code, data) {
@@ -4926,7 +4979,7 @@ $("#fast_obr_poliv").on("click", function (){
   $('#option').hide();
   $('#unit_info').show();
   $('#zupinki').hide();
-  $('#palne').hide();
+  $('#logistika').hide();
   $('#monitoring').hide();
   clearGEO(); 
   $('#men3').css({'background':'#e9e9e9'});
@@ -4945,3 +4998,901 @@ $("#fast_obr_poliv").on("click", function (){
   let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
   $('#polya_jurnal_time').val(tt);
 });
+
+
+//========================LOGISTIKA===============================================================================
+//========================LOGISTIKA===============================================================================
+//========================LOGISTIKA==============================================================================
+
+let stor=[[51.551091,33.348941,373,'ККЗ'],
+[51.552284,33.386545,4197,'Кролевець'],
+[51.493234,33.400174,460,'Буйвалове'],
+[51.622424,33.092936,436,'Райгородок ферма'],
+[50.449201,30.522985,23152,'Київ'],
+[51.677493,33.912505,3297,'Глухів'],
+[51.412857,33.676051,1567,'Литвиновичі'],
+[51.482583,33.558107,1332,'Локня'],
+[51.745262,33.798532,179,'стан Слоут'],
+[51.761407,33.794152,2640,'Слоут'],
+[51.585,32.714,200,'Робітник1'],
+[51.511,33.742,200,'Робітник2'],
+[51.774,33.471,200,'Робітник3'],
+];
+let adresa=[];
+for (let j = 0; j<stor.length; j++){
+  adresa.push(stor[j][3]);
+}
+let avto=[['ВМ7912ЕІ Радченко О. Рено Duster','Слоут',51.7614,33.7941],
+['ВМ7916ЕІ Кудін В.О. Рено Duster','ККЗ',51.5510,33.3489],
+['ВМ4110АА Зіналієв А.С. Газель TT_B008','Слоут',51.7614,33.7941],
+['ВМ1280СТ Інешин Ю.В. Газель','ККЗ',51.5510,33.3489]
+];
+
+let  marshrut_data=[];
+let  marshrut_probeg=0;
+let  marshrut_vremya=0;
+let  marshrut_point=[];
+let  marshrut_garbage=[];
+//=============Stvorenya marshruty====================================================
+let admin_transport=['транспорт1','транспорт2','транспорт3','транспорт4','транспорт5'];
+$('#log_unit_tb').hide();
+$('#log_marh_tb').hide();
+$('#marshrut_d').hide();
+$('#log_control_tb').hide();
+$('#log_cont').hide();
+$('#log_time').hide();
+$('#log_help').hide();
+
+$("#log_b1").on("click", function (){
+  $('#log_b1').css({'background':'#b2f5b4'});
+  $('#log_b2').css({'background':'#e9e9e9'});
+  $("#log_unit_tb").empty();
+  $('#log_unit_tb').show();
+  $('#log_marh_tb').show();
+  $('#marshrut_d').show();
+  $('#log_control_tb').hide();
+  $('#log_cont').hide();
+  $('#log_time').hide();
+  $('#log_help').show();
+
+  update_logistik_data(vibir_avto);
+});
+$("#log_b2").on("click", function (){
+  $('#log_b2').css({'background':'#b2f5b4'});
+  $('#log_b1').css({'background':'#e9e9e9'});
+  $('#log_unit_tb').hide();
+  $('#log_marh_tb').hide();
+  $('#marshrut_d').hide();
+  $('#log_control_tb').show();
+  $('#log_cont').hide();
+  $('#log_time').show();
+  $('#log_help').hide();
+  update_logistik_data(control_avto);
+});
+
+function marshrut(){
+  marshrut_data=[];
+  marshrut_point=[];
+  marshrut_probeg=0;
+  marshrut_vremya=0;
+  clearGarbage(marshrut_garbage);
+  update_rout(0,0,0);
+}
+
+
+
+//=============Dodavannya tocok knopki====================================================
+$("#log_marh_tb").on("click", function (evt){
+  let row = evt.target.parentNode;
+  let ind = evt.target.cellIndex;
+  //row.rowIndex
+if(evt.target.innerText=='+'){
+  
+  var td = row.insertCell(ind+1);
+      td.style.border = '1px solid black';
+  var el = document.createElement('div');
+      el.setAttribute('class', 'autocomplete');
+  var el2 = document.createElement('div');
+      el2.setAttribute('class', 'inp');
+      el2.setAttribute('id', 'myInput'+ind+'');
+      el2.setAttribute('type', 'text');
+      el2.setAttribute('contenteditable', 'true');
+      autocomplete(el2, adresa);
+      el.appendChild(el2);
+      td.appendChild(el);
+          td = row.insertCell(ind+2);
+          td.innerText=" - "
+          td.style = 'font-size:14px; min-width: 15px; background: rgb(247, 161, 161); cursor:pointer; border: 1px solid black;';
+          td = row.insertCell(ind+3);
+          td.innerText=" + "
+          td.style = 'font-size:14px; min-width: 15px; background: rgb(170, 248, 170);cursor:pointer';
+          document.getElementById("log_marh_tb").rows[0].insertCell(ind+1);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+2);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+3);
+
+  
+}
+if(evt.target.innerText=='-'){
+  if (row.cells.length>3) {
+    row.deleteCell(ind-1);
+    row.deleteCell(ind-1);
+    row.deleteCell(ind-1);
+    document.getElementById("log_marh_tb").rows[0].deleteCell(ind-1);
+    document.getElementById("log_marh_tb").rows[0].deleteCell(ind-1);
+    document.getElementById("log_marh_tb").rows[0].deleteCell(ind-1);
+    document.getElementById("log_marh_tb").rows[0].cells[0].innerText=0;
+   
+    marshrut();
+  }else{
+    row.cells[ind-1].children[0].children[0].textContent="";
+  }
+
+}
+
+    //row.style.backgroundColor = 'transparent';
+  });
+
+
+//=============vibir tochok====================================================
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.innerText;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.innerText = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+              let id=inp.id.slice(7);
+              id = parseInt(id)+3;
+              if(document.getElementById("myInput"+id+"")){
+              document.getElementById("myInput"+id+"").focus();
+              }else{
+                let row = document.getElementById("log_marh_tb").rows[1];
+                let ind = row.cells.length-1;
+                var td = row.insertCell(ind+1);
+                    td.style.border = '1px solid black';
+                var el = document.createElement('div');
+                    el.setAttribute('class', 'autocomplete');
+                var el2 = document.createElement('div');
+                    el2.setAttribute('class', 'inp');
+                    el2.setAttribute('id', 'myInput'+ind+'');
+                    el2.setAttribute('type', 'text');
+                    el2.setAttribute('contenteditable', 'true');
+                    autocomplete(el2, adresa);
+                    el.appendChild(el2);
+                    td.appendChild(el);
+                    el2.focus();
+                    td = row.insertCell(ind+2);
+                    td.innerText=" - "
+                    td.style = 'font-size:14px; min-width: 15px; background: rgb(247, 161, 161); cursor:pointer; border: 1px solid black;';
+                    td = row.insertCell(ind+3);
+                    td.innerText=" + "
+                    td.style = 'font-size:14px; min-width: 15px; background: rgb(170, 248, 170);cursor:pointer';
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+1);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+2);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+3);
+              }
+              marshrut();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x){} x[currentFocus].click();
+        }else{ 
+          let id=inp.id.slice(7);
+          id = parseInt(id)+3;
+          if(document.getElementById("myInput"+id+"")){
+          document.getElementById("myInput"+id+"").focus();
+          }else{
+            let row = document.getElementById("log_marh_tb").rows[1];
+            let ind = row.cells.length-1;
+            var td = row.insertCell(ind+1);
+                td.style.border = '1px solid black';
+            var el = document.createElement('div');
+                el.setAttribute('class', 'autocomplete');
+            var el2 = document.createElement('div');
+                el2.setAttribute('class', 'inp');
+                el2.setAttribute('id', 'myInput'+ind+'');
+                el2.setAttribute('type', 'text');
+                el2.setAttribute('contenteditable', 'true');
+                autocomplete(el2, adresa);
+                el.appendChild(el2);
+                td.appendChild(el);
+                el2.focus();
+                td = row.insertCell(ind+2);
+                td.innerText=" - "
+                td.style = 'font-size:14px; min-width: 15px; background: rgb(247, 161, 161); cursor:pointer; border: 1px solid black;';
+                td = row.insertCell(ind+3);
+                td.innerText=" + "
+                td.style = 'font-size:14px; min-width: 15px; background: rgb(170, 248, 170);cursor:pointer';
+    document.getElementById("log_marh_tb").rows[0].insertCell(ind+1);
+    document.getElementById("log_marh_tb").rows[0].insertCell(ind+2);
+    document.getElementById("log_marh_tb").rows[0].insertCell(ind+3);
+          }
+          marshrut();}
+       
+              
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+      });
+}
+
+
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("myInput-1"), adresa);
+
+
+//=============Dodavannya tocok karat====================================================
+function add_point(e){
+let table=document.getElementById("log_marh_tb");
+let roww = table.rows[1];
+let y=(e.latlng.lat).toFixed(3);
+let x=(e.latlng.lng).toFixed(3);
+for (var i = 0; i < roww.cells.length; i+=3) {
+  if (roww.cells[i].children[0].children[0].textContent) continue;
+  roww.cells[i].children[0].children[0].textContent=','+y+','+x;
+  marshrut();
+  return;
+}
+let row = document.getElementById("log_marh_tb").rows[1];
+let ind = row.cells.length-1;
+var td = row.insertCell(ind+1);
+    td.style.border = '1px solid black';
+var el = document.createElement('div');
+    el.setAttribute('class', 'autocomplete');
+var el2 = document.createElement('div');
+    el2.setAttribute('class', 'inp');
+    el2.setAttribute('id', 'myInput'+ind+'');
+    el2.setAttribute('type', 'text');
+    el2.setAttribute('contenteditable', 'true');
+    el2.textContent = ','+y+','+x;
+    autocomplete(el2, adresa);
+    el.appendChild(el2);
+    td.appendChild(el);
+    el2.focus();
+    td = row.insertCell(ind+2);
+    td.innerText=" - "
+    td.style = 'font-size:14px; min-width: 15px; background: rgb(247, 161, 161); cursor:pointer; border: 1px solid black;';
+    td = row.insertCell(ind+3);
+    td.innerText=" + "
+    td.style = 'font-size:14px; min-width: 15px; background: rgb(170, 248, 170);cursor:pointer';
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+1);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+2);
+        document.getElementById("log_marh_tb").rows[0].insertCell(ind+3);
+        marshrut();
+
+}
+//=============Rozrahunok marshrutu====================================================
+let frrr=0;
+function update_rout(i,y,x){
+  let table=document.getElementById("log_marh_tb");
+  let row = table.rows[1];
+  if(i>row.cells.length-1 && marshrut_point.length>1){
+    if($('#log_unit_tb').is(':hidden')==false)  vibir_avto();
+    return;
+  }      
+  let ay=y;
+  let ax=x;
+  let by=0;
+  let bx=0;
+  for(let ii=i;ii<row.cells.length;ii+=3){
+    let text = row.cells[ii].children[0].children[0].textContent;
+    if(text){
+      if(text[0]==','){
+       if(ay==0){
+        ay=parseFloat(text.split(',')[1]);
+        ax=parseFloat(text.split(',')[2]);
+        frrr=600;
+      }else{
+        by=parseFloat(text.split(',')[1]);
+        bx=parseFloat(text.split(',')[2]);
+        routing (ay,ax,by,bx,600,ii+3,update_rout);
+        return;
+      }
+      }else{
+        for (let j = 0; j<stor.length; j++){
+          if(text==stor[j][3]){
+            if(ay==0){
+              ay=stor[j][0];
+              ax=stor[j][1];
+              frrr= stor[j][2];
+              update_rout(ii+3,ay,ax);
+              return;
+            }else{
+              by=stor[j][0];
+              bx=stor[j][1];
+              routing (ay,ax,by,bx,stor[j][2],ii+3,update_rout);
+              return;
+            }
+            break;
+          }
+          if(j ==stor.length-1){
+            wialon.util.Gis.searchByString(text,0,1, function(code, data) {
+              if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
+              if (data) {
+                if (data[0]){
+                  if(ay==0){
+                    ay=data[0].items[0].y;
+                    ax=data[0].items[0].x;
+                    frrr= 3000;
+                    update_rout(ii+3,ay,ax);
+                    return;
+                  }else{
+                    by=data[0].items[0].y;
+                    bx=data[0].items[0].x;
+                    routing (ay,ax,by,bx,3000,ii+3,update_rout);
+                    return;
+                  }
+                 }
+                 update_rout(ii+3,-1,-1);
+              }});
+              return;
+
+          }
+        }
+
+      } 
+    }else{update_rout(ii+3,-1,-1);}
+    
+  }
+
+}
+
+
+function routing (ay,ax,by,bx,r,i,calbek){
+  clearGarbage(marshrut_garbage);
+  let aay=ay;
+  let aax=ax;
+  if (marshrut_point.length>0){
+    aay=marshrut_point[marshrut_point.length-1][0];
+    aax=marshrut_point[marshrut_point.length-1][1];;
+  }
+  wialon.util.Gis.getRoute(aay,aax,by,bx,0, function(error, data) {
+    if (error) { // error was happened
+      msg(wialon.core.Errors.getErrorText(error));
+      return;
+    }
+    if (data.status=="OK"){
+      let line=[];
+      //console.log(data)
+      for (v = 0; v < data.points.length; v++) {
+       line.push ([data.points[v].lat,data.points[v].lon]);
+       } 
+       marshrut_data.push(line);
+       marshrut_probeg+=data.distance.value;
+       marshrut_vremya+=data.duration.value;
+
+       if (marshrut_point.length==0){
+        marshrut_point.push([ay,ax,frrr]);
+       }
+       marshrut_point.push([by,bx,r]);
+       if (i-3>0)document.getElementById("log_marh_tb").rows[0].cells[i-3].innerText=marshrut_point.length-1;
+    }
+    for (v = 0; v < marshrut_point.length; v++) {
+      //let ll = L.circle([marshrut_point[v][0],marshrut_point[v][1]], { color: 'red', fillColor: 'red', fillOpacity: 0, radius: marshrut_point[v][2]}).addTo(map);
+      //marshrut_garbage.push(ll);
+      let tooltipp = L.tooltip([marshrut_point[v][0],marshrut_point[v][1]], {content: ""+v+"",permanent: true, opacity:0.9, direction: 'bottom'}).addTo(map);
+      marshrut_garbage.push(tooltipp);
+      } 
+    
+    let l = L.polyline([marshrut_data], {color: '#55ff33',weight:10,opacity:0.7}).addTo(map);
+    marshrut_garbage.push(l);
+    
+
+    let d = (marshrut_probeg/1000).toFixed(1);
+    let t = (marshrut_vremya/60).toFixed();
+    $('#marshrut_d').text(' пробіг маршрут - '+d + ' км  _________  час на маршруту - '+ t + ' хвилин');
+    calbek(i,by,bx);
+  });
+  }
+//=============dodavannya marshrutu do avto====================================================
+let logistik_size=0;
+let logistik_data=[];
+function update_logistik_data(calbek){
+  update_jurnal(20233,'MR-avto.txt',function (data) { 
+    if (data==logistik_size){ 
+      calbek();
+      return;
+    }else{
+      let size=data;
+      load_jurnal(20233,'MR-avto.txt',function (data) { 
+        logistik_data=data;
+        logistik_size=size;
+        console.log(logistik_data);
+        calbek();
+        return;
+      });
+    }
+   
+    
+  });
+}
+function vibir_avto(){
+  if (marshrut_point.length<2)return;
+  let d = (marshrut_probeg/1000).toFixed(1);
+  let t = (marshrut_vremya/60).toFixed();
+  var d1 = new Date();
+  d1.setHours(0, 0, 0, 0);
+  d1 =Date.parse(d1);
+  var d0=new Date();
+  d0.setHours(0, 0, 0, 0);
+  d0.setDate(d0.getDate() - 1);
+  d0 =Date.parse(d0);
+  var d2=new Date();
+  d2.setHours(0, 0, 0, 0);
+  d2.setDate(d2.getDate() + 1);
+  d2 =Date.parse(d2);
+  var d3=new Date();
+  d3.setHours(0, 0, 0, 0);
+  d3.setDate(d3.getDate() + 2);
+  d3 =Date.parse(d3);
+  $('#marshrut_d').text(' пробіг маршрут - '+d + ' км  _________  час на маршруту - '+ t + ' хвилин');
+  $('#log_unit_tb').empty();
+  $('#log_unit_tb').append("<tr><th>ТЗ</th><th>стоянка</th><th>вчьора</th><th>сьогодні</th><th>завтра</th><th>пробіг маршруту</th><th>час на маршруті</th></tr>");
+
+  for (let j = 0; j<avto.length; j++){
+    let status0=0;
+    let status1=0;
+    let status2=0;
+    for (let v = 1; v<logistik_data.length; v++){
+      let m=logistik_data[v].split('|');
+      if(m[1]==avto[j][0]){
+        if(m[2]=='ремонт'){
+          if(m[0]<d1)status0=2;
+          if(m[0]<d2)status1=2;
+          if(m[0]<d3)status2=2;
+
+        }else{
+          if(m[2]=='готовий'){
+            if(m[0]<d1)status0=0;
+            if(m[0]<d2)status1=0;
+            if(m[0]<d3)status2=0;
+          }else{
+            if(m[2]=='видалено'){
+              if(m[0]>=d0 && m[0]<d1){status0=0;}
+              if(m[0]>=d1 && m[0]<d2){status1=0;}
+              if(m[0]>=d2 && m[0]<d3){status2=0;}
+            }else{
+              if(m[0]>=d0 && m[0]<d1){status0=3;}
+              if(m[0]>=d1 && m[0]<d2){status1=3;}
+              if(m[0]>=d2 && m[0]<d3){status2=3;}
+            }
+          }
+        }
+      }
+    }
+let bb0 ="";
+let bb1 ="<button style = 'width: 100%;'>додати</button>";
+let bb2 ="<button style = 'width: 100%;'>додати</button>";
+if(status0==3){bb0 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status1==3){bb1 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status2==3){bb2 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status0==2){bb0 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";}
+if(status1==2){bb1 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";}
+if(status2==2){bb2 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";}
+
+    $('#log_unit_tb').append("<tr><td>"+avto[j][0]+"</td><td>"+avto[j][1]+"</td><td>"+bb0+"</td><td>"+bb1+"</td><td>"+bb2+"</td><td>"+d+" км </td><td>"+t+" хв </td></tr>");
+    point_to_point(marshrut_point[0][0],marshrut_point[0][1],avto[j][2],avto[j][3],j);
+    point_to_point(marshrut_point[marshrut_point.length-1][0],marshrut_point[marshrut_point.length-1][1],avto[j][2],avto[j][3],j);
+  }
+  
+
+
+}
+
+function point_to_point(ax,ay,bx,by,j){
+  wialon.util.Gis.getRoute(ax,ay,bx,by,0, function(error, data) {
+    if (error) { // error was happened
+      msg(wialon.core.Errors.getErrorText(error));
+      return;
+    }
+    if (data.status=="OK"){
+      let d= (data.distance.value/1000).toFixed(1);
+      let t= (data.duration.value/60).toFixed();
+      let tb = document.getElementById("log_unit_tb");
+      let dd = tb.rows[j+1].cells[5].innerText;
+      let tt = tb.rows[j+1].cells[6].innerText;
+      tb.rows[j+1].cells[5].innerText=(parseFloat(dd)+parseFloat(d)).toFixed(1)+ ' км';
+      tb.rows[j+1].cells[6].innerText=(parseFloat(tt)+parseFloat(t)).toFixed()+ ' хв';
+    }
+  });
+}
+
+$("#log_unit_tb").on("click", function (evt){
+  let row = evt.target.parentNode.parentNode;
+  if(row.rowIndex>0 && evt.target.innerText =='додати'){
+if(evt.target.parentNode.cellIndex==4){
+  let t=Date.now()+86400000;
+  let n=row.cells[0].innerText;
+  let m=row.cells[1].innerText;
+  let table=document.getElementById("log_marh_tb").rows[1];
+  for(let i=0;i<table.cells.length;i+=3){
+    let text = table.cells[i].children[0].children[0].textContent;
+    if (text)  m+='//'+text;
+  }
+  m+='//'+row.cells[1].innerText;
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m,function () { 
+      msg("маршрут додано");
+      update_logistik_data(vibir_avto);
+      return;
+    });
+
+}
+if(evt.target.parentNode.cellIndex==3){
+  let t=Date.now();
+  let n=row.cells[0].innerText;
+  let m=row.cells[1].innerText;
+  let table=document.getElementById("log_marh_tb").rows[1];
+  for(let i=0;i<table.cells.length;i+=3){
+    let text = table.cells[i].children[0].children[0].textContent;
+    if (text)  m+='//'+text;
+  }
+  m+='//'+row.cells[1].innerText;
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m,function () { 
+      msg("маршрут додано");
+      update_logistik_data(vibir_avto);
+      return;
+    });
+
+}
+
+}
+
+});
+//=============controluvannya marshrutu ====================================================
+function control_avto(){
+   let control_date = document.getElementById("log_time_inp").valueAsNumber;
+   let now_date = new Date();
+   now_date.setHours(0, 0, 0, 0);
+   now_date =Date.parse(now_date);
+
+  let d_2 = control_date+86400000*2;
+  let d_1 = control_date+86400000;
+  let d0 =  control_date;
+  let d1 =  control_date-86400000;
+  let d2 =  control_date-86400000*2;
+ 
+
+  let d_11 =new Date(d_1).toJSON().slice(0,10);
+  let d00 =new Date(d0).toJSON().slice(0,10);
+  let d11 =new Date(d1).toJSON().slice(0,10);
+  let d22 =new Date(d2).toJSON().slice(0,10);
+
+  $('#log_control_tb').empty();
+  $('#log_control_tb').append("<tr><th>ТЗ</th><th>"+d22+"</th><th>"+d11+"</th><th>"+d00+"</th><th>"+d_11+"</th>></tr>");
+
+  for (let j = 0; j<avto.length; j++){
+    let status0=0;
+    let status1=0;
+    let status2=0;
+    let status3=0;
+    for (let v = 1; v<logistik_data.length; v++){
+      let m=logistik_data[v].split('|');
+      if(m[1]==avto[j][0]){
+        if(m[2]=='ремонт'){
+          if(m[0]<d1)status0=2;
+          if(m[0]<d0)status1=2;
+          if(m[0]<d_1)status2=2;
+          if(m[0]<d_2)status3=2;
+        }else{
+          if(m[2]=='готовий'){
+            if(m[0]<d1)status0=0;
+            if(m[0]<d0)status1=0;
+            if(m[0]<d_1)status2=0;
+            if(m[0]<d_2)status3=0;
+          }else{
+            if(m[2]=='видалено'){
+              if(m[0]>=d2 && m[0]<d1){status0=0;}
+              if(m[0]>=d1 && m[0]<d0){status1=0;}
+              if(m[0]>=d0 && m[0]<d_1){status2=0;}
+              if(m[0]>=d_1 && m[0]<d_2){status3=0;}
+            }else{
+              if(m[0]>=d2 && m[0]<d1){status0=3;}
+              if(m[0]>=d1 && m[0]<d0){status1=3;}
+              if(m[0]>=d0 && m[0]<d_1){status2=3;}
+              if(m[0]>=d_1 && m[0]<d_2){status3=3;}
+            }
+          }
+        }
+      }
+    }
+let bb0 ="<button style = 'width: 100%;' >на ремонт</button>";
+if(now_date>d2)bb0 ="";
+let bb1 ="<button style = 'width: 100%;' >на ремонт</button>";
+if(now_date>d1)bb1 ="";
+let bb2 ="<button style = 'width: 100%;' >на ремонт</button>";
+if(now_date>d0)bb2 ="";
+let bb3 ="<button style = 'width: 100%;' >на ремонт</button>";
+if(now_date>d_1)bb3 ="";
+if(status0==3){bb0 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status1==3){bb1 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status2==3){bb2 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status3==3){bb3 ="<button style = 'background: rgb(170, 248, 170);width: 100%;' >маршрут</button>";}
+if(status0==2){
+  bb0 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт-зняти</button>";
+  if(now_date>d2) bb0 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";
+}
+if(status1==2){
+  bb1 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт-зняти</button>";
+  if(now_date>d1) bb1 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";
+}
+if(status2==2){
+  bb2 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт-зняти</button>";
+  if(now_date>d0) bb2 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";
+}
+if(status3==2){
+  bb3 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт-зняти</button>";
+  if(now_date>d_1) bb3 ="<button style = 'background: rgb(247, 161, 161);width: 100%;' >ремонт</button>";
+}
+
+    $('#log_control_tb').append("<tr><td>"+avto[j][0]+"</td><td>"+bb0+"</td><td>"+bb1+"</td><td>"+bb2+"</td><td>"+bb3+"</td></tr>");
+  } 
+}
+
+$("#log_control_tb").on("click", function (evt){
+  let tb = evt.target.parentNode.parentNode.parentNode;
+  let row = evt.target.parentNode.parentNode;
+  if(row.rowIndex>0 && evt.target.innerText =='на ремонт'){
+  let t=Date.parse(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
+  let n=row.cells[0].innerText;
+  let m='ремонт';
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m,function () { 
+      msg("ремонт додано");
+      evt.target.style = 'background: rgb(247, 161, 161);width: 100%;';
+      evt.target.innerText = "ремонт-зняти";
+      update_logistik_data(control_avto);
+      return;
+    });
+
+}
+
+if(row.rowIndex>0 && evt.target.innerText =='ремонт-зняти'){
+  let t=Date.parse(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
+  let n=row.cells[0].innerText;
+  let m='готовий';
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m,function () { 
+      msg("знято з ремонту додано");
+      evt.target.style = 'background: ;width: 100%;';
+      evt.target.innerText = "на ремонт";
+      update_logistik_data(control_avto);
+      return;
+    });
+
+}
+if(row.rowIndex>0 && evt.target.innerText =='маршрут'){
+  $('#log_marh_tb').show();
+  $('#log_cont').show();
+  $('#marshrut_d').show();
+  let t=Date.parse(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
+  let n=row.cells[0].innerText;
+  $('#cont_unit').text(n);
+  $('#cont_time').text(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
+
+  for (let v = 1; v<logistik_data.length; v++){
+    let m=logistik_data[v].split('|');
+    if(m[1]==n && m[0]>=t && m[0]<t+86400000){
+      if(m[2]=='ремонт')continue;
+      if(m[2]=='готовий')continue;
+   let dat =m[2].split('//');
+   $('#log_marh_tb').empty();
+   $('#log_marh_tb').append("<tr></tr><tr></tr>")
+   let row = document.getElementById("log_marh_tb").rows[1];
+          for (let i = 0; i<dat.length; i++){
+   
+            let ind = row.cells.length-1;
+            var td = row.insertCell(ind+1);
+                td.style.border = '1px solid black';
+            var el = document.createElement('div');
+                el.setAttribute('class', 'autocomplete');
+            var el2 = document.createElement('div');
+                el2.setAttribute('class', 'inp');
+                el2.setAttribute('id', 'myInput'+ind+'');
+                el2.setAttribute('type', 'text');
+                el2.setAttribute('contenteditable', 'true');
+                el2.textContent = dat[i];
+                autocomplete(el2, adresa);
+                el.appendChild(el2);
+                td.appendChild(el);
+                td = row.insertCell(ind+2);
+                td.innerText=" - "
+                td.style = 'font-size:14px; min-width: 15px; background: rgb(247, 161, 161); cursor:pointer; border: 1px solid black;';
+                td = row.insertCell(ind+3);
+                td.innerText=" + "
+                td.style = 'font-size:14px; min-width: 15px; background: rgb(170, 248, 170);cursor:pointer';
+                    document.getElementById("log_marh_tb").rows[0].insertCell(ind+1);
+                    document.getElementById("log_marh_tb").rows[0].insertCell(ind+2);
+                    document.getElementById("log_marh_tb").rows[0].insertCell(ind+3);  
+                       
+          }
+    }
+  }
+  marshrut();  
+}
+
+let name = evt.target.parentNode.cells[0].innerText;
+
+     for (let i = 0; i<unitslist.length; i++){
+      let nm=unitslist[i].getName();
+      let id=unitslist[i].getId();
+     if(nm == name){
+      let y=unitslist[i].getPosition().y;
+      let x=unitslist[i].getPosition().x;
+      map.setView([y,x+0.04],14);
+      $("#lis0").chosen().val(id);
+      $("#lis0").trigger("chosen:updated");
+      markerByUnit[id].openPopup();
+        break;
+     }
+     }
+});
+
+$("#cont_b1").on("click", function (){
+  let t=Date.parse($('#cont_time').text());
+  let n=$('#cont_unit').text();
+  let mm='';
+  let table=document.getElementById("log_marh_tb").rows[1];
+  for(let i=0;i<table.cells.length;i+=3){
+    let text = table.cells[i].children[0].children[0].textContent;
+    if (mm=='') {
+      if (text)  mm+=text;
+    }else{
+      if (text)  mm+='//'+text;
+    }
+    
+  }
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+mm,function () { 
+      msg("маршрут додано");
+      update_logistik_data(control_avto);
+      return;
+    });
+  
+  return;
+});
+$("#cont_b2").on("click", function (){
+  let t=Date.parse($('#cont_time').text());
+  let n=$('#cont_unit').text();
+  let mm='видалено';
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+mm,function () { 
+      msg("маршрут додано");
+      update_logistik_data(control_avto);
+      return;
+    });
+  
+  return;
+});
+
+$("#cont_b3").on("click", function (){
+  let t=$('#cont_time').text();
+  let t2=Date.parse($('#cont_time').text())+86400000;
+  t2 = new Date(t2);
+  let n=$('#cont_unit').text();
+  let id=unitsID[n];
+  $("#lis0").chosen().val(id);     
+  $("#lis0").trigger("chosen:updated");
+  layers[0]=0;
+  show_track(t,t2);
+  SendDataReportInCallback(Date.parse(t)/1000,Date.parse(t2)/1000,n,zvit2,[],0,logistik_zvit);
+  return;
+});
+
+function logistik_zvit(data){
+let v_marsh=0;
+var probeg=0;
+
+for(let v=0;v<marshrut_data.length;v++){
+  dataLoop:for(let j=5;j<marshrut_data[v].length;j+=5){
+    let y = marshrut_data[v][j-5][0];
+    let x = marshrut_data[v][j-5][1];
+    let yy = marshrut_data[v][j][0];
+    let xx = marshrut_data[v][j][1];
+    let dis = wialon.util.Geometry.getDistance(y, x, yy, xx);
+    for(let i=1;i<data[0].length;i++){
+      if(!data[0][i][0])continue;
+      let yyy = parseFloat(data[0][i][0].split(',')[0]);
+      let xxx = parseFloat(data[0][i][0].split(',')[1]);
+      if (wialon.util.Geometry.getDistance(yy, xx, yyy, xxx)<500) {
+        v_marsh+=dis;
+        //L.polyline([[y,x],[yy,xx]], {color: 'blue',weight:5,opacity:1}).addTo(map);
+        continue dataLoop;
+      }
+    }
+  } 
+ }
+
+for(let i=2;i<data[0].length;i++){
+    if(!data[0][i][0])continue;
+    if(!data[0][i-1][0])continue;
+     let y = parseFloat(data[0][i-1][0].split(',')[0]);
+     let x = parseFloat(data[0][i-1][0].split(',')[1]);
+
+     let yy = parseFloat(data[0][i][0].split(',')[0]);
+     let xx = parseFloat(data[0][i][0].split(',')[1]);
+
+     let dis = wialon.util.Geometry.getDistance(y, x, yy, xx);
+     probeg+=dis;
+
+  }
+
+  $('#marshrut_d').text("пробіг маршрут - "+(marshrut_probeg/1000).toFixed()+" км  _________   пробіг по маршруту - "+(v_marsh/1000).toFixed()+" км   _________  загальний пробіг - "+(probeg/1000).toFixed()+"км");
+
+}
