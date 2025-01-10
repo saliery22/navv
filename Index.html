@@ -29,7 +29,7 @@
 #option { width: 50%-6px; height:80vh; margin-left: 50%; overflow-y: auto; overflow-x: auto; border-left: 2px solid #b1b1b1;padding-left: 4px;display: flex;  flex-direction: column; }
 #unit_info { width: 35%-6px; height:80vh; margin-left: 65%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #b1b1b1;padding-left: 4px;}
 #zupinki { width: 20%-6px; height:80vh; margin-left: 80%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #b1b1b1;padding-left: 4px;}
-#palne { width: 35%-6px; height:80vh; margin-left: 65%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #b1b1b1;padding-left: 4px;}
+#logistika { width: 50%-6px; height:80vh; margin-left: 50%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #b1b1b1;padding-left: 4px;}
 #monitoring { width: 35%-6px; height:80vh; margin-left: 65%; overflow-y: scroll; overflow-x: scroll;border-left: 2px solid #b1b1b1;padding-left: 4px;}
 
 
@@ -38,7 +38,6 @@
 #chart2 { width: 100%; height:80px;}
 #inftb td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 10px;}
 #unit_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 5px;}
-#palne_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 20px;}
 #monitoring_table td{ border: 2px solid rgb(78, 78, 78);  padding: 2px 4px; white-space: nowrap;}
 
 #obrobkatehnika td{ border: 1px solid black; padding: 1px 5px;}
@@ -164,7 +163,53 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
 #min_sliv{  width: 60px;}
 #min_zup_mon{  width: 60px;}
 
-
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+ min-width: 50px;
+}
+.inp {
+  border: none;
+  padding: 2px;
+  width: 100%;
+  outline: none;
+}
+.inp[type=text] {
+  width: 100%;
+}
+.inp[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+.autocomplete-items {
+  position: absolute;
+  min-width: 200px;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  cursor: pointer;
+  text-align: left;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9; 
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
 
 
 </style>
@@ -229,12 +274,13 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
 </div>
 <div>
     
-    <!-- <button id='men6'>РЕЗЕРВ</button> -->
+    
     <button id='v11'style = "min-width: 70px;">Графік &#128200</button>
     <button id='men5'style = "min-width: 70px;">Зупинки &#9940</button>
     <button id='fast_obr_poliv'style = "min-width: 70px;">Обробка полів &#128668</button> 
     <button id='men4'style = "min-width: 70px;">Звіти &#128204</button>
     <button id='men1'style = "min-width: 70px;">Маршрути &#128259</button>  
+    <button id='men6'style = "min-width: 70px;">Логістика &#128661</button>
     <button id='men3'style = "min-width: 70px;">Журнал &#128221</button>
     <button id='men7'style = "min-width: 70px;">Моніторинг &#127760</button>
     </div>
@@ -345,6 +391,7 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
         <option value="z8">зливи</option>
         <option value="z9">звіт по журналу</option>
         <option value="z10">обробка полів</option>
+        <option value="z11">зупинки в магазині</option>
       </select>  
       <br>
       <hr>
@@ -467,7 +514,12 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
         <br>
         <!-- <button id='hidezone'>приховати геозону</button>  -->
     </div>
-
+    <div id="zz11" class='zvit'>
+        <div class='textforma'>
+        <textarea id='magaz_unit' placeholder="номер авто" rows="1" cols="20"></textarea>
+        <button id='magaz'style = "width: 200px;">звіт</button> 
+        </div>
+    </div>
  <table id="unit_table"class='table'></table>
  </div>
 
@@ -502,8 +554,42 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
     <input id='min_zup7' type='number' placeholder='180' value="180"> <input id='alone_zup7' type="checkbox" checked /> <button id='nm_zup'>зупинки найманих</button> 
     </div>
     
-    <div id="palne">
-
+    <div id="logistika">
+      <div id="log_marh">
+        <button id='log_b1'style = "min-width: 49%;">створити маршрут</button> 
+        <button id='log_b2'style = "min-width: 49%;">контроль маршрутів</button> 
+        <div id="log_help">для створення маршруту ведіть назву міста, імя пасажира,пункт призначення або вкажіть місце на карті лівим кліком,маршрут можна редагувати додаючи чи віднісаючи точки за допомогою + -</div>
+        <table id="log_marh_tb">
+            <tr>
+                <td>0</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style = " border: 1px solid black; "><div class="autocomplete"  ><div class ="inp" id="myInput-1" type="text"   contenteditable="true" ></div></div></td>
+                <td style = "min-width: 15px; cursor: pointer;border: 1px solid black; background:rgb(247, 161, 161);">-</td>
+                <td style = "min-width: 15px; cursor: pointer; background:rgb(170, 248, 170);">+</td>
+            </tr>
+        </table> 
+      </div>
+        <span id="marshrut_d"></span>
+        <table id="log_unit_tb"class='table' style="width: 100%;"></table>
+        <div id='log_cont'>
+            <div id="cont_unit_div" style="font-weight: 700; text-align:center">
+                <span id="cont_unit"></span>
+                <span id="cont_time"></span>
+                <br> 
+            <button id='cont_b1'style = "min-width: 30%;">змінити маршрут</button> 
+            <button id='cont_b3'style = "min-width: 30%;">звіт</button> 
+            <button id='cont_b2'style = "min-width: 30%;">видалити маршрут</button> 
+        </div>
+        </div>
+        <div id='log_time'>
+            зміна дати контролю маршрутів
+            <input id="log_time_inp" type="date"/>
+            для оновлення таблиці натисніть КОНТРОЛЬ МАРШРУТІВ
+        </div>
+        <table id="log_control_tb"class='table' style="width: 100%;"></table>
      </div>
     <div id="monitoring">
         фільтр техніки(JD,Камаз,SCANIA)
@@ -573,4 +659,6 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
 
 </body>
 </html>
+
+
 
