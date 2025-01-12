@@ -48,7 +48,7 @@ function getUnitMarker(unit) {
   var imsaze = 22;
   if (!unitPos) return null;
     
-  if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
+  if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Duster')>0 ||unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
   if(unit.getName().indexOf('JD')>0 || unit.getName().indexOf(' CL ')>0|| unit.getName().indexOf(' МТЗ ')>0|| unit.getName().indexOf('CASE')>0 || unit.getName().indexOf(' NH ')>0){imsaze = 24;} 
 
   marker = L.marker([unitPos.y, unitPos.x], {
@@ -296,17 +296,25 @@ function initUIData() {
       layerControl.addOverlay(lgeozonee, "Регіони");
     
 
-      let log_zone=[];
 
-      for (let i = 0; i < stor.length; i++) {
-        let poly =L.tooltip([stor[i][0],stor[i][1]], {content: ""+stor[i][3]+"",permanent: true, opacity:0.7, direction: 'top'});
-        log_zone.push(poly);
-       
-     }
+      load_jurnal(20233,'zony.txt',function (data) { 
+        let log_zone=[];
+        for(let i = 1; i<data.length; i++){
+          let m=data[i].split('|');
+          let y = parseFloat(m[0].split(',')[0]);
+          let x = parseFloat(m[0].split(',')[1]);
+          let r = parseFloat(m[1]);
+          let poly = L.circle([y,x], {stroke: false, fillColor: '#0000FF', fillOpacity: 0.2,radius: r}).bindTooltip(""+m[2]+"",{permanent: true, opacity:0.7, direction: 'top'});
+          log_zone.push(poly);
+          stor.push([y,x,r,m[2]]);
+          adresa.push(m[2]);
+          }
+          let lgeozoneee = L.layerGroup(log_zone);
+          layerControl.addOverlay(lgeozoneee, "Логістика");
+    });
 
 
-      let lgeozoneee = L.layerGroup(log_zone);
-      layerControl.addOverlay(lgeozoneee, "Логістика");
+
 
   });
 
@@ -790,9 +798,9 @@ basemaps.OSM.addTo(map);
       //$.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+pos.lat+'&lon='+pos.lng+'', function(data){ console.log(data); });
       //console.log(wialon.util.Gis.getLevelFlags(wialon.util.Gis.geocodingFlags.level_houses, wialon.util.Gis.geocodingFlags.level_streets, wialon.util.Gis.geocodingFlags.level_cities, wialon.util.Gis.geocodingFlags.level_cities, wialon.util.Gis.geocodingFlags.level_cities));
      
-      //wialon.util.Gis.getLocations([{lat: pos.lat, lon: pos.lng}], function(code, data) {
-      //  if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
-      //  if (data) {let adr =data[0].split(', '); console.log(adr); console.log(adr[adr.length-1].replace(/[0-9]| km from |\./g, '')); }});
+     //wialon.util.Gis.getLocations([{lat: pos.lat, lon: pos.lng}], function(code, data) {
+     //   if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
+     //   if (data) {let adr =data[0].split(', '); console.log(adr); console.log(adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '')); }});
 
        //wialon.util.Gis.searchByString('Глухів',0,1, function(code, data) {
        // if (code) { msg(wialon.core.Errors.getErrorText(code)); return; } // exit if error code
@@ -842,6 +850,14 @@ if (!$('#marrr').is(':hidden')) {
  map.on('click', function(e) { 
  if($('#zz1').is(':visible') || $('#zz2').is(':visible') || $('#zz3').is(':visible')) { RemainsFuel(e); }
  if($('#log_marh_tb').is(':visible') ) { add_point(e); }
+ if($('#adresy').is(':visible') ) { 
+  let y = e.latlng.lat.toFixed(4);
+  let x = e.latlng.lng.toFixed(4);
+  $('#adresy_coord').val(y+','+x);
+  let r =$('#adresy_radius').val();
+   let l = L.circle([y,x], { stroke: true, fillColor: '#f03', fillOpacity: 0.2,radius: r}).addTo(map);
+   zup_mark_data.push(l);
+  }
  });
 
 }
@@ -4155,11 +4171,25 @@ for(let i = 0; i<geozonesgrup.length; i++){
     
   }
 
+let temp_stor=[
+[51.552284,33.386545,4197,'Кролевець'],
+[50.449201,30.522985,23152,'Київ'],
+[51.677493,33.912505,3297,'Глухів'],
+[51.412857,33.676051,1567,'Литвиновичі'],
+[51.482583,33.558107,1332,'Локня'],
+[51.761407,33.794152,2640,'Слоут'],
+[51.5226,33.5764,1000,'Ярове'],
+[51.6259,33.1059,2000,'Райгородок'],
+[51.5423,33.6594,2000,'Ярославець'],
+[51.4927,33.4165,1500,'Буйвалове'],
+[51.4214,33.4826,1500,'Мутин'],
+[51.4184,33.7521,1000,'Яцине'],
+[51.5664,34.1129,3000,'Шалигине'],
+];
 async function marshrut_avto(){
   msg('Розпочато зівт маршрутів авто ЗАЧЕКАЙТЕ');
     $("#unit_table").empty();
     $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>Маршрут</td><td>Пробіг</td></tr>");
-    let kkk=0;
     let points = 0; 
     let stoyanka = 0;
     let sttime = 300;
@@ -4223,24 +4253,35 @@ async function marshrut_avto(){
               if(wialon.util.Geometry.getDistance(y,x,stor[j][0],stor[j][1])<stor[j][2]){
                 adres=stor[j][3];
                 if(adres0!=adres){
-                  html+=" "+adres+" -";
+                  html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
                   adres0=adres;
                 }
                 break;
               }
               if(j ==stor.length-1){
-                adres='00000000';
-                wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
-                  if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                  if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
-                await sleep(500); 
-                if(adres0!=adres){
-                  html+=" "+adres+" -";
-                  adres0=adres;
-                }
-                stor.push([y, x,600,adres]);
-                //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
-                kkk++;               
+                for (let jj = 0; jj<temp_stor.length; jj++){
+                  if(wialon.util.Geometry.getDistance(y,x,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
+                    adres=temp_stor[jj][3];
+                    if(adres0!=adres){
+                      html+=" "+adres+" -";
+                      adres0=adres;
+                    }
+                    break;
+                  }
+                  if(jj ==temp_stor.length-1){
+                    adres='НЕВІДОМО';
+                    wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
+                      if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
+                      if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
+                    await sleep(500); 
+                    if(adres0!=adres){
+                      html+=" "+adres+" -";
+                      adres0=adres;
+                    }
+                    temp_stor.push([y, x,600,adres]);
+                    //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
+                  }
+                }     
               }
             }
           }else{
@@ -4298,28 +4339,39 @@ async function marshrut_avto(){
               //L.polyline([[y0, x0],[y1, x1]], {color: 'red'}).addTo(map);
               //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
               
-               for (let j = 0; j<stor.length; j++){
+              for (let j = 0; j<stor.length; j++){
                 if(wialon.util.Geometry.getDistance(y1,x1,stor[j][0],stor[j][1])<stor[j][2]){
                   adres=stor[j][3];
                   if(adres0!=adres){
-                    html+=" "+adres+" -";
+                    html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
                     adres0=adres;
                   }
                   break;
                 }
                 if(j ==stor.length-1){
-                  adres='00000000';
-                  wialon.util.Gis.getLocations([{lat: y1, lon: x1}], function(code, data) {
-                    if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                    if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
-                  await sleep(500); 
-                  if(adres0!=adres){
-                    html+=" "+adres+" -";
-                    adres0=adres;
-                  }
-                  stor.push([y1, x1,600,adres]);
-                  //let circle1 = L.circle([y1, x1], { color: '#55ff33', fillColor: '#55ff33', fillOpacity: 0.5, radius: 600}).addTo(map);
-                   kkk++;
+                  for (let jj = 0; jj<temp_stor.length; jj++){
+                    if(wialon.util.Geometry.getDistance(y1,x1,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
+                      adres=temp_stor[jj][3];
+                      if(adres0!=adres){
+                        html+=" "+adres+" -";
+                        adres0=adres;
+                      }
+                      break;
+                    }
+                    if(jj ==temp_stor.length-1){
+                      adres='НЕВІДОМО';
+                      wialon.util.Gis.getLocations([{lat: y1, lon: x1}], function(code, data) {
+                        if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
+                        if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
+                      await sleep(500); 
+                      if(adres0!=adres){
+                        html+=" "+adres+" -";
+                        adres0=adres;
+                      }
+                      temp_stor.push([y1, x1,600,adres]);
+                      //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
+                    }
+                  }     
                 }
               }
             }
@@ -4336,24 +4388,35 @@ async function marshrut_avto(){
             if(wialon.util.Geometry.getDistance(y,x,stor[j][0],stor[j][1])<stor[j][2]){
               adres=stor[j][3];
               if(adres0!=adres){
-                html+=" "+adres+" -";
+                html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
                 adres0=adres;
               }
               break;
             }
             if(j ==stor.length-1){
-              adres='00000000';
-              wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
-                if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
-                if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\./g, '');}});
-              await sleep(500); 
-              if(adres0!=adres){
-                html+=" "+adres+" -";
-                adres0=adres;
-              }
-              stor.push([y, x,600,adres]);
-              //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
-              kkk++;               
+              for (let jj = 0; jj<temp_stor.length; jj++){
+                if(wialon.util.Geometry.getDistance(y,x,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
+                  adres=temp_stor[jj][3];
+                  if(adres0!=adres){
+                    html+=" "+adres+" -";
+                    adres0=adres;
+                  }
+                  break;
+                }
+                if(jj ==temp_stor.length-1){
+                  adres='НЕВІДОМО';
+                  wialon.util.Gis.getLocations([{lat: y, lon: x}], function(code, data) {
+                    if (code) { msg(wialon.core.Errors.getErrorText(code));adres='НЕВІДОМО'; return; } // exit if error code
+                    if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
+                  await sleep(500); 
+                  if(adres0!=adres){
+                    html+=" "+adres+" -";
+                    adres0=adres;
+                  }
+                  temp_stor.push([y, x,600,adres]);
+                  //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map); 
+                }
+              }     
             }
           }
         }
@@ -4384,7 +4447,7 @@ async function marshrut_avto(){
           if (stop>300000) {
             let y = parseFloat(data[0][st][0].split(',')[0]);
             let x = parseFloat(data[0][st][0].split(',')[1]);
-                  $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
+            $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
               let type=0;
                if (data.category =="shop")type="магазин"
                if (data.type =="hospital")type="лікарня"
@@ -5016,24 +5079,9 @@ $("#fast_obr_poliv").on("click", function (){
 //========================LOGISTIKA===============================================================================
 //========================LOGISTIKA==============================================================================
 
-let stor=[[51.551091,33.348941,373,'ККЗ'],
-[51.552284,33.386545,4197,'Кролевець'],
-[51.493234,33.400174,460,'Буйвалове'],
-[51.622424,33.092936,436,'Райгородок ферма'],
-[50.449201,30.522985,23152,'Київ'],
-[51.677493,33.912505,3297,'Глухів'],
-[51.412857,33.676051,1567,'Литвиновичі'],
-[51.482583,33.558107,1332,'Локня'],
-[51.745262,33.798532,179,'стан Слоут'],
-[51.761407,33.794152,2640,'Слоут'],
-[51.585,32.714,200,'Робітник1'],
-[51.511,33.742,200,'Робітник2'],
-[51.774,33.471,200,'Робітник3'],
-];
+let stor=[];
 let adresa=[];
-for (let j = 0; j<stor.length; j++){
-  adresa.push(stor[j][3]);
-}
+
 let avto=[['ВМ7912ЕІ Радченко О. Рено Duster','Слоут',51.7614,33.7941],
 ['ВМ7916ЕІ Кудін В.О. Рено Duster','ККЗ',51.5510,33.3489],
 ['ВМ4110АА Зіналієв А.С. Газель TT_B008','Слоут',51.7614,33.7941],
@@ -5054,10 +5102,39 @@ $('#log_control_tb').hide();
 $('#log_cont').hide();
 $('#log_time').hide();
 $('#log_help').hide();
+$('#adresy').hide();
+
+$("#log_b3").on("click", function (){
+  $('#log_b1').css({'background':'#e9e9e9'});
+  $('#log_b2').css({'background':'#e9e9e9'});
+  $('#log_b3').css({'background':'#b2f5b4'});
+  $('#log_unit_tb').hide();
+  $('#log_marh_tb').hide();
+  $('#marshrut_d').hide();
+  $('#log_control_tb').hide();
+  $('#log_cont').hide();
+  $('#log_time').hide();
+  $('#log_help').hide();
+  $('#adresy').show();
+
+
+});
+$("#adresy_add").on("click", function (){
+  let n=$('#adresy_name').val();
+  let c =$('#adresy_coord').val();
+  let r =$('#adresy_radius').val();
+  if(n && c && r){
+  write_jurnal(20233,'zony.txt','||'+c+'|'+r+'|'+n,function () { 
+    audio.play();
+  });
+}
+});
+
 
 $("#log_b1").on("click", function (){
   $('#log_b1').css({'background':'#b2f5b4'});
   $('#log_b2').css({'background':'#e9e9e9'});
+  $('#log_b3').css({'background':'#e9e9e9'});
   $("#log_unit_tb").empty();
   $('#log_unit_tb').show();
   $('#log_marh_tb').show();
@@ -5065,6 +5142,7 @@ $("#log_b1").on("click", function (){
   $('#log_control_tb').hide();
   $('#log_cont').hide();
   $('#log_time').hide();
+  $('#adresy').hide();
   $('#log_help').show();
 
   update_logistik_data(vibir_avto);
@@ -5072,11 +5150,13 @@ $("#log_b1").on("click", function (){
 $("#log_b2").on("click", function (){
   $('#log_b2').css({'background':'#b2f5b4'});
   $('#log_b1').css({'background':'#e9e9e9'});
+  $('#log_b3').css({'background':'#e9e9e9'});
   $('#log_unit_tb').hide();
   $('#log_marh_tb').hide();
   $('#marshrut_d').hide();
   $('#log_control_tb').show();
   $('#log_cont').hide();
+  $('#adresy').hide();
   $('#log_time').show();
   $('#log_help').hide();
   update_logistik_data(control_avto);
