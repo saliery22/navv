@@ -556,8 +556,30 @@ button, input, span, select,textarea {margin: 2px 2px 0px 0px;   font-family: "A
     
     <div id="logistika">
       <div id="log_marh">
-        <button id='log_b1'style = "min-width: 49%;">створити маршрут</button> 
-        <button id='log_b2'style = "min-width: 49%;">контроль маршрутів</button> 
+        <button id='log_b1'style = "min-width: 30%;">створити маршрут</button> 
+        <button id='log_b2'style = "min-width: 30%;">контроль маршрутів</button> 
+
+        <button id='log_b3'style = "min-width: 30%;">адреси</button> 
+        <div id="adresy">
+            для створення нової зони оберіть радіус та натисніть праву кнопку на мапі де створити зону відповідного радіусу
+            <br>
+            для редагування радіусу чи положення -  змініть радіус та кліком по мапі вкажіть нові координати
+            <br>
+            впевнившись у правильних координатах та радіусі зони вкажіть імя зони і натисніть ЗБЕРІГТИ
+            <br>
+            для відображення нових зон на мапі оновіть сторінку
+            <br>
+            <br>
+            <br>
+            <input id='adresy_coord' type='text' placeholder='натисніть на мапу' value=""> координати
+            <br>
+            <input id='adresy_radius' type='number'step='100' placeholder='400' value="400"> радіус
+            <br>
+            <input id='adresy_name' type='text' placeholder='назва' value=""> назва
+            <br>
+            <button id='adresy_add'>зберігти</button> 
+        </div>
+
         <div id="log_help">для створення маршруту ведіть назву міста, імя пасажира,пункт призначення або вкажіть місце на карті лівим кліком,маршрут можна редагувати додаючи чи віднісаючи точки за допомогою + -</div>
         <table id="log_marh_tb">
             <tr>
