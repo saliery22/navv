@@ -8,6 +8,7 @@ var cklikkk=0;
 var markerstart =0;
 var markerend =0;
 var rux=0;
+var agregat=0;
 let zvit1=0;
 let zvit2=0;
 let zvit3=0;
@@ -1839,16 +1840,16 @@ function position(t)  {
             markerrr.setLatLng([y, x]); 
             markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ '<br />' +Global_DATA[ii][i][2]+'л'+ '<br />' +Global_DATA[ii][i][5]+ '<br />' +Global_DATA[ii][i][6]);
             if(rux == 1){if (Global_DATA[ii][i][3][0]!='0' ) {markerrr.setOpacity(1);}}
-            if(rux == 21){ if (Global_DATA[ii][i][5][0]=='Д' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 22){ if (Global_DATA[ii][i][5][0]=='К' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 23){ if (Global_DATA[ii][i][5][0]=='Б' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 24){ if (Global_DATA[ii][i][5][0]=='Г' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 25){ if (Global_DATA[ii][i][5][0]=='П' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 26){ if (Global_DATA[ii][i][5][0]=='Р' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 21){ if (Global_DATA[ii][i][5][0]=='Д' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 22){ if (Global_DATA[ii][i][5][0]=='К' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 23){ if (Global_DATA[ii][i][5][0]=='Б' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 24){ if (Global_DATA[ii][i][5][0]=='Г' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 25){ if (Global_DATA[ii][i][5][0]=='П' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 26){ if (Global_DATA[ii][i][5][0]=='Р' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
             //if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-            if(rux == 30){ if (Global_DATA[ii][i][5][0]!=null ) {markerrr.setOpacity(0);}}
+            if(agregat == 28){ if (Global_DATA[ii][i][5][0]=='С' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 29){ if (Global_DATA[ii][i][5][0]=='Ж' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
+            if(agregat == 30){ if (Global_DATA[ii][i][5][0]!=null ) {markerrr.setOpacity(0);}}
             break;
           }
      }
@@ -2167,18 +2168,19 @@ function chuse(a,vibor) {
     } 
     vibor=$("#grupi_avto option:selected").val();
   }else{
-    {filtr_data=[];}
+    agregat=0;
+    filtr_data=[];
   }
-  if (vibor=='v21'){if(rux==0)rux = 21; }
-  if (vibor=='v22'){if(rux==0)rux = 22; }
-  if (vibor=='v23'){if(rux==0)rux = 23; }
-  if (vibor=='v24'){if(rux==0)rux = 24; }
-  if (vibor=='v25'){if(rux==0)rux = 25; }
-  if (vibor=='v26'){if(rux==0)rux = 26; }
+  if (vibor=='v21'){agregat = 21; }
+  if (vibor=='v22'){agregat = 22; }
+  if (vibor=='v23'){agregat = 23; }
+  if (vibor=='v24'){agregat = 24; }
+  if (vibor=='v25'){agregat = 25; }
+  if (vibor=='v26'){agregat = 26; }
   //if (vibor=='v27'){if(rux==0)rux = 27;}
-  if (vibor=='v28'){if(rux==0)rux = 28; }
-  if (vibor=='v29'){if(rux==0)rux = 29; }
-  if (vibor=='v30'){if(rux==0)rux = 30; }
+  if (vibor=='v28'){agregat = 28; }
+  if (vibor=='v29'){agregat = 29; }
+  if (vibor=='v30'){agregat = 30; }
   
 for(var i=0; i < allunits.length; i++){
 nmm =allunits[i].getName();
@@ -4279,7 +4281,7 @@ async function marshrut_avto(){
                       adres0=adres;
                     }
                     temp_stor.push([y, x,600,adres]);
-                    //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
+                    //L.marker([y,x]).addTo(map);
                   }
                 }     
               }
@@ -4288,20 +4290,14 @@ async function marshrut_avto(){
             if(ii<31)continue;
             if(ii>Global_DATA[i].length-11)continue;
             if(stoyanka==0)continue;
-            if(!Global_DATA[i][ii-30][0])continue;
-            if(!Global_DATA[i][ii-20][0])continue;
-            if(!Global_DATA[i][ii-10][0])continue;
-            if(!Global_DATA[i][ii+10][0])continue;
-            let y000 = parseFloat(Global_DATA[i][ii-30][0].split(',')[0]);
-            let x000 = parseFloat(Global_DATA[i][ii-30][0].split(',')[1]);
-            let y00 = parseFloat(Global_DATA[i][ii-10][0].split(',')[0]);
-            let x00 = parseFloat(Global_DATA[i][ii-10][0].split(',')[1]);
-            let y0 = parseFloat(Global_DATA[i][ii-20][0].split(',')[0]);
-            let x0 = parseFloat(Global_DATA[i][ii-20][0].split(',')[1]);
+        
+            let y0 = 0;
+            let x0 = 0;
             let y1 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
             let x1 = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-            let y2 = parseFloat(Global_DATA[i][ii+10][0].split(',')[0]);
-            let x2 = parseFloat(Global_DATA[i][ii+10][0].split(',')[1]);
+            let y2 = 0;
+            let x2 = 0;
+            
 
              let d=wialon.util.Geometry.getDistance(y2,x2,y1,x1);
             for (let v = ii-1; v>0; v--){
@@ -4310,33 +4306,44 @@ async function marshrut_avto(){
               x000 = parseFloat(Global_DATA[i][v][0].split(',')[1]);
               if(wialon.util.Geometry.getDistance(y000,x000,y1,x1)>d)break;
             }
+                let b0=100;
+                let b1=50;
+            outer:for (let v = 5; v<1000; v+=5){
+              if(Global_DATA[i].length-1<ii+v)break;
+              if(!Global_DATA[i][ii+v][0])continue;
+              if(parseInt(Global_DATA[i][ii+v][3])<=4){ continue;};
+              let yt = parseFloat(Global_DATA[i][ii+v][0].split(',')[0]);
+              let xt = parseFloat(Global_DATA[i][ii+v][0].split(',')[1]);
+              if(wialon.util.Geometry.getDistance(yt,xt,y1,x1)>30){
+                for (let vv = 5; v<1000; v++){
+                  if(ii-vv<5)break outer;
+                  if(!Global_DATA[i][ii-vv][0])continue;
+                  if(parseInt(Global_DATA[i][ii-vv][3])<=4){continue;};
+                  let ytt = parseFloat(Global_DATA[i][ii-vv][0].split(',')[0]);
+                  let xtt = parseFloat(Global_DATA[i][ii-vv][0].split(',')[1]);
+                  if(wialon.util.Geometry.getDistance(ytt,xtt,y1,x1)>30){
+                    let p0 = turf.point([xt, yt]);
+                    let p1 = turf.point([x1, y1]);
+                    let p2 = turf.point([xtt, ytt]);
+                    x0=xt;
+                    y0=yt;
+                    x2=xtt;
+                    y2=ytt;
+                    //L.polyline([[y0, x0],[y1, x1]], {color: '#55ff33'}).addTo(map);
+                    //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
+                     b0 = turf.bearing(p1, p0);
+                     b1 = turf.bearing(p1, p2);
+                     break outer;
+                  }
+                }
+              }
+            }
 
-
-            let point000 = turf.point([x000, y000]);
-            let point00 = turf.point([x00, y00]);
-            let point0 = turf.point([x0, y0]);
-            let point1 = turf.point([x1, y1]);
-            let point2 = turf.point([x2, y2]);
-            let bearing0 = turf.bearing(point1, point0);
-            let bearing1 = turf.bearing(point1, point2);
-            let bearing3 = turf.bearing(point1, point00);
-            let bearing4 = turf.bearing(point1, point000);
-            //L.polyline([[y0, x0],[y1, x1]], {color: 'red'}).addTo(map);
-            //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
-            if(Math.abs(bearing4-bearing1)<30 || Math.abs(bearing4-bearing1)>330){
-              bearing4=1;
-              if(wialon.util.Geometry.getDistance(y000,x000,y1,x1)<5){bearing4=0;}
-            }else{bearing4=0;}
-
-            if(Math.abs(bearing3-bearing1)<30 || Math.abs(bearing3-bearing1)>330){
-              bearing3=1;
-              if(wialon.util.Geometry.getDistance(y00,x00,y1,x1)<5){bearing3=0;}
-            }else{bearing3=0;}
             
+           
 
-
-            if(Math.abs(bearing0-bearing1)<30 || Math.abs(bearing0-bearing1)>330 || bearing3==1|| bearing4==1){ 
-              //L.polyline([[y0, x0],[y1, x1]], {color: 'red'}).addTo(map);
+            if(Math.abs(b0-b1)<30 || Math.abs(b0-b1)>330){ 
+              //L.polyline([[y0, x0],[y1, x1]], {color: '#55ff33'}).addTo(map);
               //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
               
               for (let j = 0; j<stor.length; j++){
@@ -4369,7 +4376,7 @@ async function marshrut_avto(){
                         adres0=adres;
                       }
                       temp_stor.push([y1, x1,600,adres]);
-                      //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map);
+                      //L.marker([y1,x1]).addTo(map);
                     }
                   }     
                 }
@@ -4414,7 +4421,7 @@ async function marshrut_avto(){
                     adres0=adres;
                   }
                   temp_stor.push([y, x,600,adres]);
-                  //let circle1 = L.circle([y, x], { color: 'red', fillColor: 'red', fillOpacity: 0.5, radius: 600}).addTo(map); 
+                  //L.marker([y,x]).addTo(map);
                 }
               }     
             }
@@ -5083,9 +5090,12 @@ let stor=[];
 let adresa=[];
 
 let avto=[['ВМ7912ЕІ Радченко О. Рено Duster','Слоут',51.7614,33.7941],
-['ВМ7916ЕІ Кудін В.О. Рено Duster','ККЗ',51.5510,33.3489],
-['ВМ4110АА Зіналієв А.С. Газель TT_B008','Слоут',51.7614,33.7941],
-['ВМ1280СТ Інешин Ю.В. Газель','ККЗ',51.5510,33.3489]
+['ВМ7913ЕІ Абрамчук М. Рено Duster','Слоут',51.7614,33.7941],
+['ВМ7914ЕІ Лук’яненко О.М. Рено Duster','Слоут',51.7614,33.7941],
+['ВМ5645ЕІ Черненко О.В. ФОРД','Слоут',51.7614,33.7941],
+['ВМ5647ЕІ Зіналієв Е.А. ФОРД','Слоут',51.7614,33.7941],
+['ВМ4524АА Зборщик В.Б. Газель TT_B006','Слоут',51.7614,33.7941],
+['ВМ0229АF Свергунов Ю. Газель TT_B033','Шалигине',51.5664,34.1129],
 ];
 
 let  marshrut_data=[];
