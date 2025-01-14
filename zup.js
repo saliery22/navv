@@ -4298,30 +4298,25 @@ async function marshrut_avto(){
             let y2 = 0;
             let x2 = 0;
             
-
-             let d=wialon.util.Geometry.getDistance(y2,x2,y1,x1);
-            for (let v = ii-1; v>0; v--){
-              if(!Global_DATA[i][v][0])continue;
-              y000 = parseFloat(Global_DATA[i][v][0].split(',')[0]);
-              x000 = parseFloat(Global_DATA[i][v][0].split(',')[1]);
-              if(wialon.util.Geometry.getDistance(y000,x000,y1,x1)>d)break;
-            }
+        
                 let b0=100;
                 let b1=50;
             outer:for (let v = 5; v<1000; v+=5){
+             
               if(Global_DATA[i].length-1<ii+v)break;
               if(!Global_DATA[i][ii+v][0])continue;
-              if(parseInt(Global_DATA[i][ii+v][3])<=4){ continue;};
+              if(parseInt(Global_DATA[i][ii+v][3])<=4)continue;
               let yt = parseFloat(Global_DATA[i][ii+v][0].split(',')[0]);
               let xt = parseFloat(Global_DATA[i][ii+v][0].split(',')[1]);
               if(wialon.util.Geometry.getDistance(yt,xt,y1,x1)>30){
-                for (let vv = 5; v<1000; v++){
+                for (let vv = 5; vv<1000; vv++){
                   if(ii-vv<5)break outer;
                   if(!Global_DATA[i][ii-vv][0])continue;
-                  if(parseInt(Global_DATA[i][ii-vv][3])<=4){continue;};
+                  if(parseInt(Global_DATA[i][ii-vv][3])<=4)continue;
                   let ytt = parseFloat(Global_DATA[i][ii-vv][0].split(',')[0]);
-                  let xtt = parseFloat(Global_DATA[i][ii-vv][0].split(',')[1]);
+                  let xtt = parseFloat(Global_DATA[i][ii-vv][0].split(',')[1]);       
                   if(wialon.util.Geometry.getDistance(ytt,xtt,y1,x1)>30){
+                   
                     let p0 = turf.point([xt, yt]);
                     let p1 = turf.point([x1, y1]);
                     let p2 = turf.point([xtt, ytt]);
@@ -4435,52 +4430,6 @@ async function marshrut_avto(){
     }
     }
     msg('Завантажено зівт маршрутів авто');
-    }
-
-    async function magazin(data) { 
-      msg('ЗАЧЕКАЙТЕ зівт зупинок біля магазинів');
-      let stop=0;
-      let st=0;
-      for(let i=2;i<data[0].length;i++){
-        if(!data[0][i-1][2])continue;
-        if(!data[0][i][2])continue;
-        if(!data[0][i][0])continue;
-        
-        if( parseInt(data[0][i][2])==0){
-          let t = Date.parse(data[0][i][1])-Date.parse(data[0][i-1][1]);
-          stop+=t;
-          if (st==0)st=i;
-        }else{
-          if (stop>300000) {
-            let y = parseFloat(data[0][st][0].split(',')[0]);
-            let x = parseFloat(data[0][st][0].split(',')[1]);
-            $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&accept-language=UA&lat='+y+'&lon='+x+'', function(data){
-              let type=0;
-               if (data.category =="shop")type="магазин"
-               if (data.type =="hospital")type="лікарня"
-               if (data.type =="pharmacy")type="аптека"
-               if (data.type =="car_wash")type="автомийка"
-               if (data.type =="kindergarten")type="садок"
-               if (data.type =="supermarket")type="супермаркет"
-               if (data.type =="parking")type="парковка"
-               if (data.type =="hotel")type="готель"
-               if (data.type =="fitness_centre")type="спортзал"
-               if (data.type =="dentist")type="дантист"
-               if (data.type =="university")type="університет"
-               if (type !=0){
-                let mar = L.tooltip([y,x], {content: ""+type+" - "+data.name+"",permanent: true, opacity:0.9, direction: 'top'}).addTo(map);
-                 zup_mark_data.push(mar);
-                }
-              });
-               await sleep(2000);  
-           
-          }
-          stop=0;
-          st=0;
-        }
-       
-      }
-      msg('ЗАВЕРШЕНО зівт зупинок біля магазинів');
     }
     $("#magaz").on("click", function (){
       let n=$('#magaz_unit').val();
