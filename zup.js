@@ -4038,7 +4038,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
   $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>літри</td><td>тривалість</td></tr>");
 
   let min_sliv=$('#min_sliv').val();
-  let t_pod=50;
+  let t_pod=40;
 
   for(let i = 0; i<Global_DATA.length; i++){
     let nametr = Global_DATA[i][0][1];
