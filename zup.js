@@ -5822,7 +5822,7 @@ function point_to_point(ax,ay,bx,by,r,c){
 function point_to_point_rote(ax,ay,bx,by,r,c){
   let tb = document.getElementById("log_unit_tb");
     for  (let i = 0; i<r+1; i++){
-      if (tb.rows[i].cells[1].innerText==tb.rows[r+1].cells[1].innerText && tb.rows[i].cells[c].innerText!='0 км') {
+      if (tb.rows[i].cells[1].innerText==tb.rows[r+1].cells[1].innerText && tb.rows[i].cells[c].innerText!='----') {
         tb.rows[r+1].cells[c].innerText=tb.rows[i].cells[c].innerText;
         break;
       }
