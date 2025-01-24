@@ -1,5 +1,4 @@
 
-
 // global variables
 var map, marker,unitslist = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona;
 var areUnitsLoaded = false;
@@ -871,6 +870,7 @@ if (!$('#marrr').is(':hidden')) {
  });
 
 }
+
 
 //let ps = prompt('');
 //if(ps==55555){
@@ -5120,14 +5120,8 @@ let avto=[
 ['ВМ0229АF Свергунов Ю. Газель TT_B033','Шалигине',51.5711,34.1134],
 ['ВМ3454ЕЕ Полятикін П.П. ГАЗ 33021 Грузовой TT_B034','Шалигине',51.5748,34.1035],
 
-['ВМ2047ЕС механізатор Тищенко Путивль Нива B044','Путивль',51.3541,33.8998],
-
-['ВМ1640АТ Нива TT_B011','Слоут стан',51.7454,33.7983],
-['ВМ1641ВЕ Нива TT_B027','Слоут стан',51.7454,33.7983],
 ['ВМ2559ВК Лукяненко О.М. Нива TT_B014','Слоут стан',51.7454,33.7983],
 ['ВМ4110АА Зіналієв А.С. Газель TT_B008','Слоут стан',51.7454,33.7983],
-['ВМ4466АО Нива','Слоут стан',51.7454,33.7983],
-['ВМ9987СІ Нива TT_B046','Слоут стан',51.7454,33.7983],
 
 ['ВМ4524АА Зборщик В.Б. Газель TT_B006','Слоут',51.7556,33.7608],
 ['ВМ5647ЕІ Зіналієв Е.А. ФОРД','Слоут',51.7539,33.7780],
@@ -5136,18 +5130,11 @@ let avto=[
 
 ['ВМ7914ЕІ Лук’яненко О.М. Рено Duster','Береза',51.7330,33.8609],
 
-['ВМ2487СЕ Нива Шевроле','ККЗ',51.5512,33.3495],
 ['ВМ5203ВВ Шкурат Є.А. Газель','ККЗ',51.5512,33.3495],
-['ВМ5326ВМ Нива Шевроле TT_B069','ККЗ',51.5512,33.3495],
 ['ВМ5645ЕІ Черненко О.В. ФОРД','ККЗ',51.5512,33.3495],
-['ВМ7393ВВ Абрамчук М.Нива TT_B039','ККЗ',51.5512,33.3495],
-['ВМ7921ЕІ Велес С.О. Рено Duster','ККЗ',51.5512,33.3495],
 ['ВМ8607ЕН Яковенко Ю.О. ФОРД','ККЗ',51.5512,33.3495],
 ['ВМ8684ЕН Самусь О.А. Форд','ККЗ',51.5512,33.3495],
 ['ВМ8693ЕН Максименко С.М. Форд','ККЗ',51.5512,33.3495],
-['ВМ9210ВК Нива Шевроле TT_B021','ККЗ',51.5512,33.3495],
-['ВМ9595АІ Нива','ККЗ',51.5512,33.3495],
-['ВМ9708ВЕ Нива Шевроле','ККЗ',51.5512,33.3495],
 
 ['ВМ1280СТ Інешин Ю.В. Газель','Кролевець',51.5606,33.4022],
 ['ВМ5629ЕІ Дубровін Р.В. ФОРД','Кролевець',51.5466,33.3913],
@@ -5156,8 +5143,9 @@ let avto=[
 ['ВМ8610ЕН Рахматулін О.В ФОРД','Кролевець',51.5599,33.3501],
 ['ВМ8692ЕН Шепелюк В.Д. Форд','Кролевець',51.5625,33.3345],
 
-['ВМ3181ВН Самойленко А. Нива TT_B037','Ярове',51.5254,33.5764],
 ['ВМ7922ЕІ Самойленко А. Рено Duster','Ярове',51.5254,33.5764],
+
+['ВМ7921ЕІ Велес С.О. Рено Duster','Воргол',51.4386,33.6955],
 
 ['ВМ7915ЕІ Боженко О.М. Рено Duster','Локня',51.4843,33.5629],
 
@@ -5168,10 +5156,21 @@ let avto=[
 
 ['ВМ5607ЕІ Супрун В.М. ФОРД','Вишенки',51.6436,33.0671],
 
-['ВМ7916ЕІ Кудін В.О. Рено Duster','Іваньків',51.7170,32.9839]
+['ВМ7916ЕІ Кудін В.О. Рено Duster','Іваньків',51.7170,32.9839],
 
 
 
+['ВМ2047ЕС механізатор Тищенко Путивль Нива B044','Резерв',51.3541,33.8998],
+['ВМ1640АТ Нива TT_B011','Резерв',51.7454,33.7983],
+['ВМ1641ВЕ Нива TT_B027','Резерв',51.7454,33.7983],
+['ВМ9987СІ Нива TT_B046','Резерв',51.7454,33.7983],
+['ВМ4466АО Нива','Резерв',51.7454,33.7983],
+['ВМ2487СЕ Нива Шевроле','Резерв',51.5512,33.3495],
+['ВМ5326ВМ Нива Шевроле TT_B069','Резерв',51.5512,33.3495],
+['ВМ7393ВВ Абрамчук М.Нива TT_B039','Резерв',51.5512,33.3495],
+['ВМ9595АІ Нива','Резерв',51.5512,33.3495],
+['ВМ9708ВЕ Нива Шевроле','Резерв',51.5512,33.3495],
+['ВМ3181ВН Самойленко А. Нива TT_B037','Резерв',51.5254,33.5764]
 ];
 
 let  marshrut_data=[];
@@ -5731,6 +5730,10 @@ function vibir_avto(){
   $('#log_unit_tb').append("<tr><th>ТЗ</th><th>стоянка</th><th>пробіг <br> за тиждень</th><th>маршрути <br> сьогодні</th><th>відстань <br> до маршруту</th><th>маршрути <br>завтра</th><th>відстань <br> до маршруту</th><th></th></tr>");
 
   for (let j = 0; j<avto.length; j++){
+    if(avto[j][1]=='Резерв'){
+      $('#log_unit_tb').append("<tr><td>"+avto[j][0]+"</td><td>"+avto[j][1]+"</td><td>----</td><td>----</td><td>----</td><td>----</td><td>----</td></tr>");
+      continue;
+    }
     let status0=0;
     let status1=0;
     let status2=0;
@@ -5802,7 +5805,9 @@ function svod(data){
   }
   }
  
-} 
+}  
+
+
 function unit_position(n){
   for(let i = 0; i<unitslist.length; i++){
     let namet = unitslist[i].getName();
@@ -5850,16 +5855,19 @@ if(evt.target.parentNode.cellIndex==5){
   let t=Date.now()+86400000;
   let n=row.cells[0].innerText;
   let m=row.cells[1].innerText;
-  let text = $('#marshrut_text').val();
+  let coment = 'маршрут';
+  if($('#marshrut_text').val())coment =$('#marshrut_text').val();
   let table=document.getElementById("log_marh_tb").rows[1];
   for(let i=0;i<table.cells.length;i+=3){
     let text = table.cells[i].children[0].children[0].textContent;
     if (text)  m+='//'+text;
   }
   m+='//'+row.cells[1].innerText;
-    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m+'|'+text,function () { 
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m+'|'+coment,function () { 
       msg("маршрут додано");
-      update_logistik_data(vibir_avto);
+      evt.target.style.background = "rgb(170, 248, 170)";
+      evt.target.innerHTML = 'маршрут'
+      update_logistik_data(control_avto);
       return;
     });
 
@@ -5868,16 +5876,19 @@ if(evt.target.parentNode.cellIndex==3){
   let t=Date.now();
   let n=row.cells[0].innerText;
   let m=row.cells[1].innerText;
-  let text = $('#marshrut_text').val();
+  let coment = 'маршрут';
+  if($('#marshrut_text').val())coment =$('#marshrut_text').val();
   let table=document.getElementById("log_marh_tb").rows[1];
   for(let i=0;i<table.cells.length;i+=3){
     let text = table.cells[i].children[0].children[0].textContent;
     if (text)  m+='//'+text;
   }
   m+='//'+row.cells[1].innerText;
-    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m+'|'+text,function () { 
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+m+'|'+coment,function () { 
       msg("маршрут додано");
-      update_logistik_data(vibir_avto);
+      evt.target.style.background = "rgb(170, 248, 170)";
+      evt.target.innerHTML = 'маршрут'
+      update_logistik_data(control_avto);
       return;
     });
 
@@ -5926,6 +5937,10 @@ function control_avto(){
   $('#log_control_tb').append("<tr><th>ТЗ</th><th>"+d22+"</th><th>"+d11+"</th><th>"+d00+"</th><th>"+d_11+"</th>></tr>");
 
   for (let j = 0; j<avto.length; j++){
+    if(avto[j][1]=='Резерв'){
+      $('#log_control_tb').append("<tr><td>"+avto[j][0]+"</td><td>----</td><td>----</td><td>----</td><td>----</td></tr>");
+      continue;
+    }
     let status0=0;
     let status1=0;
     let status2=0;
@@ -6032,7 +6047,7 @@ if(row.rowIndex>0 && evt.target.innerText =='ремонт-зняти'){
     });
 
 }
-if(row.rowIndex>0 && evt.target.innerText !='ремонт-зняти'&& evt.target.innerText !='на ремонт'){
+if(row.rowIndex>0 && evt.target.innerText !='ремонт-зняти' &&  evt.target.innerText !='на ремонт' &&  evt.target.innerText !='ремонт'){
   $('#log_marh_tb').show();
   $('#log_cont').show();
   $('#marshrut_d').show();
@@ -6113,7 +6128,8 @@ if(name.cells){
 $("#cont_b1").on("click", function (){
   let t=Date.parse($('#cont_time').text());
   let n=$('#cont_unit').text();
-  let text = $('#marshrut_text').val();
+  let coment = 'маршрут';
+  if($('#marshrut_text').val())coment =$('#marshrut_text').val();
   let mm='';
   let table=document.getElementById("log_marh_tb").rows[1];
   for(let i=0;i<table.cells.length;i+=3){
@@ -6125,7 +6141,7 @@ $("#cont_b1").on("click", function (){
     }
     
   }
-    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+mm+'|'+text,function () { 
+    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+mm+'|'+coment,function () { 
       msg("маршрут додано");
       update_logistik_data(control_avto);
       return;
