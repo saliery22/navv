@@ -5783,22 +5783,26 @@ if (probeg_nedelya) {
   spisok =spisok.slice(0, -1);
   SendDataReportInCallback(nedelya/1000,d2/1000,spisok,zvit4,[],0,svod);
   probeg_nedelya=false;
+}else{
+  svod(marshrut_probeg_nedelya);
 }
 
+}
+
+let marshrut_probeg_nedelya=[];
 function svod(data){ 
+  marshrut_probeg_nedelya=data;
   let tb = document.getElementById("log_unit_tb");
   for (let i = 1; i<tb.rows.length; i++){
-    for (let j = 0; j<data.length; j++){
-    if (tb.rows[i].cells[0].innerText==data[j][0][1]) {
-      tb.rows[i].cells[2].innerText=data[j][1][1];
+    for (let j = 0; j<marshrut_probeg_nedelya.length; j++){
+    if (tb.rows[i].cells[0].innerText==marshrut_probeg_nedelya[j][0][1]) {
+      tb.rows[i].cells[2].innerText=marshrut_probeg_nedelya[j][1][1];
       break;
     }
   }
   }
  
-}  
-
-}
+} 
 function unit_position(n){
   for(let i = 0; i<unitslist.length; i++){
     let namet = unitslist[i].getName();
