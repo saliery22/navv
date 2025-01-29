@@ -771,7 +771,8 @@ function initMap() {
   // create a map in the "map" div, set the view to a given place and zoom
   map = L.map('map', {
     // disable zooming, because we will use double-click to set up marker
-    doubleClickZoom: false
+    doubleClickZoom: false,
+    animate: false
   }).setView([51.62995, 33.64288], 9);
   
  //L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
