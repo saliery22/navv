@@ -4799,7 +4799,7 @@ $('#bbd').click(function() {
   });
 function avto_OBD(data){
   $("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку</td><td>пробіг по одометру</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 1хв</td><td>швидкість > 110 понад 1хв</td></tr>");
+  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку</td><td>пробіг по одометру</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>швидкість > 110 понад 1хв</td></tr>");
   for (let i = 0; i<data.length; i++){
     let name = data[i][0][1];
     let hl0 = 0;
@@ -4850,7 +4850,7 @@ function avto_OBD(data){
         if(rpm1>300 && rpm2>300){
           st+=time2-time1;
           hl0+=time2-time1;     
-        if(st>61)hl1+=time2-time1;
+        if(st>300)hl1+=time2-time1;
         }
       }else{
         st=0;
