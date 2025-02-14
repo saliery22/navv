@@ -4790,6 +4790,14 @@ async function marshrut_avto(){
 }
 $('#men7').css({'background':'#fffd7e'});
 }
+$('#bbd').click(function() {
+  let n=unitsgrup.легкові_нові;
+  if(!n)return;
+  let fr =Date.parse($('#obd_time1').val())/1000;
+  let to =Date.parse($('#obd_time2').val())/1000;
+  if(!fr){fr=0; to=0;}
+   SendDataReportInCallback(fr,to,n,zvit2,[],0,avto_OBD);
+  });
 function avto_OBD(data){
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку км.</td><td>пробіг по одометру км.</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>максимальна швидкість</td><td>швидкість > 110 понад 1хв</td><td>витрата пального л.</td><td>витрата пального л/100км</td><td>заправлено л.</td></tr>");
