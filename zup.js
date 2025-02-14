@@ -4841,7 +4841,8 @@ function avto_OBD(data){
 
           }
       }
-      if(ii==data[i].length-2 && zapr0>=0 && zapr1>=0){
+      if(ii==data[i].length-2 && zapr0>=0){
+        zapr1= parseFloat(data[i][ii][6]);
         if(zapr1-zapr0>5)zapr+=zapr1-zapr0;
       }
 
