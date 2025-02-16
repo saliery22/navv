@@ -4918,9 +4918,12 @@ function avto_OBD(data){
 
   if(dut0>=0 && dut1>=0){dut0=dut0-dut1+zapr;}else{dut0=0;}
   let sr = dut0/km_odo*100;
-  if(!sr || sr=='Infinity'){sr ="----";}else{sr = sr.toFixed(2)}
+  if(!sr || sr=='Infinity'){sr ="----";}else{sr = sr.toFixed(2).toString().replace(/\./g, ",");}
+  if(hl1>0){hl1 =sec_to_time(hl1);}else{hl1 = "----";}
+  if(sped_hr>0){sped_hr =sec_to_time(sped_hr);}else{sped_hr = "----";}
 
-  $("#unit_table").append("<tr><td align='left'>"+name+"</td><td>"+ (km/1000).toFixed()+"</td><td>"+km_odo+"</td><td>"+sec_to_time(moto_hr)+"</td><td>"+sec_to_time(hl0)+"</td><td>"+sec_to_time(hl1)+"</td><td>"+sped_max+"</td><td>"+sec_to_time(sped_hr)+"</td><td>"+dut0.toFixed(2)+"</td><td>"+sr+"</td><td>"+zapr.toFixed(2)+"</td></tr>");
+
+  $("#unit_table").append("<tr><td align='left'>"+name+"</td><td>"+ (km/1000).toFixed()+"</td><td>"+km_odo+"</td><td>"+sec_to_time(moto_hr)+"</td><td>"+sec_to_time(hl0)+"</td><td>"+hl1+"</td><td>"+sped_max+"</td><td>"+sped_hr+"</td><td>"+dut0.toFixed(2).toString().replace(/\./g, ",")+"</td><td>"+sr+"</td><td>"+zapr.toFixed(2).toString().replace(/\./g, ",")+"</td></tr>");
   }
 }
 
