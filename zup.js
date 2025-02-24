@@ -2742,7 +2742,7 @@ function SendDataReportInCallback(t1=0,t2=0,maska='All',idrep=7,data=[],i=0,calb
   let unit= false;
   if (maska=='All')unit= true;
     if(i < unitslist.length){
-      str.forEach((element) => {if(unitslist[i].getName().indexOf(element)>=0){unit = true;}});
+      str.forEach((element) => {if(unitslist[i].getName().indexOf(element)>=0 && unitslist[i].getName().indexOf('знято')<0){unit = true;}});
       if(unit){
         msg(unitslist.length-i);
         CollectDataReport(t1,t2,maska,idrep,data,i,unitslist[i],calbek);
@@ -2757,6 +2757,7 @@ function SendDataReportInCallback(t1=0,t2=0,maska='All',idrep=7,data=[],i=0,calb
       calbek(data);
     }   
 }
+
 
 function CollectDataReport(t1,t2,maska,idrep,olddata,i,unit,calbek){ // execute selected report
     // get data from corresponding fields
