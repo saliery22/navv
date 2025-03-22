@@ -1104,7 +1104,7 @@ L.control.ruler(options).addTo(map);
 //let ps = prompt('');
 //if(ps==55555){
 // execute when DOM ready
-eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('$(q).p(4(){o 5=\'n\';2.1.7.6().m("l://k.j.i.h",g,f);2.1.7.6().e(5,"",4(0){d(0){3(2.1.c.b(0));a}3(\'Зеднання з Глухів - успішно\');9();8()})});',27,27,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|initMap|return|getErrorText|Errors|if|loginToken|0x800|null|ua|com|ingps|local3|https|initSession|0999946a10477f4854a9e6f27fcbe842F67BC8FCC169E4DF441AAD6518A6B240CE7121FC|var|ready|document'.split('|'),0,{}))
+eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('$(q).p(4(){o 5=\'n\';2.1.7.6().m("l://k.j.i.h",g,f);2.1.7.6().e(5,"",4(0){d(0){3(2.1.c.b(0));a}3(\'Зеднання з Глухів - успішно\');9();8()})});',27,27,'code|core|wialon|msg|function|TOKEN|getInstance|Session|init|initMap|return|getErrorText|Errors|if|loginToken|0x800|null|ua|com|ingps|local3|https|initSession|0999946a10477f4854a9e6f27fcbe8427965C21F8ED437BF90053ED6D98576AD088149EA|var|ready|document'.split('|'),0,{}))
 //  $('#option').hide();
 //  $('#unit_info').hide();
 //  $('#zupinki').hide();
@@ -6491,6 +6491,8 @@ $("#log_b1").on("click", function (){
   $('#log_help').show();
   $('#marshrut_text').show();
   $('#upd_marsh_bt').show();
+  $('#log_marh_tb').empty();
+  $('#log_marh_tb').append("<tr>  <td>1</td>  <td></td>  <td></td> </tr> <tr><td style = ' border: 1px solid black; '><div class='autocomplete'  ><div class ='inp' id='myInput-1' type='text'   contenteditable='true' ></div></div></td>  <td style = 'font-size:14px;min-width: 15px; cursor: pointer;border: 1px solid black; background:rgb(247, 161, 161);'>-</td><td style = 'font-size:14px;min-width: 15px; cursor: pointer; background:rgb(170, 248, 170);'>+</td> </tr> <tr><td></td> <td></td> <td></td> </tr> <tr> <td></td> <td></td> <td></td> </tr> <tr> <td><input type='checkbox' checked></td>   <td></td> <td></td> </tr>");
   clearGEO();
   marshrut();
   update_logistik_data(vibir_avto);
@@ -7917,12 +7919,16 @@ if(row.rowIndex>0 && evt.target.innerText !='ремонт-зняти' &&  evt.ta
   $('#marshrut_text').show();
   $('#upd_marsh_bt').show();
   let t=Date.parse(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
+  let d0=new Date(t);
+  d0.setHours(0, 0, 0, 0);
+  t =Date.parse(d0);
   let n=row.cells[0].innerText;
   $('#cont_unit').text(n);
   $('#cont_time').text(tb.rows[0].cells[evt.target.parentNode.cellIndex].innerText);
   $('#marshrut_text').val('');
 
   $('#log_marh_tb').empty();
+  $('#log_marh_tb').append("<tr>  <td>1</td>  <td></td>  <td></td> </tr> <tr><td style = ' border: 1px solid black; '><div class='autocomplete'  ><div class ='inp' id='myInput-1' type='text'   contenteditable='true' ></div></div></td>  <td style = 'font-size:14px;min-width: 15px; cursor: pointer;border: 1px solid black; background:rgb(247, 161, 161);'>-</td><td style = 'font-size:14px;min-width: 15px; cursor: pointer; background:rgb(170, 248, 170);'>+</td> </tr> <tr><td></td> <td></td> <td></td> </tr> <tr> <td></td> <td></td> <td></td> </tr> <tr> <td><input type='checkbox' checked></td>   <td></td> <td></td> </tr>");
   for (let v = 1; v<logistik_data.length; v++){
     let m=logistik_data[v].split('|');
     if(!m[1])continue;
