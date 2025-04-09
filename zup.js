@@ -28,7 +28,7 @@ var isUIActive = true;
 
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 
-var from111 = new Date().toJSON().slice(0,11) + '00:00';
+var from111 = new Date().toJSON().slice(0,11) + '05:00';
 var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 
