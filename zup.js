@@ -33,7 +33,7 @@ var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 
 $('#vchora').click(function() { 
-   from111 = (new Date(Date.now() - tzoffset-86400000)).toISOString().slice(0, -13)+ '05:00';
+   from111 = (new Date(Date.now() - tzoffset-86400000)).toISOString().slice(0, -13)+ '00:00';
    from222 = (new Date(Date.now() - tzoffset-86400000)).toISOString().slice(0, -13)+ '23:59';
    $('#fromtime1').val(from111);
    $('#fromtime2').val(from222);
@@ -3161,15 +3161,15 @@ function Naryady(data=[],maska='JD'){
        if(newspline==true){
 
             if(spline.length>1) {
-              if(p_start.length>0)spline.unshift(p_start);
-              if(p_end.length>0)spline.push(p_end);
+              if(p_start.length>0){spline.unshift(p_start);}
+              if(p_end.length>0){spline.push(p_end);}
               splines.push(spline);
               }
           //var linestring1 = turf.lineString(spline);
           //var polyline = L.geoJSON(linestring1).addTo(map);
        
         spline=[];
-        p_start=p_end;
+        p_start=[lon,lat];
         p_end=[];
         newspline=false;
       }
@@ -9882,3 +9882,4 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
           }
         });
 }
+
