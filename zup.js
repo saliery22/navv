@@ -1,6 +1,5 @@
 
 
-
 // global variables
 var map, marker,unitslist = [],unitslistID = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona,temp_layer=[],trailers={},drivers={};
 var areUnitsLoaded = false;
@@ -28,7 +27,7 @@ var isUIActive = true;
 
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 
-var from111 = new Date().toJSON().slice(0,11) + '05:00';
+var from111 = new Date().toJSON().slice(0,11) + '00:00';
 var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 
@@ -595,9 +594,22 @@ if(params.selected.split('_')[0]=='поле'){
     markerstart.setLatLng([0,0]); 
     markerend.setLatLng([0,0]);
     cklikkk=0;
-    clearGarbage(marshrutMarkers);
-    clearGarbage(marshrut_gruzoperevozky_temp);
-    clearGarbage(marshrut_zony_temp);
+     clearGarbage(garbage);
+  garbage=[];
+  clearGarbage(garbagepoly);
+  garbagepoly=[];
+  clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
+  clearGarbage(marshrut_treck);
+  marshrut_treck=[];
+  clearGarbage(logistik_treck);
+  logistik_treck=[];
+  clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
+  clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
   }
   $('#option').hide();
   $('#unit_info').hide();
@@ -612,13 +624,22 @@ if(params.selected.split('_')[0]=='поле'){
   $('#men6').css({'background':'#e9e9e9'});
   $('#men7').css({'background':'#e9e9e9'});
   $('#men8').css({'background':'#e9e9e9'});
-  clearGarbage(garbage);
+   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
   clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
   bufer=[];
   });
  $('#men3').click(function() { 
@@ -651,12 +672,22 @@ $('#men5').css({'background':'#e9e9e9'});
 $('#men6').css({'background':'#e9e9e9'});
 $('#men7').css({'background':'#e9e9e9'});
 $('#men8').css({'background':'#e9e9e9'});
-clearGarbage(garbage);
-clearGarbage(garbagepoly);
-clearGarbage(marshrut_garbage);
-clearGarbage(marshrutMarkers);
-clearGarbage(marshrut_gruzoperevozky_temp);
-clearGarbage(marshrut_zony_temp);
+ clearGarbage(garbage);
+  garbage=[];
+  clearGarbage(garbagepoly);
+  garbagepoly=[];
+  clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
+  clearGarbage(marshrut_treck);
+  marshrut_treck=[];
+  clearGarbage(logistik_treck);
+  logistik_treck=[];
+  clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
+  clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
 $('#jurnal').hide();
 $('#jurnal_upd').hide();
 bufer=[];
@@ -693,14 +724,22 @@ bufer=[];
     $('#men6').css({'background':'#e9e9e9'});
     $('#men7').css({'background':'#e9e9e9'});
     $('#men8').css({'background':'#e9e9e9'});
-    clearGarbage(garbage);
-    clearGarbage(garbagepoly);
-    clearGarbage(marshrut_garbage);
-    clearGarbage(marshrutMarkers);
-    clearGarbage(marshrut_treck);
-    clearGarbage(logistik_treck);
-    clearGarbage(marshrut_gruzoperevozky_temp);
-    clearGarbage(marshrut_zony_temp);
+     clearGarbage(garbage);
+  garbage=[];
+  clearGarbage(garbagepoly);
+  garbagepoly=[];
+  clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
+  clearGarbage(marshrut_treck);
+  marshrut_treck=[];
+  clearGarbage(logistik_treck);
+  logistik_treck=[];
+  clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
+  clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
     bufer=[];
  });
 
@@ -731,14 +770,22 @@ bufer=[];
   $('#men6').css({'background':'#e9e9e9'});
   $('#men7').css({'background':'#e9e9e9'});
   $('#men8').css({'background':'#e9e9e9'});
-  clearGarbage(garbage);
+   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
   clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
   bufer=[];
 });
 
@@ -771,14 +818,22 @@ bufer=[];
   $('#men5').css({'background':'#e9e9e9'});
   $('#men7').css({'background':'#e9e9e9'});
   $('#men8').css({'background':'#e9e9e9'});
-  clearGarbage(garbage);
+   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
   clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
   bufer=[];
 });
 
@@ -810,14 +865,22 @@ bufer=[];
   $('#men5').css({'background':'#e9e9e9'});
   $('#men6').css({'background':'#e9e9e9'});
   $('#men8').css({'background':'#e9e9e9'});
-  clearGarbage(garbage);
+   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
   clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
 });
 
 $("#men8").on("click", function (){
@@ -849,13 +912,21 @@ $("#men8").on("click", function (){
   $('#men6').css({'background':'#e9e9e9'});
   $('#men7').css({'background':'#e9e9e9'});
   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_gruzoperevozky_temp);
+  marshrut_gruzoperevozky_temp=[];
   clearGarbage(marshrut_zony_temp);
+  marshrut_zony_temp=[];
 
   let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
 });
@@ -4273,6 +4344,7 @@ function RemainsFuel(e){
  }
 
  clearGarbage(garbage);
+ garbage=[];
  bufer=[];
  buferpoly=[];
 
@@ -4291,8 +4363,8 @@ function RemainsFuel(e){
 function clearGarbage(garbage){
   for(var i=0; i < garbage.length; i++){
     map.removeLayer(garbage[i]);
-     if(i == garbage.length-1){garbage=[];}
     }
+    garbage=[];
 }
 
 let stan=[[51.55109167453309,33.34894127728944,373,'ККЗ'],
@@ -5931,6 +6003,7 @@ let post_gluhiv = [[51.7205,33.8833],[51.7229,33.8813],[51.7190,33.8784],[51.717
 let vilne = [[51.5949,33.0300],[51.5981,33.0300],[51.5950,33.0244],[51.5950,33.0354],[51.5920,33.0301],[51.5973,33.0344],[51.5923,33.0255],[51.5978,33.0254],[51.5926,33.0343]];
   function planuvannya_start(){
     clearGarbage(logistik_treck);
+    logistik_treck=[];
     $("#unit_table").append("<tr><td></td><td></td><td><b>№</b></td><td>&nbsp&nbsp&nbsp&nbsp</td><td><b>ТЗ</b></td><td><b>агрегат</b></td><td><b>локація</b></td><td><b>відвезти</b></td><td><b>адреса</b></td><td><b>забрати</b></td><td><b>адреса</b></td></tr>");
     //for(let i = 0; i<10; i++){
       //$("#unit_table").append("<tr><td>"+(i+1)+"</td><td style ='background-color:rgb(255, 0, 0)'>&nbsp&nbsp&nbsp&nbsp</td><td  contenteditable='true'>ККЗ</td><td contenteditable='true'>-----</td></tr>");
@@ -5942,6 +6015,7 @@ let mehanizator_adresa=[];
 let point_planuvannya_list = [];
   function planuvannya_marshrutiv(data,col){
     clearGarbage(logistik_treck);
+    logistik_treck=[];
     let table_plan=document.getElementById('unit_table');
 
 let tochki_krolevec = 0;
@@ -6252,6 +6326,7 @@ $("div").on("click", '.planuvannya_buton', function () {
 
     map.closePopup();
     clearGarbage(logistik_treck);
+    logistik_treck=[];
     planuvannya_marshrutiv(); 
 });
 
@@ -6284,11 +6359,14 @@ $('#planuvannya_bt1').click(function() {
   //  $("#unit_table").append("<tr><td>"+(i+1)+"</td><td style ='background-color:rgb(255, 0, 0)'>&nbsp&nbsp&nbsp&nbsp</td><td  contenteditable='true'>ККЗ</td><td contenteditable='true'>-----</td></tr>");
   //}
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
 });
 
 $('#planuvannya_bt2').click(function() {
   clearGarbage(logistik_treck);
+  logistik_treck=[];
   planuvannya_marshrutiv();
 });
 
@@ -6608,6 +6686,7 @@ $('#geomodul_bt').click(function() {
  $('#geomodul_bt').prop("disabled", true);
    $("#unit_table").empty();
  clearGarbage(garbagepoly);
+ garbagepoly=[];
   load_jurnal(20233,'geomodul.txt',function (data) { 
     
     for(let i = 1; i<data.length; i+=2){
@@ -7127,8 +7206,11 @@ $( "#vib_zvit" ).on( "change", function() {
   if(this.value=='z1'||this.value=='z2'|| this.value=='z3'|| this.value=='z17')$('.leaflet-container').css('cursor','crosshair');
   clearGEO(); 
   clearGarbage(garbage);
+  garbage=[];
   clearGarbage(garbagepoly);
+  garbagepoly=[];
   clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
   let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
   if(this.value=='z15') planuvannya_start();
 } );
@@ -7242,7 +7324,9 @@ $("#log_b3").on("click", function (){
   $('#clear_marsh_bt').hide();
   clearGEO();
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   activ_zone==0;
 
 });
@@ -7316,7 +7400,9 @@ $("#log_b4").on("click", function (){
   $('#clear_marsh_bt').hide();
   clearGEO();
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   activ_zone==0;
 });
 
@@ -7382,6 +7468,7 @@ $("#log_b2").on("click", function (){
   clearGEO();
   update_logistik_data(control_avto);
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
 });
 
 
@@ -7394,7 +7481,9 @@ function marshrut(){
   marshrut_probeg=0;
   marshrut_vremya=0;
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   update_rout();
 }
 
@@ -7430,6 +7519,7 @@ $("#log_marh_tb").on("click", function (evt){
 
 
               clearGarbage(marshrut_treck);
+              marshrut_treck=[];
               $("#lis0").chosen().val(idd);     
               $("#lis0").trigger("chosen:updated");
               layers[0]=0;
@@ -7437,7 +7527,15 @@ $("#log_marh_tb").on("click", function (evt){
               slider.value=(Date.parse(t1)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
               position(Date.parse(t1));
               }
-
+              for(i = 0; i < marshrut_garbage.length; i++){
+               marshrut_garbage[i].getTooltip().setOpacity(0.5);
+                if (i==id || i==id+1 || i==id-1){
+                  marshrut_garbage[i].bringToFront();
+                  marshrut_garbage[i].getTooltip().setOpacity(0.8);
+                  marshrut_garbage[i].getTooltip().bringToFront();
+                }
+              }
+      
     }
     return;
   }
@@ -7785,7 +7883,9 @@ let id_rote=0;
 function update_rout(){
 
   clearGarbage(marshrut_garbage);
+  marshrut_garbage=[];
   clearGarbage(marshrut_treck);
+  marshrut_treck=[];
   marshrut_point=[];
   let table=document.getElementById("log_marh_tb");
   let row = table.rows[1];
@@ -7838,11 +7938,13 @@ if(id_rote>100){id_rote=0;}
           let stoyanka='';
           if (row2.cells[ii+1].textContent && $('#log_control_tb').is(':visible')) {
             stoyanka = parseInt(row2.cells[ii+1].textContent.split(',')[1]);
+            let dt_stoy = Date.parse(row2.cells[ii+2].textContent);
+               dt_stoy = new Date(dt_stoy-tzoffset-(stoyanka*1000)).toISOString().slice(0, -5).replace("T", " ");
             let m = Math.trunc(stoyanka / 60) + '';
             let h = Math.trunc(m / 60) + '';
             m=(m % 60) + '';
             let s =(stoyanka % 60) + '';
-            stoyanka=row2.cells[ii+2].textContent+'<br>'+h.padStart(2, 0) + ':' + m.padStart(2, 0) +':'+s.padStart(2, 0); 
+            stoyanka=dt_stoy+'<br>'+h.padStart(2, 0) + ':' + m.padStart(2, 0) +':'+s.padStart(2, 0); 
             if(rr>50){rr=50;}
           } 
           let color = 'rgb(170, 248, 170)';
@@ -7896,6 +7998,7 @@ if(id_rote>100){id_rote=0;}
               map.removeEventListener('mousemove');
              
               clearGarbage(marshrut_treck);
+              marshrut_treck=[];
             let y = parseFloat(mar._latlng.lat);
             let x = parseFloat(mar._latlng.lng);
             let id = parseInt(mar._tooltip._content);
@@ -7928,6 +8031,16 @@ if(id_rote>100){id_rote=0;}
               show_track(t0,t2);
               slider.value=(Date.parse(t1)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
               position(Date.parse(t1));
+
+               for(i = 0; i < marshrut_garbage.length; i++){
+               marshrut_garbage[i].getTooltip().setOpacity(0.5);
+                if (i==id || i==id-1 || i==id-2){
+                  marshrut_garbage[i].bringToFront();
+                  marshrut_garbage[i].getTooltip().setOpacity(0.8);
+                  marshrut_garbage[i].getTooltip().bringToFront();
+                }
+              }
+             if (!drag)mar.openPopup();
              
           })
         continue;
@@ -7982,6 +8095,15 @@ if(id_rote>100){id_rote=0;}
                 }
                 map.dragging.enable();
                 map.removeEventListener('mousemove');
+
+                for(i = 0; i < marshrut_garbage.length; i++){
+               marshrut_garbage[i].getTooltip().setOpacity(0.5);
+                if (i==id || i==id+1 || i==id-1){
+                  marshrut_garbage[i].bringToFront();
+                  marshrut_garbage[i].getTooltip().setOpacity(0.8);
+                  marshrut_garbage[i].getTooltip().bringToFront();
+                }
+              }
               
             })
 
@@ -8034,6 +8156,15 @@ if(id_rote>100){id_rote=0;}
                           }
                   map.dragging.enable();
                   map.removeEventListener('mousemove');
+
+                  for(i = 0; i < marshrut_garbage.length; i++){
+               marshrut_garbage[i].getTooltip().setOpacity(0.5);
+                if (i==id || i==id+1 || i==id-1){
+                  marshrut_garbage[i].bringToFront();
+                  marshrut_garbage[i].getTooltip().setOpacity(0.8);
+                  marshrut_garbage[i].getTooltip().bringToFront();
+                }
+              }
                 
               })
         
@@ -8127,6 +8258,14 @@ if(id_rote>100){id_rote=0;}
                           map.dragging.enable();
                           map.removeEventListener('mousemove');
                           
+                          for(i = 0; i < marshrut_garbage.length; i++){
+                          marshrut_garbage[i].getTooltip().setOpacity(0.5);
+                          if (i==id || i==id+1 || i==id-1){
+                           marshrut_garbage[i].bringToFront();
+                           marshrut_garbage[i].getTooltip().setOpacity(0.8);
+                           marshrut_garbage[i].getTooltip().bringToFront();
+                            }
+                          }
                    
                       })
                     }
@@ -8282,6 +8421,7 @@ $("div").on("click", '.point_checkbox', function () {
 function marshrut_rote(marshrut,id){
   if(id!= id_rote && id>=0)return;
   clearGarbage(marshrut_treck);
+  marshrut_treck = [];
   for (i = 0; i < marshrut.length-1; i++) {
     if(id!= id_rote && id>=0)return;
     if(marshrut[i][4]=='----')continue;
@@ -8583,6 +8723,10 @@ if(evt.target.parentNode.cellIndex==5){
    text+='//СТОЯНКА';
    chek+='//true';
    radius+='//200';
+   if(marshrut_point.length==0){
+    alert("Маршрут не містить точок!");
+    return;
+  }
     write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+text+'|'+point+'|'+radius+'|'+chek+'|'+coment+'|\n',function () { 
       msg("маршрут додано");
       evt.target.style.background = "rgb(170, 248, 170)";
@@ -8612,6 +8756,10 @@ if(evt.target.parentNode.cellIndex==3){
    text+='//СТОЯНКА';
    chek+='//true';
    radius+='//200';
+   if(marshrut_point.length==0){
+    alert("Маршрут не містить точок!");
+    return;
+  }
     write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+text+'|'+point+'|'+radius+'|'+chek+'|'+coment+'|\n',function () { 
       msg("маршрут додано");
       audio.play();
@@ -9075,14 +9223,18 @@ $("#cont_b1").on("click", function (){
    if(chek==''){chek=marshrut_point[i][5];}else{chek+='//'+marshrut_point[i][5];}
    if(radius==''){radius=marshrut_point[i][4];}else{radius+='//'+marshrut_point[i][4];}
   }
+  if(marshrut_point.length==0){
+    alert("Маршрут не містить точок!");
+    return;
+  }
 
 
-    write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+text+'|'+point+'|'+radius+'|'+chek+'|'+coment+'|\n',function () { 
-      msg("маршрут змінено");
-      audio.play();
-      update_logistik_data(control_avto);
-      return;
-    });
+     write_jurnal(20233,'MR-avto.txt','||'+t+'|'+n+'|'+text+'|'+point+'|'+radius+'|'+chek+'|'+coment+'|\n',function () { 
+       msg("маршрут змінено");
+       audio.play();
+       update_logistik_data(control_avto);
+       return;
+     });
   
   return;
 });
@@ -9125,7 +9277,9 @@ async function logistik_zvit(data){
   }
   $('button').prop("disabled", true);
   clearGarbage(marshrut_garbage);
+  marshrut_garbage= []; 
   clearGarbage(marshrut_treck);
+  marshrut_treck= [];
   marshrut_point0 = [];
   let tb = document.getElementById("log_marh_tb");
   if (tb.rows[0]) {
@@ -9727,7 +9881,9 @@ async function logistik_zvit(data){
 
      }
     
-
+     //err_stops =0;
+     let home_stops_0 = home_stops;
+     home_stops=0;
 
      let odo = odometr1 - odometr0;
 
@@ -9760,11 +9916,11 @@ async function logistik_zvit(data){
      $('#marh_zvit_tb').empty();
      $('#marh_zvit_tb').show();
      $('#marh_zvit_tb').append("<thead><td>дата</td><td>водій</td><td>ТЗ</td><td>початок маршруту</td><td>кінкць маршруту</td><td>одометр</td><td>пробіг</td><td>розрахунок</td><td>відхилення</td><td>час</td><td>розрахунок</td><td>відхилення</td><td>в русі</td><td>розрахунок</td><td>відхилення</td></td><td>простій</td><td>розрахунок</td><td>відхилення</td><td>простой на стоянці</td><td>простріли</td><td>назва</td><td>маршрут</td></thead>");
-       $('#marh_zvit_tb').append("<tr><td>"+$('#cont_time').text()+"</td><td>"+logistik_vodiy+"</td><td>"+$('#cont_unit').text()+"</td><td>"+begin_marshrut0+"</td><td>"+end_marshrut0+"</td><td>"+odo+"</td><td>"+d0+"</td><td>"+d1+"</td><td>"+d2+"</td><td>"+sec_to_time(t0)+"</td><td>"+sec_to_time(t1)+"</td><td>"+sec_to_time(t2)+"</td><td>"+sec_to_time(r0)+"</td><td>"+sec_to_time(r1)+"</td><td>"+sec_to_time(r2)+"</td><td>"+sec_to_time(s0)+"</td><td>"+sec_to_time(s1)+"</td><td>"+sec_to_time(s2)+"</td><td>"+sec_to_time(home_stops)+"</td><td>"+sec_to_time(err_stops)+"</td><td>"+ $('#marshrut_text').val()+"</td><td>"+mar_text+"</td></tr>");
+       $('#marh_zvit_tb').append("<tr><td>"+$('#cont_time').text()+"</td><td>"+logistik_vodiy+"</td><td>"+$('#cont_unit').text()+"</td><td>"+begin_marshrut0+"</td><td>"+end_marshrut0+"</td><td>"+odo+"</td><td>"+d0+"</td><td>"+d1+"</td><td>"+d2+"</td><td>"+sec_to_time(t0)+"</td><td>"+sec_to_time(t1)+"</td><td>"+sec_to_time(t2)+"</td><td>"+sec_to_time(r0)+"</td><td>"+sec_to_time(r1)+"</td><td>"+sec_to_time(r2)+"</td><td>"+sec_to_time(s0)+"</td><td>"+sec_to_time(s1)+"</td><td>"+sec_to_time(s2)+"</td><td>"+sec_to_time(home_stops_0)+"</td><td>"+sec_to_time(err_stops)+"</td><td>"+ $('#marshrut_text').val()+"</td><td>"+mar_text+"</td></tr>");
  
 
 
-  let cpdata= $('#cont_time').text() + '\t'+logistik_vodiy + '\t' +$('#cont_unit').text() + '\t' +begin_marshrut0+ '\t' +end_marshrut0+ '\t' +odo + '\t' +d0 + ' \t' + d1 + '\t' + d2 + '\t' + sec_to_time(t0) + '\t' + sec_to_time(t1)+ '\t' + sec_to_time(t2)+ '\t' + sec_to_time(r0)+ '\t' + sec_to_time(r1)+ '\t' + sec_to_time(r2)+ '\t' + sec_to_time(s0)+ '\t' + sec_to_time(s1)+ '\t' + sec_to_time(s2)+ '\t' + sec_to_time(home_stops)+ '\t' + sec_to_time(err_stops)+'\t'+ $('#marshrut_text').val() + '\t' + mar_text +'\n';
+  let cpdata= $('#cont_time').text() + '\t'+logistik_vodiy + '\t' +$('#cont_unit').text() + '\t' +begin_marshrut0+ '\t' +end_marshrut0+ '\t' +odo + '\t' +d0 + ' \t' + d1 + '\t' + d2 + '\t' + sec_to_time(t0) + '\t' + sec_to_time(t1)+ '\t' + sec_to_time(t2)+ '\t' + sec_to_time(r0)+ '\t' + sec_to_time(r1)+ '\t' + sec_to_time(r2)+ '\t' + sec_to_time(s0)+ '\t' + sec_to_time(s1)+ '\t' + sec_to_time(s2)+ '\t' + sec_to_time(home_stops_0)+ '\t' + sec_to_time(err_stops)+'\t'+ $('#marshrut_text').val() + '\t' + mar_text +'\n';
   navigator.clipboard.writeText(cpdata);
      }
  
@@ -9787,11 +9943,11 @@ async function logistik_zvit(data){
      $('#marh_zvit_tb').empty();
      $('#marh_zvit_tb').show();
       $('#marh_zvit_tb').append("<thead><td>дата</td><td>водій</td><td>ТЗ</td><td>початок маршруту</td><td>кінкць маршруту</td><td>одометр</td><td>пробіг</td><td>розрахунок</td><td>відхилення</td><td>час</td><td>розрахунок</td><td>відхилення</td><td>в русі</td><td>розрахунок</td><td>відхилення</td></td><td>простій</td><td>розрахунок</td><td>відхилення</td><td>простой на стоянці</td><td>простріли</td><td>назва</td><td>маршрут</td></thead>");
-     $('#marh_zvit_tb').append("<tr><td>"+$('#cont_time').text()+"</td><td>"+logistik_vodiy+"</td><td>"+$('#cont_unit').text()+"</td><td>"+begin_marshrut0+"</td><td>"+end_marshrut0+"</td><td>"+odo+"</td><td>"+d0+"</td><td>"+d1+"</td><td>"+d2+"</td><td>"+sec_to_time(t0)+"</td><td>"+sec_to_time(t1)+"</td><td>"+sec_to_time(t2)+"</td><td>"+sec_to_time(r0)+"</td><td>"+sec_to_time(r1)+"</td><td>"+sec_to_time(r2)+"</td><td>"+sec_to_time(s0)+"</td><td>"+sec_to_time(s1)+"</td><td>"+sec_to_time(s2)+"</td><td>"+sec_to_time(home_stops)+"</td><td>"+sec_to_time(err_stops)+"</td><td>"+ $('#marshrut_text').val()+"</td><td>"+mar_text+"</td></tr>");
+     $('#marh_zvit_tb').append("<tr><td>"+$('#cont_time').text()+"</td><td>"+logistik_vodiy+"</td><td>"+$('#cont_unit').text()+"</td><td>"+begin_marshrut0+"</td><td>"+end_marshrut0+"</td><td>"+odo+"</td><td>"+d0+"</td><td>"+d1+"</td><td>"+d2+"</td><td>"+sec_to_time(t0)+"</td><td>"+sec_to_time(t1)+"</td><td>"+sec_to_time(t2)+"</td><td>"+sec_to_time(r0)+"</td><td>"+sec_to_time(r1)+"</td><td>"+sec_to_time(r2)+"</td><td>"+sec_to_time(s0)+"</td><td>"+sec_to_time(s1)+"</td><td>"+sec_to_time(s2)+"</td><td>"+sec_to_time(home_stops_0)+"</td><td>"+sec_to_time(err_stops)+"</td><td>"+ $('#marshrut_text').val()+"</td><td>"+mar_text+"</td></tr>");
  
 
 
-  let cpdata= $('#cont_time').text() + '\t'+logistik_vodiy + '\t' +$('#cont_unit').text() + '\t' +begin_marshrut0+ '\t' +end_marshrut0+ '\t' +odo + '\t' +d0 + ' \t' + d1 + '\t' + d2 + '\t' + sec_to_time(t0) + '\t' + sec_to_time(t1)+ '\t' + sec_to_time(t2)+ '\t' + sec_to_time(r0)+ '\t' + sec_to_time(r1)+ '\t' + sec_to_time(r2)+ '\t' + sec_to_time(s0)+ '\t' + sec_to_time(s1)+ '\t' + sec_to_time(s2)+ '\t' + sec_to_time(home_stops)+ '\t' + sec_to_time(err_stops)+'\t'+ $('#marshrut_text').val() + '\t' + mar_text +'\n';
+  let cpdata= $('#cont_time').text() + '\t'+logistik_vodiy + '\t' +$('#cont_unit').text() + '\t' +begin_marshrut0+ '\t' +end_marshrut0+ '\t' +odo + '\t' +d0 + ' \t' + d1 + '\t' + d2 + '\t' + sec_to_time(t0) + '\t' + sec_to_time(t1)+ '\t' + sec_to_time(t2)+ '\t' + sec_to_time(r0)+ '\t' + sec_to_time(r1)+ '\t' + sec_to_time(r2)+ '\t' + sec_to_time(s0)+ '\t' + sec_to_time(s1)+ '\t' + sec_to_time(s2)+ '\t' + sec_to_time(home_stops_0)+ '\t' + sec_to_time(err_stops)+'\t'+ $('#marshrut_text').val() + '\t' + mar_text +'\n';
   navigator.clipboard.writeText(cpdata);
 
 }
@@ -10615,4 +10771,3 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
           }
         });
 }
-
