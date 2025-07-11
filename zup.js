@@ -5684,6 +5684,7 @@ function avto_OBD(data){
     let zapr0=-10;
     let zapr1=-10;
     let zapr=0;
+    let zapr00 = 0;
     for (let ii = 1; ii<data[i].length-1; ii++){
       if(!data[i][ii][1])continue;
       if(!data[i][ii+1][1])continue;
@@ -5707,8 +5708,9 @@ function avto_OBD(data){
           zapr0=zapr1;
         }
       }
+      if(parseFloat(data[i][ii][6]))zapr00=parseFloat(data[i][ii][6]);
       if(ii==data[i].length-2 && zapr0>=0 && parseInt(data[i][ii][2])==0){
-        zapr1= parseFloat(data[i][ii][6]);
+        zapr1= zapr00;
         if(zapr1-zapr0>5)zapr+=zapr1-zapr0;
       }
 
