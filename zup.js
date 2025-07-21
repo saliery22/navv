@@ -58,7 +58,7 @@ function getUnitMarker(unit) {
   if (marker) return marker;
     
   var unitPos = unit.getPosition();
-   var imsaze = 18;
+  var imsaze = 18;
   if (!unitPos) return null;
     
   //if(unit.getName().indexOf('Нива')>0 || unit.getName().indexOf('Duster')>0 ||unit.getName().indexOf('Газель')>0 || unit.getName().indexOf('Лада')>0 || unit.getName().indexOf('Lanos')>0 || unit.getName().indexOf('Дастер')>0 || unit.getName().indexOf('Stepway')>0 || unit.getName().indexOf('ВАЗ')>0 || unit.getName().indexOf('ФОРД')>0 || unit.getName().indexOf('Toyota')>0 || unit.getName().indexOf('Рено')>0 || unit.getName().indexOf('TOYOTA')>0 || unit.getName().indexOf('Skoda')>0|| unit.getName().indexOf('ЗАЗ ')>0){imsaze = 18;}
@@ -7200,6 +7200,138 @@ function zapravki(data) {
 }
 }
 
+$('#vagy_zvit').click(function() {
+    let to = Date.parse($('#vagy_time2').val())/1000; // end of day in seconds
+    let fr = Date.parse($('#vagy_time1').val())/1000; // get begin time - beginning of day
+    if(!fr){fr=0; to=0;}
+    let n="Ваги №1,Ваги №2,Ваги №3,Ваги №4";
+   SendDataReportInCallback(fr,to,n,7,[],0,vagy);
+});
+function vagy(data){
+ let tbl =[];
+  let v1 = [];
+  let v2 = [];
+  let v3 = [];
+  let v4 = [];
+
+  if(data[0]){
+    if(data[0][0][1]=="Ваги №1") v1=data[0];
+    if(data[0][0][1]=="Ваги №2") v2=data[0];
+    if(data[0][0][1]=="Ваги №3") v3=data[0];
+    if(data[0][0][1]=="Ваги №4") v4=data[0];
+  }
+  if(data[1]){
+    if(data[1][0][1]=="Ваги №1") v1=data[1];
+    if(data[1][0][1]=="Ваги №2") v2=data[1];
+    if(data[1][0][1]=="Ваги №3") v3=data[1];
+    if(data[1][0][1]=="Ваги №4") v4=data[1];
+  }
+  if(data[2]){
+    if(data[2][0][1]=="Ваги №1") v1=data[2];
+    if(data[2][0][1]=="Ваги №2") v2=data[2];
+    if(data[2][0][1]=="Ваги №3") v3=data[2];
+    if(data[2][0][1]=="Ваги №4") v4=data[2];
+  }
+  if(data[3]){
+    if(data[3][0][1]=="Ваги №1") v1=data[3];
+    if(data[3][0][1]=="Ваги №2") v2=data[3];
+    if(data[3][0][1]=="Ваги №3") v3=data[3];
+    if(data[3][0][1]=="Ваги №4") v4=data[3];
+  }
+ 
+  if(v1){
+    let vod0 =0;
+    let avto0 =0;
+    for(let i = 1; i<v1.length; i++){
+      let vod = v1[i][3];
+      let avto = v1[i][4];
+      let vag = parseFloat(v1[i][5]);
+      let vag2=0;
+      let vg="-----";
+      let tm =0;
+      let data =Date.parse(v1[i][1]); 
+      if(vod && avto && vag && v1[i][8]=='17.00'){
+        if(vod0!=vod && avto0!=avto){
+          if(v3){
+            for(let ii = 1; ii<v3.length; ii++){
+              let dd = Date.parse(v3[ii][1]);
+              if(dd>data && vod ==v3[ii][3] && avto ==v3[ii][4] && v3[ii][8]=='17.00' && parseFloat(v3[ii][5])>0){
+                vag2=parseFloat(v3[ii][5]);
+                tm = sec_to_time((dd-data)/1000);
+                vg="Ваги №3";
+                break;
+              } 
+            }
+          }
+          if(vag2 ==0 && v4){
+            for(let iii = 1; iii<v4.length; iii++){
+              let dd = Date.parse(v4[iii][1]);
+              if(dd>data && vod ==v4[iii][3] && avto ==v4[iii][4] && v4[iii][8]=='17.00' && parseFloat(v4[iii][5])>0){
+                vag2=parseFloat(v4[iii][5]);
+                tm = sec_to_time((dd-data)/1000);
+                vg="Ваги №4";
+                break;
+              } 
+            }
+          }
+         
+        let vag3 =vag-vag2;
+         tbl.push([v1[i][1],"Ваги №1",vg,tm,vod,avto,vag,vag2,vag3]);
+         vod0=vod;
+         avto0=avto;
+        }
+      }
+    }
+  }
+  if(v2){
+    let vod0 =0;
+    let avto0 =0;
+     for(let i = 1; i<v2.length; i++){
+      let vod = v2[i][3];
+      let avto = v2[i][4];
+      let vag = parseFloat(v2[i][5]);
+      let vag2=0;
+      let vg="-----";
+      let data =Date.parse(v2[i][1]); 
+      if(vod && avto && vag && v2[i][8]=='17.00'){
+        if(vod0!=vod && avto0!=avto){
+          if(v3){
+            for(let ii = 1; ii<v3.length; ii++){
+              let dd = Date.parse(v3[ii][1]);
+              if(dd>data && vod ==v3[ii][3] && avto ==v3[ii][4] && v3[ii][8]=='17.00' && parseFloat(v3[ii][5])>0){
+                vag2=parseFloat(v3[ii][5]);
+                tm = sec_to_time((dd-data)/1000);
+                vg="Ваги №3";
+                break;
+              } 
+            }
+          }
+          if(vag2 ==0 && v4){
+            for(let iii = 1; iii<v4.length; iii++){
+              let dd = Date.parse(v4[iii][1]);
+              if(dd>data && vod ==v4[iii][3] && avto ==v4[iii][4] && v4[iii][8]=='17.00' && parseFloat(v4[iii][5])>0){
+                vag2=parseFloat(v4[iii][5]);
+                tm = sec_to_time((dd-data)/1000);
+                vg="Ваги №4";
+                break;
+              } 
+            }
+          }
+          let vag3 =vag-vag2;
+         tbl.push([v2[i][1],"Ваги №2",vg,tm,vod,avto,vag,vag2,vag3]);
+         vod0=vod;
+         avto0=avto;
+        }
+      }
+    }
+  }
+    tbl = tbl.sort((a, b) => new Date(a[0]) - new Date(b[0]));
+  $("#unit_table").append("<tr><td>Дата</td><td>заїзд</td><td>виїзд</td><td>тривалість</td><td>водій</td><td>авто</td><td>брутто</td><td>тара</td><td>нетто</td></tr>");
+for(let i = 0; i<tbl.length; i++){
+ $("#unit_table").append("<tr><td>"+tbl[i][0]+"</td><td>"+tbl[i][1]+"</td><td>"+tbl[i][2]+"</td><td>"+tbl[i][3]+"</td><td>"+tbl[i][4]+"</td><td>"+tbl[i][5]+"</td><td>"+tbl[i][6]+"</td><td>"+tbl[i][7]+"</td><td>"+tbl[i][8]+"</td></tr>");
+}
+  
+}
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
@@ -11248,3 +11380,4 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
           }
         });
 }
+
