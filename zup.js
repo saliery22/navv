@@ -11169,6 +11169,7 @@ function calculate_mn(data,ind){
               hodki-=1;
             }
             if(marsh[0]=='V') hodki-=1;
+            if(marsh[0]=='Z') hodki-=1;
             if(marsh[marsh.length-1]=='V')direktion='V';
           }
           let position='невідомо';
