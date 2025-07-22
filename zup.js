@@ -7292,6 +7292,7 @@ function vagy(data){
       let vag = parseFloat(v2[i][5]);
       let vag2=0;
       let vg="-----";
+      let tm =0;
       let data =Date.parse(v2[i][1]); 
       if(vod && avto && vag && v2[i][8]=='17.00'){
         if(vod0!=vod && avto0!=avto){
