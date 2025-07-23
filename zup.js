@@ -1,6 +1,5 @@
 
 
-
 // global variables
 var map, marker,unitslist = [],unitslistID = [],allunits = [],rest_units = [],marshruts = [],zup = [], unitMarkers = [], markerByUnit = {},tile_layer, layers = {},marshrutMarkers = [],unitsID = {},Vibranaya_zona,temp_layer=[],trailers={},drivers={};
 var areUnitsLoaded = false;
@@ -28,7 +27,7 @@ var isUIActive = true;
 
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 
-var from111 = new Date().toJSON().slice(0,11) + '05:00';
+var from111 = new Date().toJSON().slice(0,11) + '00:00';
 var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 
@@ -1144,16 +1143,19 @@ function initMap() {
 
 
   var basemaps = {
-    OSM:L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {}),
-
-    'Google Hybrid':L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ subdomains:['mt0','mt1','mt2','mt3'],layers: 'OSM-Overlay-WMS,TOPO-WMS'})
+    'Google_Streets':L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3']}),
+    'Google_Hybrid':L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],layers: 'OSM-Overlay-WMS,TOPO-WMS'}),
+    'Google_Terrain': L.tileLayer('http://{s}.google.com/vt?lyrs=p&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3']}),
+    'OSM':L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {}),
+    'Night': L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'png'})
 
 };
 
 
 layerControl=L.control.layers(basemaps).addTo(map);
 
-basemaps.OSM.addTo(map);
+basemaps.Google_Streets.addTo(map);
   
     markerstart = L.marker([0,0],{icon: L.icon({iconUrl: '555.png',iconSize:[30, 45],iconAnchor:[15, 45]})}).addTo(map);
     markerend = L.marker([0,0],{icon: L.icon({iconUrl: '444.png',iconSize:[30, 45],iconAnchor:[15, 45]})}).addTo(map);
@@ -1397,7 +1399,7 @@ function show_track (time1,time2) {
 				   // map.fitBounds(bounds); // get center and zoom
 				    // create tile-layer and specify the tile template
 					if (!tile_layer)
-						tile_layer = L.tileLayer(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png", {zoomReverse: true, zoomOffset: -1,zIndex: 3}).addTo(map);
+						tile_layer = L.tileLayer(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png", {zoomReverse: true, zoomOffset: -1,zIndex: 6}).addTo(map);
 					else 
 						tile_layer.setUrl(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png");
 				    // push this layer in global container
@@ -7252,11 +7254,25 @@ function vagy(data){
       let data =Date.parse(v1[i][1]); 
       if(vod && avto && vag && v1[i][8]=='17.00'){
         if(vod0!=vod && avto0!=avto){
+          let vv1 = vag;
+          let vv2 = vag;
+          let vv3 = vag;
+          if(v1.length>i+2 && vod ==v1[i+1][3] && avto ==v1[i+1][4] && v1[i+1][8]=='17.00' && parseFloat(v1[i+1][5])>0)vv1=parseFloat(v1[i+1][5]);
+          if(v1.length>i+3 && vod ==v1[i+2][3] && avto ==v1[i+1][4] && v1[i+2][8]=='17.00' && parseFloat(v1[i+2][5])>0)vv2=parseFloat(v1[i+2][5]);
+          if(v1.length>i+4 && vod ==v1[i+3][3] && avto ==v1[i+1][4] && v1[i+3][8]=='17.00' && parseFloat(v1[i+3][5])>0)vv3=parseFloat(v1[i+3][5]);
+          vag = Math.min(vag, vv1, vv2, vv3);
           if(v3){
             for(let ii = 1; ii<v3.length; ii++){
               let dd = Date.parse(v3[ii][1]);
               if(dd>data && vod ==v3[ii][3] && avto ==v3[ii][4] && v3[ii][8]=='17.00' && parseFloat(v3[ii][5])>0){
                 vag2=parseFloat(v3[ii][5]);
+                 vv1 = vag2;
+                 vv2 = vag2;
+                 vv3 = vag2;
+                 if(v3.length>ii+2 && vod ==v3[ii+1][3] && avto ==v3[ii+1][4] && v3[ii+1][8]=='17.00' && parseFloat(v3[ii+1][5])>0)vv1=parseFloat(v3[ii+1][5]);
+                 if(v3.length>ii+3 && vod ==v3[ii+2][3] && avto ==v3[ii+1][4] && v3[ii+2][8]=='17.00' && parseFloat(v3[ii+2][5])>0)vv2=parseFloat(v3[ii+2][5]);
+                 if(v3.length>ii+4 && vod ==v3[ii+3][3] && avto ==v3[ii+1][4] && v3[ii+3][8]=='17.00' && parseFloat(v3[ii+3][5])>0)vv3=parseFloat(v3[ii+3][5]);
+                 vag2 = Math.min(vag2, vv1, vv2, vv3);
                 tm = sec_to_time((dd-data)/1000);
                 vg="Ваги №3";
                 break;
@@ -7268,6 +7284,13 @@ function vagy(data){
               let dd = Date.parse(v4[iii][1]);
               if(dd>data && vod ==v4[iii][3] && avto ==v4[iii][4] && v4[iii][8]=='17.00' && parseFloat(v4[iii][5])>0){
                 vag2=parseFloat(v4[iii][5]);
+                 vv1 = vag2;
+                 vv2 = vag2;
+                 vv3 = vag2;
+                 if(v4.length>iii+2 && vod ==v4[iii+1][3] && avto ==v4[iii+1][4] && v4[iii+1][8]=='17.00' && parseFloat(v4[iii+1][5])>0)vv1=parseFloat(v4[iii+1][5]);
+                 if(v4.length>iii+3 && vod ==v4[iii+2][3] && avto ==v4[iii+1][4] && v4[iii+2][8]=='17.00' && parseFloat(v4[iii+2][5])>0)vv2=parseFloat(v4[iii+2][5]);
+                 if(v4.length>iii+4 && vod ==v4[iii+3][3] && avto ==v4[iii+1][4] && v4[iii+3][8]=='17.00' && parseFloat(v4[iii+3][5])>0)vv3=parseFloat(v4[iii+3][5]);
+                 vag2 = Math.min(vag2, vv1, vv2, vv3);
                 tm = sec_to_time((dd-data)/1000);
                 vg="Ваги №4";
                 break;
@@ -7296,11 +7319,25 @@ function vagy(data){
       let data =Date.parse(v2[i][1]); 
       if(vod && avto && vag && v2[i][8]=='17.00'){
         if(vod0!=vod && avto0!=avto){
+          let vv1 = vag;
+          let vv2 = vag;
+          let vv3 = vag;
+          if(v2.length>i+2 && vod ==v2[i+1][3] && avto ==v2[i+1][4] && v2[i+1][8]=='17.00' && parseFloat(v2[i+1][5])>0)vv1=parseFloat(v2[i+1][5]);
+          if(v2.length>i+3 && vod ==v2[i+2][3] && avto ==v2[i+1][4] && v2[i+2][8]=='17.00' && parseFloat(v2[i+2][5])>0)vv2=parseFloat(v2[i+2][5]);
+          if(v2.length>i+4 && vod ==v2[i+3][3] && avto ==v2[i+1][4] && v2[i+3][8]=='17.00' && parseFloat(v2[i+3][5])>0)vv3=parseFloat(v2[i+3][5]);
+          vag = Math.min(vag, vv1, vv2, vv3);
           if(v3){
             for(let ii = 1; ii<v3.length; ii++){
               let dd = Date.parse(v3[ii][1]);
               if(dd>data && vod ==v3[ii][3] && avto ==v3[ii][4] && v3[ii][8]=='17.00' && parseFloat(v3[ii][5])>0){
                 vag2=parseFloat(v3[ii][5]);
+                vv1 = vag2;
+                vv2 = vag2;
+                vv3 = vag2;
+                if(v3.length>ii+2 && vod ==v3[ii+1][3] && avto ==v3[ii+1][4] && v3[ii+1][8]=='17.00' && parseFloat(v3[ii+1][5])>0)vv1=parseFloat(v3[ii+1][5]);
+                if(v3.length>ii+3 && vod ==v3[ii+2][3] && avto ==v3[ii+1][4] && v3[ii+2][8]=='17.00' && parseFloat(v3[ii+2][5])>0)vv2=parseFloat(v3[ii+2][5]);
+                if(v3.length>ii+4 && vod ==v3[ii+3][3] && avto ==v3[ii+1][4] && v3[ii+3][8]=='17.00' && parseFloat(v3[ii+3][5])>0)vv3=parseFloat(v3[ii+3][5]);
+                vag2 = Math.min(vag2, vv1, vv2, vv3);
                 tm = sec_to_time((dd-data)/1000);
                 vg="Ваги №3";
                 break;
@@ -7312,13 +7349,21 @@ function vagy(data){
               let dd = Date.parse(v4[iii][1]);
               if(dd>data && vod ==v4[iii][3] && avto ==v4[iii][4] && v4[iii][8]=='17.00' && parseFloat(v4[iii][5])>0){
                 vag2=parseFloat(v4[iii][5]);
+                 vv1 = vag2;
+                 vv2 = vag2;
+                 vv3 = vag2;
+                 if(v4.length>iii+2 && vod ==v4[iii+1][3] && avto ==v4[iii+1][4] && v4[iii+1][8]=='17.00' && parseFloat(v4[iii+1][5])>0)vv1=parseFloat(v4[iii+1][5]);
+                 if(v4.length>iii+3 && vod ==v4[iii+2][3] && avto ==v4[iii+1][4] && v4[iii+2][8]=='17.00' && parseFloat(v4[iii+2][5])>0)vv2=parseFloat(v4[iii+2][5]);
+                 if(v4.length>iii+4 && vod ==v4[iii+3][3] && avto ==v4[iii+1][4] && v4[iii+3][8]=='17.00' && parseFloat(v4[iii+3][5])>0)vv3=parseFloat(v4[iii+3][5]);
+                 vag2 = Math.min(vag2, vv1, vv2, vv3);
                 tm = sec_to_time((dd-data)/1000);
                 vg="Ваги №4";
                 break;
               } 
             }
           }
-          let vag3 =vag-vag2;
+         let vag3 =vag-vag2;
+         console.log(tm)
          tbl.push([v2[i][1],"Ваги №2",vg,tm,vod,avto,vag,vag2,vag3]);
          vod0=vod;
          avto0=avto;
@@ -11367,19 +11412,28 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
             table.rows[ind+1].cells[3].innerText = t;
             if(parseInt(table.rows[ind+1].cells[5].innerText)>0){
               let mash = 0;
-              let zmina = 12*60;
-              let zagr = 15;
+              let zmina = 9*60;
+              let zagr = 20;
               let gektary = parseInt(table.rows[ind+1].cells[5].innerText)*30;
               let hodky = zmina/(t*2+zagr*2);
+              
   
-                 if(table.rows[ind+1].cells[4].children[0].value=='кукурудза')mash = (gektary*9/(hodky*24)).toFixed();
-                 if(table.rows[ind+1].cells[4].children[0].value=='соняшник')mash = (gektary*3/(hodky*18)).toFixed();
-                 if(table.rows[ind+1].cells[4].children[0].value=='соя')mash = (gektary*2.8/(hodky*30)).toFixed();
-                 if(table.rows[ind+1].cells[4].children[0].value=='ріпак')mash = (gektary*2.7/(hodky*30)).toFixed();
-                 if(table.rows[ind+1].cells[4].children[0].value=='пшениця')mash = (gektary*4.5/(hodky*36)).toFixed(); 
-                 table.rows[ind+1].cells[6].innerText = mash+" маш "+(hodky).toFixed()+" ходки "+(t*2+zagr*2)+" хв/ходка";       
+                 if(table.rows[ind+1].cells[4].children[0].value=='кукурудза')mash = gektary*9/(hodky*24);
+                 if(table.rows[ind+1].cells[4].children[0].value=='соняшник')mash = gektary*3/(hodky*18);
+                 if(table.rows[ind+1].cells[4].children[0].value=='соя')mash = gektary*2.8/(hodky*30);
+                 if(table.rows[ind+1].cells[4].children[0].value=='ріпак')mash = gektary*2.7/(hodky*30);
+                 if(table.rows[ind+1].cells[4].children[0].value=='пшениця')mash = gektary*4.5/(hodky*36); 
+
+                  let vsego = mash*hodky;
+                  let nam = (vsego/12).toFixed(1);
+                  mash = Math.ceil(mash);
+                 if(mash<(parseInt(table.rows[ind+1].cells[5].innerText)/2)){
+                  mash=Math.ceil(parseInt(table.rows[ind+1].cells[5].innerText)/2);
+                  hodky=vsego/mash;
+                 }
+
+                 table.rows[ind+1].cells[6].innerText = mash+" маш "+ (hodky).toFixed(0)+" ход "+(t*2+zagr*2)+" хв/ход  "+(nam)+" маш/год";       
             }
           }
         });
 }
-
