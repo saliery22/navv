@@ -5627,7 +5627,7 @@ function linearRegression(data){
 function tehnika_poruch(name,y,x,time){ 
   for(let i = 0; i<Global_DATA.length; i++){
     if(name==Global_DATA[i][0][1]) continue;
-    for (let ii = Global_DATA[i].length-1; ii>=0; ii--){
+    for (let ii = Global_DATA[i].length-1; ii>0; ii--){
        if(time>Global_DATA[i][ii][4]){
         let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
         let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
