@@ -1583,7 +1583,12 @@ $("#men8").on("click", function (){
        let n=unitsgrup.Заправки;
        if(!n)return;
        SendDataInCallback(0,0,n,[],0,TestNavigation);
-  });
+    });
+      $('#nav_zvit').click(function() { 
+       let n=unitsgrup.Заправки;
+       if(!n)return;
+       SendDataInCallback(0,0,n,[],0,TestNavigationZvit);
+      });
 
     $('#monitoring_bt').click(Monitoring2);
     $('#marsh_bt').click(marshrut_avto);
@@ -4791,6 +4796,45 @@ function TestAZS(data){
     }
 }
 
+function TestNavigationZvit(data){
+  if ($('#unit_info').is(':hidden')) {
+      $('#unit_info').show();
+      $('#map').css('width', '50%'); 
+      $('#men4').css({'background':'#b2f5b4'});
+    }
+    $("#unit_table").empty();
+    $('#marrr').hide();
+    $('#option').hide();
+    $('#zupinki').hide();
+    $('#logistika').hide();
+    $('#men3').css({'background':'#e9e9e9'});
+    $('#men1').css({'background':'#e9e9e9'});
+    
+  let no_aktiv = [];
+  let dt = unitsgrup.Заправки;
+  for(var ii=0; ii < unitslist.length; ii++){
+if(!unitslist[ii].getPosition())continue;
+ if(unitslist[ii].getName().indexOf('Резерв')>=0 ||unitslist[ii].getName().indexOf('резерв')>=0||unitslist[ii].getName().indexOf('Знято')>=0||unitslist[ii].getName().indexOf('знято')>=0)continue;
+    if (Date.parse($('#fromtime1').val())/1000-3600> unitslist[ii].getPosition().t){ 
+      no_aktiv.push(unitslist[ii]); 
+      $("#unit_table").append("<tr><td>"+new Date($('#fromtime2').val()).toLocaleDateString('ru-RU', { year: 'numeric', month: '2-digit', day: '2-digit',})+"</td><td align='left'>"+unitslist[ii].getName()+"</td><td>"+wialon.util.DateTime.formatTime(unitslist[ii].getPosition().t)+"</td><td>завис</td></tr>");
+    }
+    }
+  for (let i = 0; i < data.length; i++) {
+    let zapcarta=0;
+    let namee = data[i][0][1];
+    for (let ii = 1; ii < data[i].length; ii++) {
+    if(dt.indexOf(namee)>=0){
+         if(data[i][ii][4]  && zapcarta != data[i][ii][4]){
+          zapcarta = data[i][ii][4];
+          no_aktiv.forEach((element) => {if(element.getName().indexOf(zapcarta)>=0){
+              $("#unit_table").append("<tr><td>"+new Date($('#fromtime2').val()).toLocaleDateString('ru-RU', { year: 'numeric', month: '2-digit', day: '2-digit',})+"</td><td align='left'>"+element.getName()+"</td><td>"+wialon.util.DateTime.formatTime(element.getPosition().t)+"</td><td>"+data[i][ii][1]+"  - заправлявся   "+namee+"</td></tr>"); 
+          }});
+         }
+        }
+      }
+    }
+}
 //===================================================================
 
 function Monitoring(){
