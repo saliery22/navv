@@ -5145,7 +5145,11 @@ for(let i = 0; i<data._latlngs[0].length; i++){
                    }else break;
                 }
               } 
-            if(agregat)agregat=agregat.split(' ')[0];
+            if(agregat){
+              if(typeof agregat === 'string'){
+               agregat=agregat.split(' ')[0];
+              }
+            }
             if(!agregat){
               agregat="-----";
               if(namet.indexOf('JCB')>0|| namet.indexOf('Manitou')>0 || namet.indexOf('Scorpion')>0)agregat="навантажник";
@@ -7962,6 +7966,8 @@ function zapravki(data) {
     let avto ='';
     let zapr =0;
     let prom = 0;
+    let st0 = 0;
+    let p0 =0;
     let start =0;
     let stop = 0;
     let p =0;
@@ -8040,10 +8046,15 @@ function zapravki(data) {
 }
 
     let drt =6;
+    console.log(data[i])
     for(let ii = 1; ii<data[i].length; ii++){
-      if(data[i][ii][drt]=='-----')continue;
+      
+      if(!data[i][ii][drt])continue;
       if(a==-555)a = parseFloat(data[i][ii][drt]);
       if(b==-555)b = data[i][ii][3];
+
+       p0 =data[i][ii][0]
+       st0 =data[i][ii][1]
       if(data[i][ii][drt]!=a){
         if(b!=data[i][ii][3]){
           if(stop==0)stop = data[i][ii-1][1];
@@ -8058,10 +8069,10 @@ function zapravki(data) {
           zapr = 0;
           sped=0;
         }
-        if(vodiy=='' && data[i][ii][3]!='-----')vodiy=data[i][ii][3];
-        if(avto=='' && data[i][ii][4]!='-----')avto=data[i][ii][4];
-        if(start==0)start=data[i][ii-1][1];
-        if(p==0 && data[i][ii-1][0])p=data[i][ii-1][0];
+        if(vodiy=='' && data[i][ii][3])vodiy=data[i][ii][3];
+        if(avto=='' && data[i][ii][4])avto=data[i][ii][4];
+        if(start==0)start=st0;
+        if(p==0)p=p0;
         stop=0;
         prom=0;
         let l = data[i][ii][drt]-a;
@@ -8071,7 +8082,7 @@ function zapravki(data) {
         a=parseFloat(data[i][ii][drt]);
         b = data[i][ii][3];
       }else{
-        if(stop==0)stop = data[i][ii-1][1];
+        if(stop==0)stop = st0;
         prom+= (Date.parse(data[i][ii][1]) - Date.parse(data[i][ii-1][1]))/1000;
         if(prom>3){
           if(sped>0){sped='в русі';}else{sped='стоїть';}
