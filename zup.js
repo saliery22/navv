@@ -5795,7 +5795,7 @@ for(let i = 0; i<geozonesgrup.length; i++){
   for(let i = 0; i<Global_DATA.length; i++){
     let nametr = Global_DATA[i][0][1];
     let id = Global_DATA[i][0][0];
-    if(nametr.indexOf('ДРП ККЗ')>=0 || nametr.indexOf('ДРП Райгородок')>=0 || nametr.indexOf('Бензин ККЗ Ультразвук')>=0 || nametr.indexOf('РЕЗЕРВУАР ККЗ новий')>=0 || nametr.indexOf('знято')>=0 ||  nametr.indexOf('Знято')>=0 ||  nametr.indexOf('еревантажувач')>=0) continue;
+    if(nametr.indexOf('ДРП Криски')>=0 || nametr.indexOf('ДРП ККЗ')>=0 || nametr.indexOf('ДРП Райгородок')>=0 || nametr.indexOf('Бензин ККЗ Ультразвук')>=0 || nametr.indexOf('РЕЗЕРВУАР ККЗ новий')>=0 || nametr.indexOf('знято')>=0 ||  nametr.indexOf('Знято')>=0 ||  nametr.indexOf('еревантажувач')>=0) continue;
     let start=0;
     let finish=0;
     let interval0=0;
