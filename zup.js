@@ -8023,7 +8023,7 @@ function zapravki(data) {
       kkk = 0.1;
       break;
       case "ВМ1251ЕМ Колотуша О. Iveco":
-      kk=1023;
+      kk=1016;
       kkk = 0.1;
       break;
       case "ВМ1252ЕМ Білоус Ю. Iveco Паливозаправник":
