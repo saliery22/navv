@@ -33,10 +33,7 @@ var isUIActive = true;
 
 
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-var tzoffset0 = (new Date('20-Oct-2022 04:04:37')).getTimezoneOffset() * 60000; //offset in milliseconds
 
-console.log(tzoffset);
-console.log(tzoffset0);
 
 var from111 = new Date().toJSON().slice(0,11) + '00:00';
 var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
