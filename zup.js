@@ -4858,7 +4858,7 @@ $("#reestr_save_BT").on("click", function (evt){
           let date=Date.parse(table_polya.rows[i].cells[2].innerText);
           let time=Date.now();
           let name=table_polya.rows[i].cells[6].innerText;
-          let text=table_polya.rows[i].cells[8].innerText + "      "+ga+"га";
+          let text=table_polya.rows[i].cells[8].innerText + "      "+ga.toFixed(2)+"га";
           let autor='Диспетчер';
           jurnal_polya_temp+=tx;
           naryad='||'+date+'|'+name+'|'+text+'|'+autor+'|'+time+'\n';
@@ -4872,7 +4872,7 @@ $("#reestr_save_BT").on("click", function (evt){
           let date=Date.parse(table_polya.rows[i].cells[2].innerText);
           let time=Date.now();
           let name=table_polya.rows[i].cells[6].innerText;
-           let text=table_polya.rows[i].cells[8].innerText + "      "+ga+"га";
+           let text=table_polya.rows[i].cells[8].innerText + "      "+ga.toFixed(2)+"га";
           let autor='Диспетчер';
           jurnal_polya_temp+=tx;
           naryad+='||'+date+'|'+name+'|'+text+'|'+autor+'|'+time+'\n';
