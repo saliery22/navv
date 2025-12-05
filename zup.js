@@ -3242,6 +3242,7 @@ function position(t)  {
              if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.02)markerrr.setOpacity(opt*0.97);}}
              if(agregat !=0){
              markerrr.setOpacity(0);
+             if(agregat == 30){ if (!Global_DATA[ii][i][5]) {if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}break;}
              if(!Global_DATA[ii][i][5])break;
              
              if(agregat == 21 && Global_DATA[ii][i][5][0]=='Д'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
@@ -3253,7 +3254,7 @@ function position(t)  {
              //if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
              if(agregat == 28 && Global_DATA[ii][i][5][0]=='С'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
              if(agregat == 29 && Global_DATA[ii][i][5][0]=='Ж'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 30){ if (Global_DATA[ii][i][5][0]==null ) {markerrr.setOpacity(0);}}
+             
             }
             break;
           }
