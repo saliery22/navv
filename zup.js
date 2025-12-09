@@ -3372,6 +3372,7 @@ function Zupinka(data){ // execute selected report
        stop+=time2-time1;
       }else{
        if(start!=0){
+        end=data[i][ii][1];
         stop=(Date.parse(end)/1000)-(Date.parse(start)/1000)
         data_zup.push([kord,start,end,sec_to_time(stop),name,id]);
        }
@@ -3398,6 +3399,7 @@ function zupinki(){
 // map.removeLayer(zup_mark_data[iii]);
  // if(iii == zup_mark_data.length-1){zup_mark_data=[];}
  //}
+
 
  for(var i=0; i < data_zup.length; i++){
  
