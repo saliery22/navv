@@ -8888,7 +8888,7 @@ $('#kartki_zvit').click(function() {
               } 
               if(km>0){
               if(km<3000){
-                 tr+="<td style='white-space: nowrap; color:rgba(255, 0, 0, 1);'>"+(km/1000).toFixed(1)+" км</td>"+tr0+'</tr>';
+                 tr+="<td style='white-space: nowrap; color:rgba(255, 251, 0, 1);'>"+(km/1000).toFixed(1)+" км</td>"+tr0+'</tr>';
                 $("#unit_table").append(tr);      
                 }else{
                   if(tr0=="<td style='white-space: nowrap;'>картка-4095</td>"){
