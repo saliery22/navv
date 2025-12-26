@@ -3894,6 +3894,7 @@ const scales = {
     }
   },
   y: {
+	   offset: true,
     position: 'left',
     ticks: {
       callback: (val, index, ticks) => index === 0 || index === ticks.length - 1 ? null : val,
