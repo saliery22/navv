@@ -3913,7 +3913,7 @@ meChart = new Chart(ctx, {
     datasets: [{
          label: 'пальне',
          data: data_gr,
-         fill: true,
+         fill: 'start',
          pointStyle: false,
          //spanGaps: true,
          borderWidth: 1,
