@@ -5050,7 +5050,7 @@ function TestNavigation(data){
     
   let no_aktiv = [];
   let mark;
-  let dt = unitsgrup.Заправки;fail_trakkart
+  let dt = unitsgrup.Заправки;
   for(var ii=0; ii < unitslist.length; ii++){
 if(!unitslist[ii].getPosition())continue;
     if (Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getPosition().t){ no_aktiv.push(unitslist[ii]); }
