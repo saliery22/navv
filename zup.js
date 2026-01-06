@@ -3209,10 +3209,7 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
    }
 
      if (!unitslist[ii].getLastMessage() || !unitslist[ii].getLastMessage().t || Date.parse($('#fromtime1').val())/1000 > unitslist[ii].getLastMessage().t){
-
     console.log(unit.getName() + " - відсутня навігація  "); 
-    console.log(unitslist[ii].getPosition()); 
-    console.log(unitslist[ii].getLastMessage()); 
     ii++; UpdateGlobalData(t2,ii);return;
    }
 
