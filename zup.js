@@ -13263,7 +13263,6 @@ marshrut_problem_his.push([e.cells[1].innerText,e.cells[2].innerText,e.cells[3].
   }
 
  problem = problem.sort((a, b) => new Date(a[2]) - new Date(b[2]));
-  console.log(problem)
   var div = document.createElement("div");
   div.style = 'margin-bottom: 10px;margin-right: 10px;min-width: 900px;';
   newdiv.appendChild(div);
