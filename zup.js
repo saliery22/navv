@@ -1,5 +1,5 @@
 
-var TOKEN = ${{ secrets.TOKEN }};
+var TOKEN = process.env.TOKEN ;
 
 
 // global variables
