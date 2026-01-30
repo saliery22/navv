@@ -1,5 +1,14 @@
 
-var TOKEN = process.env.TOKEN ;
+var TOKEN = '4d2e59443e9e64c89c5725f14c042fbd3D91C94CFE94B0EDAD6EAEC75C6C8F4A428020D3';
+
+const secretValue = process.env.TOKEN;
+
+if (!secretValue) {
+  console.error("Секрет не найден!");
+  process.exit(1);
+}
+
+console.log("Секрет успешно получен!");
 
 
 // global variables
