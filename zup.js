@@ -1,4 +1,4 @@
-
+//var TOKEN = '0999946a10477f4854a9e6f27fcbe8424E7222985DA6B8C3366AABB4B94147D6C5BAE69F';
 var TOKEN = '4d2e59443e9e64c89c5725f14c042fbd3D91C94CFE94B0EDAD6EAEC75C6C8F4A428020D3';
 
 
@@ -6156,7 +6156,9 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
       i0=0;
     }
 
-    function robota(){
+   
+}
+ function robota(){
       kmx=0;
       kmy=0;
       if(rob==0){rob=i0;}
@@ -6325,8 +6327,6 @@ for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
         }
       rob=0;
     }
-}
-
 
 if(prostoy0>600){litry+=litry0;prostoy+=prostoy0;}
 zupp+=zupp0;
@@ -8573,7 +8573,7 @@ if($("#unit_table tr").length==0){
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:weight,opacity:1}).addTo(map);
           temp_layer.push(l);
          }else{
-          let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:weight,opacity:1}).addTo(map);
+          let l = L.polyline([[yy,xx],[yy0,xx0]], {color:  rgb(63, 62, 62),weight:weight,opacity:1}).addTo(map);
           temp_layer.push(l);
          }
     
