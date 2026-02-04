@@ -3304,6 +3304,7 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
    for (key in sens) {
           if (FuelID == -1 && sens[key].t=='fuel level') { FuelID = sens[key].id; }
            //if (FuelID == -1 && sens[key].n=='Порціонна вага') { FuelID = sens[key].id; }
+           //if (FuelID == -1 && sens[key].n=='Робота Шнека') { FuelID = sens[key].id; }
            if (VodiyID == -1 && sens[key].t=='driver') { VodiyID = sens[key].id; }
             if (PrichepID == -1 && sens[key].t=='trailer')  { PrichepID = sens[key].id; }
             //console.log(id_unit+"///"+unit.getName()+"///"+sens[key].n+"///"+sens[key].t);
@@ -8482,10 +8483,19 @@ let str = 'geohis/'+(currentDate.getMonth()+1)+'.'+currentDate.getFullYear()+'.t
             garbagepoly.push(G);
           }else{
                 for(let iii = 0; iii<poly.coordinates.length; iii++){
+                  try {
                   let coords = L.GeoJSON.coordsToLatLngs(poly.coordinates[iii],1);
                   let G=L.polygon(coords, {color: 'blue', stroke: false,  fillOpacity: 0.6}).bindTooltip(n ,{opacity:0.8,sticky:true}).addTo(map);
                   G.nam =m[0]+m[1]+m[4]+m[6];
                   garbagepoly.push(G);
+                  } catch (e) {
+                  let arr = [poly.coordinates[iii]];
+                  let coords = L.GeoJSON.coordsToLatLngs(arr,1);
+                  let G=L.polygon(coords, {color: 'blue', stroke: false,  fillOpacity: 0.6}).bindTooltip(n ,{opacity:0.8,sticky:true}).addTo(map);
+                  G.nam =m[0]+m[1]+m[4]+m[6];
+                  garbagepoly.push(G);
+                  }
+                 
                 }
           }
 
@@ -9532,34 +9542,42 @@ function vagy(data){
 function BLE(data){
   let data_ble =[];
   $("#unit_table").empty();
+  $("#unit_table").append("<tr><td>Дата</td><td>Перевантажувач</td><td>Локація</td><td>Мітка</td><td>ID мітки</td><td>відстань</td></tr>");
 for(let i = 0; i<data.length; i++){
   let name = data[i][0][1];
+  if(data[i][0][2][12]!='Робота Шнека')continue;
   let ble=0;
   let dist= 999999;
+  let zav = 0;
   for(let ii = 1; ii<data[i].length; ii++){
     if(!data[i][ii][1])continue;
     if(!data[i][ii][0])continue;
-    if( data[i][ii][4] && parseFloat(data[i][ii][12])<=5){
-     //if(data[i][ii][4]!=ble){
+    if( parseInt(data[i][ii][12])==0 && zav == 0){
+      data_ble.push(["-----","-----","-----","-----","-----","-----"]);
+      zav=1;
+    }
+    if( parseInt(data[i][ii][12])==1 ){
+     //if(data[i][ii][4]!=ble && parseFloat(data[i][ii][13])<=20){
       ble=data[i][ii][4];
       let y = parseFloat(data[i][ii][0].split(',')[0]);
       let x = parseFloat(data[i][ii][0].split(',')[1]);
       let zn = point_in_region(y,x);
-       data_ble.push([data[i][ii][1],name,zn,ble.split('_')[0],data[i][ii][12]]);
+       data_ble.push([data[i][ii][1],name,zn,ble.split('_')[0],data[i][ii][11],data[i][ii][13]]);
+       zav=0;
      //}
     }   
 }
 }
- data_ble = data_ble.sort(function(a, b) {
-      if (a[2] > b[2]) return -1; 
-      if (a[2] < b[2])  return  1;  
-      if (new Date(a[0]) < new Date(b[0]))  return -1; 
-      if (new Date(a[0]) > new Date(b[0]))   return  1;  
-      return 0;   
-    });
+//  data_ble = data_ble.sort(function(a, b) {
+//       if (a[2] > b[2]) return -1; 
+//       if (a[2] < b[2])  return  1;  
+//       if (new Date(a[0]) < new Date(b[0]))  return -1; 
+//       if (new Date(a[0]) > new Date(b[0]))   return  1;  
+//       return 0;   
+//     });
 
 for(let i = 0; i<data_ble.length; i++){
-        $("#unit_table").append("<tr><td>"+data_ble[i][0]+"</td><td>"+data_ble[i][1]+"</td><td>"+data_ble[i][2]+"</td><td>"+data_ble[i][3]+"</td><td>"+data_ble[i][4]+"</td></tr>");
+        $("#unit_table").append("<tr><td>"+data_ble[i][0]+"</td><td>"+data_ble[i][1]+"</td><td>"+data_ble[i][2]+"</td><td>"+data_ble[i][3]+"</td><td>"+data_ble[i][4]+"</td><td>"+data_ble[i][5]+"</td></tr>");
         }
 }
 
