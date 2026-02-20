@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Передача токена...</title></head>
+<body>
+    <script>
+    let params = new URLSearchParams(window.location.search);
+    let token = params.get('access_token');
+    let userName = params.get('user_name');
+     if (!token) {
+        params = new URLSearchParams(window.location.hash.substring(1));
+        token = params.get('access_token');
+        userName = params.get('user_name');
+    }
+
+if (token) {
+    // 2. Сохраняем в localStorage, чтобы основная страница его увидела
+    localStorage.setItem('wialon_token', token);
+      if (userName) {
+            localStorage.setItem('wialon_user', userName);
+        }
+    
+    // 3. ПЕРЕНАПРАВЛЯЕМ на главную страницу вашего приложения
+    window.location.href = "index.html"; 
+} else {
+    document.body.innerHTML = "Ошибка авторизації --------- звернітся до Пальгуй С.В. 0668196439";
+}
+    </script>
+</body>
+</html>
