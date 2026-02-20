@@ -1,6 +1,3 @@
-//var TOKEN = '0999946a10477f4854a9e6f27fcbe8424E7222985DA6B8C3366AABB4B94147D6C5BAE69F';
-var TOKEN = '4d2e59443e9e64c89c5725f14c042fbd57490C2BBF7EDF82855F2A104861D9E6A454BE30';
-
 
 
 // global variables
@@ -542,10 +539,10 @@ function init() { // Execute after login succeed
 		    if (templ[i].ct != "avl_unit") continue; // skip non-unit report templates
 		    // add report template to select list
 		     //console.log(templ[i].id +"     "+ templ[i].n+ + '\n' );
-         if(templ[i].n=="яx001") {zvit1=templ[i].id; msg('звіт зливи      1/4 завантажено');}
-         if(templ[i].n=="яx002") {zvit2=templ[i].id; msg('звіт трасування 2/4 завантажено');}
-         if(templ[i].n=="яx003") {zvit3=templ[i].id; msg('звіт зупинки    3/4 завантажено');}
-         if(templ[i].n=="яx004") {zvit4=templ[i].id; msg('звіт підсумок   4/4 завантажено');}
+        //  if(templ[i].n=="яx001") {zvit1=templ[i].id; msg('звіт зливи      1/4 завантажено');}
+        //  if(templ[i].n=="яx002") {zvit2=templ[i].id; msg('звіт трасування 2/4 завантажено');}
+        //  if(templ[i].n=="яx003") {zvit3=templ[i].id; msg('звіт зупинки    3/4 завантажено');}
+        //  if(templ[i].n=="яx004") {zvit4=templ[i].id; msg('звіт підсумок   4/4 завантажено');}
 	      }
         // add received data to the UI, setup UI events
         initUIData();
@@ -2014,7 +2011,7 @@ function initMap() {
 
 
   // add an OpenStreetMap tile layer
-
+map.attributionControl.addAttribution('Пальгуй Сергій');
 
   var basemaps = {
     'Google_Streets':L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3']}),
@@ -2428,23 +2425,48 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
 //let ps = prompt('');
 //if(ps==55555){
 // execute when DOM ready
-$(document).ready(function () {
-  // init session
-  //wialon.core.Session.getInstance().initSession("https://local3.ingps.com.ua",null,0x800);
-  wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
 
-  wialon.core.Session.getInstance().loginToken(TOKEN, "", // try to login
+
+
+$(document).ready(function () {
+ initApp();
+});
+
+function initApp(){
+  const TK = localStorage.getItem('wialon_token');
+  const USER = localStorage.getItem('wialon_user');
+  const host = "https://1.gpsagro.info";
+ if(USER!='KKZ_Gluhiv'){
+  $('option[value="z8"]').hide(); 
+  $('option[value="z5"]').hide(); 
+ }
+  if(TK){
+  wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
+  wialon.core.Session.getInstance().loginToken(TK, "", // try to login
     function (code) { // login callback
       // if error code - print error message
-      if (code){ msg(wialon.core.Errors.getErrorText(code)); return; }
-      msg('Зеднання з Глухів - успішно');
-    
+      if (code){
+         msg(wialon.core.Errors.getErrorText(code)); 
+         msg(code); 
+         if(code==1)login(host);
+         return;
+         }
+      msg(USER+' успішне зеднання з Walon');
       initMap();
       init(); // when login suceed then run init() function
     }
   );
-});
+  }else{
+  login(host);
+  }
+}
 
+function login(host){
+  let redirect = window.location.origin + "/post_token.html";
+  let encodedRedirect = encodeURIComponent(redirect);
+  let url = host+"/login.html?client_id=myApp&access_type=-1&activation_time=0&duration=2592000&flags=0x1&redirect_uri=" + encodedRedirect;
+   window.location.href = url;   
+}
 
 //}else{
 //  $('#marrr').hide();
