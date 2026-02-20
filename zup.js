@@ -2446,9 +2446,10 @@ function initApp(){
     function (code) { // login callback
       // if error code - print error message
       if (code){
-         msg(wialon.core.Errors.getErrorText(code)); 
-         msg(code); 
-         if(code==1)login(host);
+         console.log(wialon.core.Errors.getErrorText(code)); 
+         console.log(code); 
+         msg('Звернітся до Пальгуй С.  ---- 0668196439');
+         if(code==1 || code==8)login(host);
          return;
          }
       msg(USER+' успішне зеднання з Walon');
