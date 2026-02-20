@@ -2462,10 +2462,13 @@ function initApp(){
 }
 
 function login(host){
-  let currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-  let redirect = window.location.origin + currentPath + "/post_token.html";
-  let encodedRedirect = encodeURIComponent(redirect);
-  let url = host+"/login.html?client_id=Palgui_S&access_type=-1&activation_time=0&duration=2592000&flags=0x1&redirect_uri=" + redirect;
+  let currentPath = window.location.pathname;
+    if (!currentPath.endsWith('/')) {
+        currentPath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+    }
+    let redirect = window.location.origin + currentPath + "post_token.html";
+    let encodedRedirect = encodeURIComponent(redirect);
+  let url = host+"/login.html?client_id=Palgui_S&access_type=-1&activation_time=0&duration=2592000&flags=0x1&redirect_uri=" + encodedRedirect;
    window.location.href = url;   
 }
 
