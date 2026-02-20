@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>KKZ</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="//hst-api.wialon.com/wsdk/script/wialon.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+    
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+
+  
+     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+
+     <link rel="stylesheet" href="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.css" />
+     <script src="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.umd.js"></script>
+
+
+     <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.css"
+    integrity="sha384-P9DABSdtEY/XDbEInD3q+PlL+BjqPCXGcF8EkhtKSfSTr/dS5PBKa9+/PMkW2xsY"
+    crossorigin="anonymous"
+    />
+     <script
+    src="https://cdn.jsdelivr.net/gh/gokertanrisever/leaflet-ruler@master/src/leaflet-ruler.js"
+    integrity="sha384-8SqKZR7V8uOetpjjbcNJHvwuHpb074WS0UXjCLhzfJUqYn3B/uWx1WVv5mwRp1mV"
+    crossorigin="anonymous"
+     ></script>
+
+     
+     <script src="https://cdn.jsdelivr.net/npm/treeselectjs@0.13.1/dist/treeselectjs.umd.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/treeselectjs@0.13.1/dist/treeselectjs.css" />
+
+     
+     <link rel="stylesheet" href="leaflet.contextmenu.css"/>
+     <script src="leaflet.contextmenu.js"></script>
+
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
+     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+
+      <script src="leaflet.rotatedMarker.js"></script>
+
+
+     <!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
+
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css">
+
+   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="chartjs-plugin-zoom.min.js"></script>
+    <!-- <script src="chartjs-plugin-crosshair.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    
+</head>
+<body>
+    <style>
+
+
+        #shapka{ width: 100%; height:30px;border-bottom: 2px solid #d7dde4;display: flex;  justify-content: space-between; background: #ffffff;}
+        #nizz{ width: 100%; height:30px; border-bottom: 2px solid #d7dde4;display: flex;  justify-content: flex-start;}
+        #niz{ border-top: 2px solid #d7dde4; }
+        #main0 {display: flex;}
+        #main1 {width: 300px; height:calc(100vh - 124px); overflow-y: auto; overflow-x: auto;}
+        #main2 {width: 100%; height:calc(100vh - 124px);}
+        #map { width: 100%; height:calc(100vh - 124px); float: left;  font-family: Arial, Tahoma, sans-serif; color: #000000; font-size: 12px; margin: auto; border-bottom: 2px solid #d7dde4;}
+        #marrr { width: 50%-6px; height:calc(100vh - 124px); margin-left: 50%; overflow-y: auto; overflow-x: auto;  border-left: 2px solid #d7dde4;padding-left: 4px;}
+        #option { width: 50%-6px; height:calc(100vh - 124px); margin-left: 50%; overflow-y: auto; overflow-x: auto; border-left: 2px solid #d7dde4;padding-left: 4px;display: flex;  flex-direction: column; }
+        #unit_info { width: 50%-6px; height:calc(100vh - 124px); margin-left: 50%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #d7dde4;padding-left: 4px;}
+        #zupinki { width: 20%-6px; height:calc(100vh - 124px); margin-left: 80%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #d7dde4;padding-left: 4px;}
+        #logistika { width: 50%-6px; height:calc(100vh - 124px); margin-left: 50%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #d7dde4;padding-left: 4px;}
+        #monitoring { width: 35%-6px; height:calc(100vh - 124px); margin-left: 65%; overflow-y: scroll; overflow-x: scroll;border-left: 2px solid #b1b1b1;padding-left: 4px;}
+        #geomodul { width: 50%-6px; height:calc(100vh - 124px); margin-left: 50%; overflow-y: auto; overflow-x: auto;border-left: 2px solid #d7dde4;padding-left: 4px;}
+        
+        .my-labels {
+          background-color: transparent;
+          border: transparent;
+          box-shadow: none;
+          font-weight: bold;
+          font-size: 12px;
+          color: #464646; 
+          color:#000000;
+          width: 50px;
+          text-align: center;
+          text-shadow: #ffffff 1px 0 0px, #ffffff 0 1px 0px, #ffffff -1px 0 0px, #ffffff 0 -1px 0px;
+          }
+        
+        .div-icon{
+            display:inline-block;
+            white-space: nowrap;
+        }
+        .leaflet-tooltip-red {
+            position: absolute;
+            padding: 4px;
+            background-color: rgba(228, 12, 12, 0.9);
+            border: 0px solid #000;
+            color: #000;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .leaflet-tooltip-green {
+            position: absolute;
+            padding: 4px;
+            background-color: rgba(70, 247, 0, 0.9);
+            border: 0px solid #000;
+            color: #000;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .leaflet-tooltip-grey {
+            position: absolute;
+            padding: 4px;
+            background-color: rgba(148, 150, 149, 0.9);
+            border: 0px solid #000;
+            color: #000;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .leaflet-tooltip-yellow {
+            position: absolute;
+            padding: 4px;
+            background-color: rgba(255, 230, 4, 0.9);
+            border: 0px solid #000;
+            color: #000;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .leaflet-tooltip-blue {
+            position: absolute;
+            padding: 4px;
+            background-color: rgba(2, 81, 252, 0.9);
+            border: 0px solid #000;
+            color: #000;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+        .leaflet-popup-content-wrapper{
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        .leaflet-popup-tip{
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        
+        #grafik {height: 280px;  border: 1px solid #c6c6c6;}
+        #inftb td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 10px;}
+        #unit_table td{ border: 1px solid rgb(78, 78, 78);  padding: 2px 5px;}
+        #monitoring_table td{ border: 2px solid rgb(78, 78, 78);  padding: 2px 4px; white-space: nowrap;}
+        
+        #obrobkatehnika td{ border: 1px solid black; padding: 1px 5px;}
+        
+        
+        #reestr_polya{ max-height:30vh; overflow-y: auto;}
+        .table {min-width: 98%;}
+        .table thead th {font-weight: bold;	color: #464646; text-align: left;border: none;padding: 2px 5px;	background: #e7e7e7;border: 1px solid #292929;border-right: 1px solid #292929;}
+        .table tbody td {text-align: left;border: 1px solid #292929;padding: 2px 5px;vertical-align: top;}
+        
+        .table2 {min-width: 98%;}
+        .table2 thead th {font-weight: bold;color: #464646; 	text-align: left;border: none;padding: 2px 5px;	background: #e7e7e7;border: 1px solid #292929;border-right: 1px solid #292929;}
+        .table2 tbody td {text-align: left;border: 1px solid #292929;padding: 2px 5px;vertical-align: top; max-width: 150px; white-space: nowrap; overflow: hidden;text-overflow: ellipsis;}
+        
+        .table3 { border: none;}
+        .table3 tbody td {border: none; padding: 2px 5px;  white-space: nowrap; overflow: hidden;}
+        
+        #log { width: 99%; border: 0px solid #c6c6c6; height:10px; overflow-y: hidden; margin: 0px 0px 0px 0px;font-family: Arial, Tahoma, sans-serif; color: #464646; font-size: 9px;}
+        #log2 { width: 99%; border: 0px solid #c6c6c6; height:10px; overflow-y: hidden;  overflow-x: hidden; margin: 0px 0px 0px 0px;font-family: Arial, Tahoma, sans-serif; color: #464646; font-size: 9px;}
+        #mars_table{max-height:60vh; overflow-y: auto;}
+        #control_table{max-height:60vh; overflow-y: auto;}
+        #mars_table_div{max-width:99%;  overflow-x: auto; white-space: nowrap;}
+        #mars_zvit_table_div{max-width:99%; overflow-x: auto;white-space: nowrap;}
+        #marshrut { min-width: 100%; border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
+        #marsh_tb { min-width: 100%; border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
+        #zvittt{ border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
+        #zvitttt{ border: 1px solid #c6c6c6; margin: 10px 0px 10px 0px;}
+        body{ font-family: Arial, Tahoma, sans-serif; font-size: 12px; color: #000000; background: #ffffff;margin: 0;}
+      
+        #jurnal{ width: 100%;}
+        #jurnal_upd{ width: 100%;overflow-y: auto;height: 25vh;}
+        #jurnal_name_table{ min-width: 98%;}
+        #jurnal_name_table tbody td {text-align: left;border-bottom: 1px solid #292929;padding: 2px 5px;vertical-align: top;}
+        #jurnal_online{width: 100%; overflow-y: auto;}
+        
+        
+        
+            .leaflet-sidebar-left {
+                left: 0px;
+            }
+                .leaflet-sidebar {
+                top: 0px;
+                bottom: 0px;
+                transition: width 500ms;
+            }
+        
+            .treejs .treejs-nodes {
+            padding-left: 2px;
+        }
+        
+        .leaflet-sidebar-pane {
+        
+            padding: 10px 0px;
+        }
+        .leaflet-sidebar-header {
+            margin: -10px -20px 0px;
+            height: 40px;
+            padding: 0px 0px 0px 30px;
+            line-height: 40px;
+            font-size: 14.4pt;
+            color: #fff;
+            background-color: #0074d9;
+        }
+        
+        #inftb{ margin: 5px 0px 5px 0px;}
+        
+        #zvit td{ border: 1px solid black;  padding: 3px 10px;}
+        #zvit th{ border: 1px solid black;  padding: 3px 10px;}
+        
+        .wrap{ max-height:150px; overflow-y: auto; }
+        
+        thead {  border: 0px; height:30px; }
+        table {width: auto; margin: 10px 5px 10px 5px; border: 1px solid #dddddd; border-collapse: collapse; text-align: center;}
+        
+        
+        
+        
+        .slidecontainer {
+            width: 100%; /* Width of the outside container */
+            margin: 10px 0px 10px 0px;
+        }
+        
+        /* The slider itself */
+        .slider {
+            -webkit-appearance: none;  /* Override default CSS styles */
+            appearance: none;
+            width: calc(100% - 4px); /* Full-width */
+            height: 10px; /* Specified height */
+            background: #d3d3d3; /* Grey background */
+            outline: none; /* Remove outline */
+            opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+            transition: opacity .2s;
+        }
+        
+        /* Mouse-over effects */
+        .slider:hover {
+            opacity: 1; /* Fully shown on mouse-over */
+        }
+        
+        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+        .slider::-webkit-slider-thumb {
+            
+            width: 15px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+         
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 0px
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 15px; /* Set a specific slider handle width */
+            height: 25px; /* Slider handle height */
+            background: #4CAF50; /* Green background */
+            cursor: pointer; /* Cursor on hover */
+            border-radius: 0px
+        }
+        .main_menu {   
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+            border-color: #d7dde4;
+            border-style: solid;
+            border-right-width: 1px ;
+            border-left-width: 1px;
+            border-radius: 0px;
+            color: #000000; 
+            font-family: Arial, Tahoma, sans-serif; 
+            font-size: 12px;
+            box-shadow: none;
+            cursor: pointer;
+            background: #ffffff;
+        }
+        
+        
+        
+        .treeselect-input {
+              border-top-width: 0px;
+            border-bottom-width: 0px;
+                border-right-width: 1px;
+                border-left-width: 1px;
+            border-radius: 0px;
+        }
+        
+        .textforma {display: flex }
+        
+        .result-tooltip{
+            border: none;
+        }
+        
+        #v8{ background-color: #b2f5b4; cursor: pointer;}
+        #v18{ background-color: #cbf5b2; cursor: pointer;}
+        #fromtime1{ 
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+            border-right-width: 5px;
+            border-left-width: 2px;
+            border-radius: 0px;
+            border-style: solid;
+            border-color: #d7dde4;
+            font-family: Arial, Tahoma, sans-serif; 
+            font-size: 12px;
+            color: #000000; 
+        
+        }
+        #fromtime2{
+            border-color: #d7dde4;
+            border-top-width: 0px;
+            border-bottom-width: 0px;
+            border-right-width: 2px;
+            border-left-width: 0px;
+            border-radius: 0px;
+             border-style: solid;
+            font-family: Arial, Tahoma, sans-serif; 
+            font-size: 12px;
+            color: #000000; 
+        }
+        
+        .leaflet-ruler {
+            height: 30px;
+            width: 30px;
+            border-radius: 3px;
+            box-shadow:none;
+        }
+        ._37qQG button {
+           box-shadow:none;
+            border-radius: 3px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+        }
+        
+        .leaflet-left .leaflet-control {
+            margin-left: 5px;
+        }
+        .leaflet-top .leaflet-control
+         {
+            margin-top: 2px;
+        }
+        
+        
+        
+        #geo_data{float: right;  }
+        #geo_serch{float: right;  }
+        #ff{ position: relative;left: 15%;}
+        #f{  position: relative;left: 15%;}
+        #shirzahvata{  width: 40px;}s
+        #uni_data{  width: 25px;}
+        
+        #min_zup{  width: 60px;}
+        #min_zup1{  width: 60px;}
+        #min_zup2{  width: 60px;}
+        #min_zup3{  width: 60px;}
+        #min_zup4{  width: 60px;}
+        #min_zup5{  width: 60px;}
+        #min_zup6{  width: 60px;}
+        #min_zup7{  width: 60px;}
+        #min_sliv{  width: 60px;}
+        #min_zup_mon{  width: 60px;}
+        
+        .autocomplete {
+          /*the container must be positioned relative:*/
+          position: relative;
+          display: inline-block;
+         min-width: 50px;
+        }
+        .inp {
+          border: none;
+          padding: 2px;
+          width: 100%;
+          outline: none;
+        }
+        .inp[type=text] {
+          width: 100%;
+        }
+        .inp[type=submit] {
+          background-color: DodgerBlue;
+          color: #fff;
+          cursor: pointer;
+        }
+        .autocomplete-items {
+          position: absolute;
+          min-width: 200px;
+          border: 1px solid #d4d4d4;
+          border-bottom: none;
+          border-top: none;
+          z-index: 99;
+          /*position the autocomplete items to be the same width as the container:*/
+          top: 20%;
+          left: 51%;
+          right: 0;
+        }
+        .autocomplete-items div {
+          cursor: pointer;
+          text-align: left;
+          background-color: rgb(232, 255, 230); 
+          border-bottom: 1px solid #d4d4d4; 
+        }
+        .autocomplete-items div:hover {
+          /*when hovering an item:*/
+          background-color: #e9e9e9; 
+        }
+        .autocomplete-active {
+          /*when navigating through the items using the arrow keys:*/
+          background-color: DodgerBlue !important; 
+          color: #ffffff; 
+        }
+        
+        .llllll {max-height:calc(100vh - 124px); width: 400px; transform: translate(-50%, 0); font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000; }
+        .lllll {max-height:calc(100vh - 124px); width: 400px; transform: translate(-50%, 0);font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+        .llll {max-height:calc(100vh - 124px); width: 400px;font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+        .treeselect-input{min-height: 100%;font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+          input,textarea{font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+
+        .container_geomodul{border: 1px solid rgb(0, 0, 0);}
+        
+        .easy-button-button{ padding: 0px;}
+        .container5{ border: 1px solid #d4d4d4; font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+        .container6{ border: 1px solid #d4d4d4; font-family: Arial, Tahoma, sans-serif;font-size: 12px;color: #000000;}
+        
+
+        button {
+    
+    outline: none;
+    border: 1px solid rgb(49, 47, 47);
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+
+button:hover {
+    box-shadow: 0px 0px 4px 2px rgba(83, 83, 83, 0.479);
+}
+        </style>
+
+
+<!-- load map -->
+
+
+    <div id="shapka">
+        <div style ="display: flex;  ">
+    <!-- <select class='livesearch' id='lis0'style='width:200px;'> <option value='0'>—</option></select> -->
+    <!-- <select class='livesearch' id='lis1'style='min-width:300px;' multiple> <option value="v1" selected>Вся техніка</option><option value="v000">Обраний</option></select> -->
+
+    <div class='container2' style='width:200px; z-index: 99999;'></div>
+    <div class='container1' style='width:200px; z-index: 99999;'></div>
+      
+
+    <button class='main_menu' id='v9'style = "min-width: 110px;">Ті що рухаються</button> 
+<!-- <button id='v2'>Камази</button> 
+<button id='v1'>Всі</button> 
+<button id='v3'>МАЗи</button> 
+<button id='v4'>Сканії</button> 
+<button id='v5'>Погрузчики</button> 
+<button id='v6'>ГАЗи</button> 
+<button id='v12'>Трактори</button> 
+<button id='v13'>Автомобілі</button> 
+<button id='v14'>Найм</button> 
+
+<button id='v15' style = "min-width: 110px;">Прих.неактивні</button>-->
+
+
+
+</div>
+<!-- <div>
+    <button id='v18'style = "min-width: 150px;">Очистити маркери</button>
+    <button id='v8'style = "min-width: 150px;">Очистити трек</button>
+</div> -->
+<div class='container3' style='width:400px; z-index: 99999;'></div>
+
+<div style ="display: flex;  ">
+    <button class='main_menu' id='v11'style = "min-width: 70px;">Графік &#128200</button>
+    <button class='main_menu' id='men5'style = "min-width: 70px;">Зупинки &#9940</button>
+    <button class='main_menu' id='men4'style = "min-width: 70px;">Звіти &#128204</button>
+    <button class='main_menu' id='men8'style = "min-width: 70px;">Обробка полів &#128668</button> 
+    <button class='main_menu' id='men1'style = "min-width: 70px;">Маршрути &#128259</button>  
+    <button class='main_menu' id='men6'style = "min-width: 70px;">Логістика &#128661</button>
+    <button class='main_menu' id='men3'style = "min-width: 70px;">Журнал &#128221</button>
+    <button class='main_menu' id='men7'style = "min-width: 70px;">Моніторинг &#127760</button>
+    </div>
+</div>
+
+
+
+
+<div id="main0">
+<div id="main1">
+  <table id='auto_list' class='table3'> </table>
+</div>
+
+<div id="main2">
+ <div id="grafik">
+  <canvas id="myChart" ></canvas>
+</div>
+<div id="map"></div>
+
+ <div id="marrr">  
+    <button id='marsh_bt4' style = "width: 49%;">завантажити маршрути</button>
+    <button id='marsh_bt3' style = "width: 49%;">зберігти маршрути</button> 
+    <table id='marsh_tb'></table>
+    <button id='marsh_bt2'style = "width: 32%;">завантажити наряди з Excel</button>
+    <button id='marsh_bt5'style = "width: 32%;">перерахувати маршрути</button>
+    <button id='marsh_bt0' style = "width: 32%;">моніторинг</button>
+    <div id="marsh_list" contenteditable='true'></div>
+    <table id='marsh_avto' class='table'></table>
+
+ </div>      
+ <div id="option"> 
+    <audio id=audio src="sound.mp3" ></audio> 
+    <div id="jurnal">
+        <br> 
+        <table id="inftb"></table>
+        <div id="jurnal_name" style="font-weight: 700"></div>
+        <div class='textforma'>
+        <input id="jurnal_time" type="date"/>
+        <textarea id='jurnal_text' placeholder="авторезуйтесь для відправки повідомлення введіть повідомлення" rows="3" cols="100"></textarea>
+        <button id='jurnal_write_buton'>записати в журнал</button>
+        <button class='jurnal_autorization_buton'>авторизуйтесь</button>
+        </div> 
+    </div> 
+    <div id="jurnal_upd"> 
+        <table id="jurnal_name_table"></table>
+    </div>
+    <div id="jurnal_online">
+        <hr>
+        <table id="jurnal_online_tb"class='table'>
+            <tr>
+                <th>ID</th>
+                <th>Дата</th>
+                <th>Обєкт</th>
+                <th>Запис</th>
+                <th>Автор</th>
+                <th>Додано</th>
+                <th>Х</th>
+            </tr>
+        </table>
+    </div> 
+
+ </div>
+
+
+
+ <div id="unit_info">
+    <select id="vib_zvit" style="width: 100%; height: 25px;">
+        <option selected disabled>оберіть звіт із списка</option>
+        <option value="z1">залишки пального в геозоні</option>
+        <option value="z2">вїзд-виїзд-стоянка в геозоні</option>
+        <option value="z3">звіт по мотогодинах в геозоні</option>
+        <option value="z4">звіт по мотогодинах</option>
+        <option value="z5">перевірка навігації</option>
+        <option value="z6">робота по регіонах</option>
+        <option value="z8">зливи</option>
+        <option value="z7">звіт маршрутів авто</option>
+        <option value="z9">звіт по журналу</option>
+        <option value="z11">зупинки в магазині</option>
+        <option value="z12">звіт авто OBD</option>
+        <option value="z13">реєстр поля, причепи, водії, транспорт, групи, датчики</option>
+        <option value="z14">візуалізація треків за період</option>
+        <option value="z15">планування маршрутів</option>
+        <option value="z16">історія обробки полів</option>
+        <option value="z17">перевезення вантажів</option>
+        <option value="z18">пробіг індивідуальний</option>
+        <option value="z19">обробка індивідуальна</option>
+        <!-- <option value="z99">витрата пального робота</option> -->
+        <option value="z20">заправки</option>
+        <option value="z21">ваги</option>
+        <option value="z22">звіт по картках</option>
+      </select>  
+      <br>
+      <hr>
+  
+        <div id="zz1" class='zvit'> 
+            створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
+            <br>
+           <textarea id='unit_palne'  rows="1" cols="60">John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea>   
+        </div> 
+        <div id="zz2" class='zvit'> 
+            створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
+            <br>
+           <textarea id='unit_geozup'  rows="1" cols="60">SCANIA,Камаз,МАЗ</textarea>  
+        </div> 
+        <div id="zz3" class='zvit'> 
+           створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
+            <br>
+           <textarea id='unit_moto'  rows="1" cols="60">John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea>   
+        </div> 
+
+    <div id="zz4" class='zvit'> 
+        <div class='textforma'>
+        <button id='prMot'>перевірка мотогодин</button>
+        <textarea id='unit_prMot'  rows="1" cols="50">John,JD,CL,NH,CASE,JCB,Manitou,Scorpion</textarea>
+        </div>
+        <input id='1_mot' type="checkbox"> переїзд - актуально лише для польових робіт </td>
+        <br>
+        <input id='2_mot' type="checkbox"> робота в полі - актуально лише для польових робіт</td>
+        <br>
+        <input id='3_mot' type="checkbox"> стоянка на станах </td>
+        <br>
+        <input id='4_mot' type="checkbox"> холостий хід</td>
+        <br>
+        <input id='5_mot' type="checkbox"> візуалізація</td>
+    </div> 
+    <div id="zz5" class='zvit'> 
+        <button id='prNV' style = "width: 32%;">перевірка навігації</button>
+        <input id='no_activ' type="checkbox"checked />
+         не показувати техніку яка зависла більше 5 дней
+         <br>
+          <br>
+        <button id='prDUT' style = "width: 32%;">перевірка ДРП/GPS</button>
+   
+        <button id='prAZS' style = "width: 32%;">перевірка АЗС</button>
+     
+        <button id='nav_zvit' style = "width: 32%;">для звіту</button>
+    </div> 
+    <div id="zz6" class='zvit'> 
+        <div class='textforma'>
+        <button id='prPos'>роботи по регіонах</button>
+        <textarea id='unit_prPos'  rows="1" cols="50">John,JD,CL,NH,CASE</textarea>
+        </div>
+    </div> 
+    <div id="zz7" class='zvit'> 
+        <div class='textforma'>
+        <button id='marsh_bt'>маршрути авто</button>
+        <textarea id='unit_marsh'  rows="2" cols="80">ВМ0229АF,ВМ1280СТ,ВМ1640АТ,ВМ1641ВЕ,ВМ1953ВС,ВМ1988ВС,ВМ2559ВК,ВМ3454ЕЕ,ВМ4110АА,ВМ4466АО,ВМ4524АА,ВМ4632АА,ВМ5203ВВ,ВМ5326ВМ,ВМ5607Е,ВМ5629Е,ВМ5645Е,ВМ5647Е,ВМ5887E,ВМ7393ВВ,ВМ7912Е,ВМ7913Е,ВМ7914,ВМ7915Е,ВМ7916Е,ВМ7921Е,ВМ7922Е,ВМ7925Е,ВМ8607Е,ВМ8610ЕН,ВМ8684ЕН,ВМ8692ЕН,ВМ8693ЕН,ВМ9595А,ВМ9708ВЕ,ВМ9987С</textarea>
+        </div>
+    </div> 
+    <div id="zz8" class='zvit'> 
+        <button id='sliv_det'>перевірка зливів</button>
+         мінімальний злив л<input id='min_sliv' type='number' placeholder='5' value="5">
+    </div> 
+    <div id="zz9" class='zvit'> 
+        <input id="jurnal_time1" type="datetime-local"/>
+        <input id="jurnal_time2" type="datetime-local"/>
+        <div class='textforma'>
+        <textarea id='jurnal_units' placeholder="зазначне обєкт через ',' або залиште порожнім для всіх обєктів, - приклад SR-7601,ВМ1252СТ,Камаз,JD" rows="3" cols="50"></textarea>
+        <button id='jurnal_zvit_buton'>звіт за період</button>
+        </div>
+    </div> 
+    <!-- <div id="zz10" class='zvit'>
+    </div> -->
+    <div id="zz11" class='zvit'>
+        <div class='textforma'>
+        <textarea id='magaz_unit' placeholder="номер авто" rows="1" cols="20"></textarea>
+        <button id='magaz'style = "width: 200px;">звіт</button> 
+        </div>
+    </div>
+    <div id="zz12" class='zvit'>
+        <input id="obd_time1" type="datetime-local"/>
+        <input id="obd_time2" type="datetime-local"/>
+        <br>
+        авто берутся з групи легкові_нові в Wialon
+        <br>
+        <input id='bbd_chek' type="checkbox"> візуалізація порушень
+        <br>
+        <button id='bbd'style = "width: 200px;">звіт</button> 
+
+    </div>
+    <div id="zz13" class='zvit'> 
+        <button id='polya_kkz'style = "width: 13%;">поля</button>
+        <button id='trailers_kkz'style = "width: 13%;">причепи</button> 
+        <button id='vodiyi_kkz'style = "width: 13%;">водії</button>
+        <button id='transport_kkz'style = "width: 13%;">транспорт</button>   
+        <button id='grups_kkz'style = "width: 13%;">групи авто</button>  
+        <button id='sensors_kkz'style = "width: 13%;">датчики</button>  
+         <button class='copy_table' style = "width: 13%; background: rgb(51, 153, 255);">копіювати</button>
+    </div> 
+
+    <div id="zz14" class='zvit'> 
+    <input id="track_time1" type="datetime-local"/>
+    <input id="track_time2" type="datetime-local"/>
+    <br>
+    <br>
+    <select class='livesearch' id='track_lis'style='width:100%;' multiple></select>
+    <br>
+    <br>
+        <button id='track_lis_bt' style='width:100%;'>швидко відобразити треки (не більше 50 одиниць техніки)</button> 
+        <br>
+        <br>
+        <button id='track_lis_bt2' style='width:100%;'>відобразити треки (без обмежань)</button> 
+    </div> 
+    <div id="zz15" class='zvit'> 
+        створіть замкнуту геозону за допомаогою інструменту обміру
+        <select class='livesearch' id='planuvannya_lis'style='width:100%;' multiple></select>
+        <br>
+        <button id='planuvannya_bt2' style='width:19%;'>перерахувати</button> 
+        <button id='planuvannya_bt1' style='width:19%;'>очистити</button> 
+        <button id='planuvannya_bt5' style='width:19%;'>імп. Excel</button> 
+        <button id='planuvannya_bt3' style='width:19%;'>коп завтрашні</button> 
+        <button id='planuvannya_bt4' style='width:19%;'>коп сьогодняшні</button> 
+    </div> 
+    <div id="zz16" class='zvit'> 
+        <input id="geomodul_time1" type="date"/>
+        <input id="geomodul_time2" type="date"/>
+        <br>
+        <br>
+        <select class='livesearch' id='geomodul_lis'style='width:100%;' multiple>
+            <option selected value="Всі">Всі роботи</option>
+            <option value="Боронування">Боронування</option>
+            <option value="Дискування">Дискування</option>
+            <option value="Глибоке рихлення">Глибоке рихлення</option>
+            <option value="Культивація">Культивація</option>
+            <option value="Обприскування культур">Обприскування культур</option>
+            <option value="Внесення добрив">Внесення добрив</option>
+            <option value="Висів зернових">Висів зернових</option>
+            <option value="Збір врожаю">Збір врожаю</option>
+            <option value="Оранка">Оранка</option>
+        </select>
+        <br>
+        <select class='livesearch' id='geomodul_field_lis'style='width:100%;' multiple>
+            <option selected value="Всі">Всі поля</option>
+        </select>
+        <br>
+            <button id='geomodul_bt' style='width:100%;'>завантажити</button> 
+        </div> 
+
+        <div id="zz17" class='zvit'> 
+            для створення маршруту А-Б подвійно натисніть ліву клавішу миші створивши точку А наступним подвійним натиском вкажіть радіус від точки А,
+            повторіть тіж дії для створення точки Б, налаштуйте параметри звіту, виконайте звіт
+            <table id="marshrut">
+            <thead>
+            <td>Місце завантаження</td>
+            <td>Місце розвантаження</td>
+            <td>Техніка</td>
+            <td>мін зупинка</td>
+            <td>враховувати  <br> інші маршрути</td>
+            <td>Розрахунок</td>
+            <td>Видалення</td>
+            </thead>
+        </table>
+            <table id='zvittt' ><thead><tr>
+          <td>Номер ТЗ</td>
+          <td>Місце завантаження</td>
+          <td>Місце развантаження</td>
+          <td>Дата </td>
+          <td>Пробіг</td>
+          <td>Тривалість</td>
+          <td>Зупинки</td>
+          <td>Макс. швидкість</td>
+          <td>Водій</td>
+          <td>Вит. пального</td>
+          <td>сер. вит. пального</td>
+          <td>початок</td>
+          <td>кінець</td>
+        </tr></thead>
+        <tbody id='zvit'></tbody>
+        </table>
+        <button id='gooo1'>  зберігти маршрути </button>
+        <button id='gooo2'> завантажити маршрути  </button>
+        <button id='goooo'> копіювати таблицю в буфер </button>
+        <table id='zvitttt' ><thead><tr>
+            <td>Номер ТЗ</td>
+            <td>заїзд</td>
+            <td>тривалість</td>
+            <td>віїзд</td>
+            <td>робота</td>
+          </tr></thead>
+          <tbody id='zvitt'></tbody>
+          </table>
+            </div> 
+    <div id="zz18" class='zvit'>
+        завантажте данні, оберіть транспорт на мапі чи в списку, оберіть "час з" на шкалі часу (перемістіть повзунок на потрібний час і натисніть кнопку час з), оберіть "час по" на шкалі часу, виконайте "звіт"
+        <br>
+        <button id='prob_bt1'>  час з </button>   
+        <input id="prob_from" type="datetime-local"/>
+
+        <button id='prob_bt2'>  час по </button> 
+        <input id="prob_to" type="datetime-local"/>  
+
+        <button id='prob_bt3'>  звіт </button> 
+        <button id='prob_bt4'>  очистити </button>
+        <button class='copy_table'>  копіювати </button>
+             &nbsp;&nbsp; коір &nbsp;&nbsp;
+        <input type="color" id="z18_color" value="#007bff" style='height:20px; padding: 0;'>
+           &nbsp;&nbsp; товщина &nbsp;&nbsp;
+        <input type="number" id="z18_shirina" size="2"  step="1" value="3" min="1" style='width:50px;'>
+   
+    </div> 
+    <div id="zz19" class='zvit'>
+        завантажте данні, оберіть транспорт на мапі чи в списку, оберіть "час з" на шкалі часу (перемістіть повзунок на потрібний час і натисніть кнопку час з), оберіть "час по" на шкалі часу, встановіть налаштування, виконайте "звіт"
+        <br>
+  
+        <button id='ga_bt1'>  час з </button>   
+        <input id="ga_from" type="datetime-local" step="1"/>
+
+        <button id='ga_bt2'>  час по </button> 
+        <input id="ga_to" type="datetime-local" step="1"/> 
+         <select id='agregat_lis'>
+            <option value=10>ширина захвату</option>
+            <option value=6.7>Дискування</option>
+            <option value=8.8>Глибоке рихлення</option>
+            <option value=12.4>Культивація</option>
+            <option value=36>Обприскування культур</option>
+            <option value=36>Внесення добрив</option>
+            <option value=16.8>Висів зернових</option>
+            <option value=12>Збір врожаю</option>
+            <option value=3.5>Оранка</option>
+        </select>
+        <input type="number" id="ga_sh" size="3" name="num" step="0.1" value="10" min="0" style='width:80px;'>
+        <input type="color" id="z19_color" value="#007bff" style='height:20px; padding: 0;'>
+        <br>
+        <div style='display: flex;  align-items: center;'>
+        <img id='strelka' src="alfa.png"> 
+        <input type="checkbox" id="ga_rz" /> напрямок обробки
+        <input type="range" id="ga_alfa" min="0" max="179" value="0" step="1"  style="width: 300px;"/>
+        </div>
+        
+        <button id='ga_bt3' style='width:70%;'>  звіт </button> 
+        <button id='ga_bt4' style='width:29%;'>  очистити </button>
+         
+    </div> 
+    <div id="zz99" class='zvit'>
+        завантажте данні, оберіть групу транспорту,натисніть кнопку "звіт"
+         <br>
+         для звіту по індивідуальному транспорту - видаліть всі групи та оберіть транспорт на мапі чи в списку зліва вгорі
+        <br>
+        <select class='livesearch' id='track_lis2'style='width:100%;' multiple></select>
+        <br>
+        <button id='dut_ruh_zvit' style='width:98%;'> звіт </button> 
+    </div>
+    <div id="zz20" class='zvit'>
+    завантажувати дані не потрібно, звіт фіксує заправки по роботі лічильника, мінімальна заправка 0.1л, мінімальний час між заправками 3с
+    <br>
+    для групування заправок встановіт відповідну галочку (якщо завантажити дані відобразиться рівень заправки в баці техніки)
+    <br>
+    <input id="zapr_time1" type="datetime-local"/>
+    <input id="zapr_time2" type="datetime-local"/>
+    <button id='zapr_zvit'> звіт </button> 
+     групувати заправки <input id='zapr_chek' type="checkbox"> 
+    </div>
+    <div id="zz21" class='zvit'>
+    завантажувати дані не потрібно
+    <br>
+    <input id="vagy_time1" type="datetime-local"/>
+    <input id="vagy_time2" type="datetime-local"/>
+    <button id='vagy_zvit'> звіт ваги</button> 
+    <button id='ble_zvit'> звіт перевантажники </button> 
+    </div>
+
+    <div id="zz22" class='zvit'>
+    <br> 
+    завантажте - необхідний період та необхідну техніку для звіту
+    <br> 
+    <br> 
+    <button id='kartki_zvit'> звіт </button> 
+    </div>
+
+
+ <table id="unit_table"class='table'></table>
+ </div>
+
+ <div id="zupinki">
+    <br> 
+    <br> 
+        <div class='container5' style='width:99%;  z-index: 99999;'></div>
+    <br> 
+    <input id='min_zup' type='number' placeholder='30' value="30"> мінімальний час зупинки(секунд)
+    <br> 
+    <input id='alone_zup' type="checkbox"> поруч нікого немає 
+    <br>  
+    <button id='per_zup'>перевірка зупинок</button>
+    <br>  
+    <br>
+    <br> 
+    <input id='min_zup1' type='number' placeholder='180' value="180"> <input id='alone_zup1' type="checkbox"> <button id='gruz_zup'>зупинки вантажівок</button> 
+    <br>  
+    <input id='min_zup2' type='number' placeholder='180' value="180"> <input id='alone_zup2' type="checkbox"> <button id='benzovoz_zup'>зупинки бензовозів</button> 
+    <br>  
+    <input id='min_zup3' type='number' placeholder='30' value="30"> <input id='alone_zup3' type="checkbox"> <button id='gaz_zup'>зупинки газонів</button> 
+    <br>  
+    <input id='min_zup4' type='number' placeholder='60' value="60"> <input id='alone_zup4' type="checkbox"> <button id='moloko_zup'>зупинки молоковозів</button> 
+    <br>  
+    <input id='min_zup5' type='number' placeholder='60' value="60"> <input id='alone_zup5' type="checkbox"> <button id='pogr_zup'>зупинки погрузчиків</button> 
+     <br>  
+    <input id='min_zup6' type='number' placeholder='180' value="180"> <input id='alone_zup6' type="checkbox" checked /> <button id='tr_zup'>зупинки тракторів</button> 
+    <br>  
+    <input id='min_zup7' type='number' placeholder='180' value="180"> <input id='alone_zup7' type="checkbox" checked /> <button id='nm_zup'>зупинки найманих</button> 
+    </div>
+    
+    <div id="logistika">
+      <div id="log_marh">
+        <button id='log_b1'style = "min-width: 32%;">створити маршрут</button> 
+        <button id='log_b2'style = "min-width: 32%;">контроль маршрутів</button> 
+        <button id='log_b3'style = "min-width: 15%;">адреси</button> 
+        <button id='log_b4'style = "min-width: 15%;">транспорт</button>
+   
+        <div id="adresy">
+            для створення нової зони оберіть радіус та <b>подвійно натисніть</b> праву кнопку на мапі де створити зону відповідного радіусу
+            <br>
+            для редагування радіусу чи положення -  змініть радіус та <b>подвійно натисніть</b> по мапі вкажіть нові координати
+            <br>
+            впевнившись у правильних координатах та радіусі зони вкажіть імя зони і натисніть ЗБЕРІГТИ
+            <br>
+            для видалення зони оберіть зону, впевнившись що у полях назви та радіусу необхідна зона, натисніть ВИДАЛИТИ
+            <br>
+            <b>якщо менша зона знаходиться в більшій зоні то менша зона створюється після створення більшої зони, поверх неї</b>
+            <br>
+            <input id='adresy_coord' type='text' placeholder='натисніть на мапу' value=""> координати
+            <br>
+            <input id='adresy_radius' type='number'step='100' placeholder='400' value="400"> радіус
+            <br>
+            <input id='adresy_name' type='text' placeholder='назва' value=""> назва
+            <br>
+            <button id='adresy_add'>зберігти</button> 
+            <button id='adresy_remove'>видалити</button> 
+        </div>
+
+        <div id="transport_logistik">
+            <b>для оновлення даних після збереження змін оновіть сторінку</b>
+            <br>
+            <table id="transport_logistik_tb" class='table'></table> 
+            <button id='transport_logistik_bt'>зберігти</button> 
+        </div>
+
+        <div id="log_help">
+            <!-- для створення маршруту ведіть назву міста, імя пасажира,пункт призначення або вкажіть місце на карті лівим подвійним кліком
+            <br>
+            маршрут можна редагувати додаючи чи віднісаючи точки за допомогою + -
+            <br>
+            назву маршрута можна редагувати, маршрут можна переміщувати за допомогою миші на мапі,  під назвою маршрута вказаний радіус - його можна редагувати
+         
+           -->
+        </div>
+        
+        <button id='upd_marsh_bt'>оновлення маршруту після змін в таблиці маршрута</button>
+        <button id='clear_marsh_bt'>очистити маршрути</button>
+        <div id="mars_table_div">
+           
+        <table id="log_marh_tb">
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style = " border: 1px solid black; "><div class="autocomplete"  ><div class ="inp" id="myInput-1" type="text"   contenteditable="true" ></div></div></td>
+                <td style = "font-size:14px;min-width: 15px; cursor: pointer;border: 1px solid black; background:rgb(247, 161, 161);">-</td>
+                <td style = "font-size:14px;min-width: 15px; cursor: pointer; background:rgb(170, 248, 170);">+</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><input type='checkbox' checked></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table> 
+        
+    </div>
+       <textarea id="marshrut_text"  rows="2" cols="150" placeholder="коментар до маршруту"></textarea>
+      </div>
+        
+
+        <div id="mars_table">
+            <table id="log_unit_tb"class='table'></table>
+        </div>
+        
+        <div id='log_cont'>
+            <div id="mars_zvit_table_div"><table id="marh_zvit_tb"  class='table'> </table></div>
+            
+            <div id="cont_unit_div" style="font-weight: 700; text-align:center">
+                <span id="cont_unit"></span>
+                <span id="cont_time"></span>
+                <br> 
+            <button id='cont_b1'style = "min-width: 30%;">змінити маршрут</button> 
+            <button id='cont_b3'style = "min-width: 25%;">звіт</button> 
+            <button id='cont_b4'style = "min-width: 5%;">копіювати</button> 
+            <button id='cont_b2'style = "min-width: 30%;">видалити маршрут</button> 
+        </div>
+        </div>
+        <div id='log_time'>
+            зміна дати контролю маршрутів
+            <input id="log_time_inp" type="date"/>
+            для оновлення таблиці натисніть КОНТРОЛЬ МАРШРУТІВ
+        </div>
+        <div id="control_table">
+        <table id="log_control_tb"class='table'></table>
+        </div>
+     </div>
+    <div id="monitoring">
+    <select class='livesearch' id='m_lis'style='width:100%;' multiple></select>
+        <button id='monitoring_bt'>розрахунок</button> 
+        <br>
+        <input id='monitoring_gif' type="checkbox">  автоповтор
+        <br>
+        <input id='robviz_gif' type="checkbox">  візуалізація роботи по за геозоною
+        <br>
+        <input id='min_zup_mon' type='number' placeholder='60' value="60"> мінімальний час зупинки(хвилин)
+        <br>
+
+        <table id="monitoring_table"></table>
+       
+     </div> 
+     <div id="geomodul">
+            <div id="robota_polya_help">
+            1.оберіть  техніку
+            <br>
+            2.оберіть поле на мапі, або зі списку РЕЕСТР РОБОТИ НА ПОЛЯХ
+            <br>
+            3.натисніть НАРЯДИ щоб визначити техніку що працювала на полі, переконайтесь що техніка працювала на полі [натисніть на назву ТЗ в табличці] 
+            <br>
+            - наряд водії - групування нарядів по зміні водія
+            <br>
+            - наряд трактор - групування нарядів по транспортному засобу
+            <br>
+            - наряд заїзд поле - групування нарядів по заїзду на поле
+            <br>
+            4.відмітте галочками техніку - роботу якої потрібно порахувати, всі властивості техніки можна редагувати [агрегат,захват, водій і т.п.] 
+            <br>
+            5.якшо під час тривалого розрахунку зявиться повідомлення натисніть ПОЧЕКАТИ
+            <br>
+            6.РЕЕСТР РОБОТИ НА ПОЛЯХ можна редагувати - все окрім поля,площі поля 
+            <br>
+            <hr>
+            </div>
+            <div id="robota_polya">
+               
+                <div class='container_geomodul' style='width:100%; z-index: 99999;height:30px;'></div>
+          
+            <select class='livesearch' id='r_lis'style='width:100%;' multiple></select>
+            <button id='robota_polya_BT' style = "width: 69%; background:rgb(247, 248, 170);">РЕЕСТР РОБОТИ НА ПОЛЯХ</button>
+            <button id='reestr_save_BT' style = "width: 29%; background:rgb(252, 205, 136);">ЗБЕРЕГТИ/КОПІЮВАТИ РЕЕСТР</button>
+            <div id="reestr_polya">
+            <table id="robota_polya_tb" class='table2'></table> 
+            </div> 
+            </div>
+            <div style="font-weight: 700; text-align:center" > 
+                <span id="name_pole" style="font-weight: 700;"></span>
+                <span id="grup_pole" style="font-weight: 700;"></span>
+                <span id="getary_pole" style="font-weight: 700;"></span>
+            </div>
+           
+            <button id='obrabotkaBT1' style = "width: 33%; ">наряди водії</button>
+            <button id='obrabotkaBT2' style = "width: 33%; ">наряди трактор</button>
+            <button id='obrabotkaBT3' style = "width: 33%; ">наряди заїзд поле</button>
+
+            <table id="obrobkatehnika" class='table'></table>  
+            <button id='gektaryBT' style = "width: 69%; background: rgb(170, 248, 170); ">РОЗРАХУВАТИ</button>
+            <button id='gektaryBTtrue' style = "width: 29%; background: rgb(103, 252, 140); ">РОЗР. ЗАКРИТЕ ПОЛЕ</button>
+            <br>
+            <br>
+            
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <!-- <button id='hidezone'>приховати геозону</button>  -->
+         </div> 
+
+
+</div> 
+</div> 
+
+
+
+
+
+
+
+
+ <div id="niz">
+    <div id="nizz" style ="display: flex;  justify-content: space-between;">
+        <div style ="display: flex;">
+    <input id="fromtime1" type="datetime-local"/>
+    <input id="fromtime2" type="datetime-local"/>
+    <!-- <input id='uni_data' type="text" style='min-width:100px;' onkeydown="this.style.width = ((this.value.length + 1) * 8) + 'px';" placeholder='All'value="">  -->
+    <!-- <select  id='lis10'style='min-width:50px;'> </select> -->
+    <div class='container4' style='width:200px; z-index: 99999;'></div>
+    <button class='main_menu' id='eeew'>Завантажити</button>
+    <button class='main_menu' id='vchora'>Вчора</button>
+    </div>
+    <div style ="width: 200px; display: flex; align-items: center;">
+    <span id="f"></span>
+    </div>
+    <!-- <span id="fff">Автоповтор</span>  -->
+    <!-- <input id='gif' type="checkbox"> -->
+    <!-- <input type="range" id="sp_play" min="1000" max="20000" value="6000" step="1000" /> -->
+    
+    <div style ="display: flex;">        
+        
+        <button class='main_menu' id='bak' style = "width: 50px; ">A<<</button>
+        <button class='main_menu' id='play' style = "width: 50px;">></button>
+        <button class='main_menu' id='front' style = "width: 50px;">>>D</button>
+       <input type="range" id="sp_play" min="1000" max="40000" value="6000" step="1000"  style="width: 300px;"/>
+        
+      </div>
+    </div> 
+
+   <div id="scrool_area">   
+ <div class="slidecontainer">
+   <input type="range" min="1" max="2000" value="2000" class="slider" id="myRange">
+ </div>     
+                
+<div id="log" style ="text-align: center;"></div>
+</div>
+<!-- для плавного перемішення програвача використовуйте клавіші "A" "D" -->
+<!-- <button id='v21'>Диски</button> 
+<button id='v22'>Культиватори</button> 
+<button id='v23'>Боронування</button>
+<button id='v24'>Рихлитель</button>
+<button id='v25'>Оранка</button>  
+<button id='v26'>Розкидачи</button>
+<button id='v27'>Оприскувачи</button> 
+<button id='v28'>Сівалки</button> 
+<button id='v29'>Комбайни</button>  
+<button id='v30'>Без агрегату</button>  -->
+
+
+<!-- <button id='geo_serch'>>></button> -->
+<!-- <input id='geo_data' type="text" onkeydown="this.style.width = ((this.value.length + 1) * 8) + 'px';" placeholder='Пошук міста'value="Пошук міста"> -->
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+  <script src="zup.js"></script> 
+
+
+
+</body>
+</html>
+
