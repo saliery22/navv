@@ -2434,6 +2434,7 @@ $(document).ready(function () {
 
 function initApp(){
   const TK = localStorage.getItem('wialon_token');
+  const TKK =  '4d2e59443e9e64c89c5725f14c042fbd06A26B961F5F4E66E58CF35E0EE5C6CB56CAD4DB'
   const USER = localStorage.getItem('wialon_user');
   const host = "https://1.gpsagro.info";
  if(USER!='KKZ_Gluhiv'){
@@ -2442,7 +2443,7 @@ function initApp(){
  }
   if(TK){
   wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
-  wialon.core.Session.getInstance().loginToken(TK, "", // try to login
+  wialon.core.Session.getInstance().loginToken(TKK, "", // try to login
     function (code) { // login callback
       // if error code - print error message
       if (code){
