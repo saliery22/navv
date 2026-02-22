@@ -539,10 +539,10 @@ function init() { // Execute after login succeed
 		    if (templ[i].ct != "avl_unit") continue; // skip non-unit report templates
 		    // add report template to select list
 		     //console.log(templ[i].id +"     "+ templ[i].n+ + '\n' );
-        //  if(templ[i].n=="яx001") {zvit1=templ[i].id; msg('звіт зливи      1/4 завантажено');}
-        //  if(templ[i].n=="яx002") {zvit2=templ[i].id; msg('звіт трасування 2/4 завантажено');}
-        //  if(templ[i].n=="яx003") {zvit3=templ[i].id; msg('звіт зупинки    3/4 завантажено');}
-        //  if(templ[i].n=="яx004") {zvit4=templ[i].id; msg('звіт підсумок   4/4 завантажено');}
+         if(templ[i].n=="яx001") {zvit1=templ[i].id; console.log('звіт зливи      1/4 завантажено');}
+         if(templ[i].n=="яx002") {zvit2=templ[i].id; console.log('звіт трасування 2/4 завантажено');}
+         if(templ[i].n=="яx003") {zvit3=templ[i].id; console.log('звіт зупинки    3/4 завантажено');}
+         if(templ[i].n=="яx004") {zvit4=templ[i].id; console.log('звіт підсумок   4/4 завантажено');}
 	      }
         // add received data to the UI, setup UI events
         initUIData();
@@ -2443,7 +2443,7 @@ function initApp(){
  }
   if(TK){
   wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
-  wialon.core.Session.getInstance().loginToken(TKK, "", // try to login
+  wialon.core.Session.getInstance().loginToken(TK, "", // try to login
     function (code) { // login callback
       // if error code - print error message
       if (code){
