@@ -2441,9 +2441,9 @@ function initApp(){
   $('option[value="z8"]').hide(); 
   $('option[value="z5"]').hide(); 
  }
-  if(TK){
+  if(TKK){
   wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
-  wialon.core.Session.getInstance().loginToken(TK, "", // try to login
+  wialon.core.Session.getInstance().loginToken(TKK, "", // try to login
     function (code) { // login callback
       // if error code - print error message
       if (code){
