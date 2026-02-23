@@ -2434,16 +2434,16 @@ $(document).ready(function () {
 
 function initApp(){
   const TK = localStorage.getItem('wialon_token');
-  const TKK =  '4d2e59443e9e64c89c5725f14c042fbd06A26B961F5F4E66E58CF35E0EE5C6CB56CAD4DB'
   const USER = localStorage.getItem('wialon_user');
   const host = "https://1.gpsagro.info";
+  const server = "https://hst-api.wialon.eu";
  if(USER!='KKZ_Gluhiv'){
   $('option[value="z8"]').hide(); 
   $('option[value="z5"]').hide(); 
  }
-  if(TKK){
-  wialon.core.Session.getInstance().initSession("https://hst-api.wialon.eu",null,0x800);
-  wialon.core.Session.getInstance().loginToken(TKK, "", // try to login
+  if(TK){
+  wialon.core.Session.getInstance().initSession(server,null,0x800);
+  wialon.core.Session.getInstance().loginToken(TK, "", // try to login
     function (code) { // login callback
       // if error code - print error message
       if (code){
@@ -2453,10 +2453,37 @@ function initApp(){
          if(code==1 || code==8)login(host);
          return;
          }
+           let remotee= wialon.core.Remote.getInstance(); 
+           remotee.remoteCall('file/read',{'itemId':ftp_id,'storageType':1,'path':'//'+'TK.txt','contentType':0},function (error,data) {
+           if (error) {
+            console.log(wialon.core.Errors.getErrorText(error));
+            msg('Звернітся до Пальгуй С.  ---- 0668196439');
+           return;
+           }else{
+     let token = data.content;
+     let sess = wialon.core.Session.getInstance();
+	   if (sess && sess.getId() && token) {
+    	sess.logout(function() {
+            wialon.core.Session.getInstance().initSession(server,null,0x800);
+            wialon.core.Session.getInstance().loginToken(token, "", // try to login
+            function (code) { 
+            if (code){
+            console.log(wialon.core.Errors.getErrorText(code)); 
+            console.log(code); 
+            msg('Звернітся до Пальгуй С.  ---- 0668196439');
+            return;
+            }
       msg(USER+' успішне зеднання з Walon');
       initMap();
       init(); // when login suceed then run init() function
-    }
+              }
+          );
+
+        });
+    } 
+   }
+   });
+  }
   );
   }else{
   login(host);
