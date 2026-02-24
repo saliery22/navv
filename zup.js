@@ -1736,6 +1736,7 @@ $("#men8").on("click", function (){
   $("#unit_table").on("click", ".fail_trak", track_TestNavigation);
   $("#monitoring_table").on("click", track_Monitoring);
   $("#unit_table").on("click", ".sliv_trak", track_Sliv);
+  $("#unit_table").on("click", ".zapravka_trak", track_Zapravka);
 
   $('#prMot').click(function() { 
     $("#unit_table").empty();
@@ -8088,6 +8089,21 @@ for(let i = 0; i<geozonesgrup.length; i++){
 }
 return mesto; 
 }
+function point_in_map(y,x){
+    return new Promise((resolve, reject) => {
+        wialon.util.Gis.getLocations([{ lat: y, lon: x }], function(code, data) {
+            if (code) {
+                reject("невідомо"); // Reject the promise on error
+            } else if (data) {
+                let adr = data[0].split(', ');
+                let result = adr[adr.length - 1].replace(/[0-9]| km from |\.|\s/g, '');
+                resolve(result); // Resolve the promise with the result
+            }
+        });
+    });        
+}
+
+
 $('#planuvannya_bt1').click(function() {
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td></td><td></td><td><b>№</b></td><td>&nbsp&nbsp&nbsp&nbsp</td><td><b>ТЗ</b></td><td><b>агрегат</b></td><td><b>локація</b></td><td><b>відвезти</b></td><td><b>адреса</b></td><td><b>забрати</b></td><td><b>адреса</b></td></tr>");
@@ -9098,12 +9114,45 @@ $('#zapr_zvit').click(function() {
     let fr = Date.parse($('#zapr_time1').val())/1000; // get begin time - beginning of day
     if(!fr){fr=0; to=0;}
     let n=unitsgrup.Заправки;
+    $('#zapr_zvit').prop('disabled', true);
+    $('#zapr_zvit1').prop('disabled', true);
+    $('#zapr_zvit2').prop('disabled', true);
+    zapravki_F=0;
+
    SendDataInCallback(fr,to,n,[],0,zapravki);
 });
-function zapravki(data) {
-  
-  $("#unit_table").empty();
+
+$('#zapr_zvit1').click(function() {
+    let to = Date.parse($('#zapr_time2').val())/1000; // end of day in seconds
+    let fr = Date.parse($('#zapr_time1').val())/1000; // get begin time - beginning of day
+    if(!fr){fr=0; to=0;}
+    let n=unitsgrup.Заправки;
+    $('#zapr_zvit').prop('disabled', true);
+    $('#zapr_zvit1').prop('disabled', true);
+    $('#zapr_zvit2').prop('disabled', true);
+     zapravki_F=1;
+   SendDataInCallback(fr,to,n,[],0,zapravki);
+});
+
+$('#zapr_zvit2').click(function() {
+    let to = Date.parse($('#zapr_time2').val())/1000; // end of day in seconds
+    let fr = Date.parse($('#zapr_time1').val())/1000; // get begin time - beginning of day
+    if(!fr){fr=0; to=0;}
+    let n=unitsgrup.Заправки;
+    $('#zapr_zvit').prop('disabled', true);
+    $('#zapr_zvit1').prop('disabled', true);
+    $('#zapr_zvit2').prop('disabled', true);
+     zapravki_F=2;
+   SendDataInCallback(fr,to,n,[],0,zapravki);
+});
+
+let zapravki_F=0;
+async function zapravki(data) {
+  $('#zapr_zvit').prop('disabled', true);
+  $('#zapr_zvit1').prop('disabled', true);
+  $('#zapr_zvit2').prop('disabled', true);
   let tb = [];
+  let list = unitsgrup['Авто SCANIA']+','+unitsgrup['Авто Молоковози'];
  for(let i = 0; i<data.length; i++){
   
     let name = data[i][0][1];
@@ -9119,6 +9168,7 @@ function zapravki(data) {
     let stop = 0;
     let p =0;
     let sped =0;
+    let lokation ='';
    
 
     switch (name) {
@@ -9246,12 +9296,23 @@ function zapravki(data) {
           start = 0;
           stop = 0;
           sped=0;
+          lokation ='';
           a=drt;
         }
         if(vodiy=='' && data[i][ii][3])vodiy=data[i][ii][3];
         if(avto=='' && data[i][ii][4])avto=data[i][ii][4];
         if(start==0)start=data[i][ii-1][1];
-        if(p==0)p=data[i][ii][0];
+        if(p==0 || p == "undefined"){
+          p=data[i][ii-1][0];
+          if(p){
+          let y = parseFloat(p.split(',')[0]);
+          let x = parseFloat(p.split(',')[1]);
+          lokation = await point_in_map(y,x);
+          }else{
+           lokation = "невідомо";
+          }
+          
+        }
         stop=0;
         prom=0;
         let l = drt-a;
@@ -9265,7 +9326,7 @@ function zapravki(data) {
         prom+= (Date.parse(data[i][ii][1]) - Date.parse(data[i][ii-1][1]))/1000;
         if(prom>3){
           if(sped>0){sped='в русі';}else{sped='стоїть';}
-         if(zapr>0.1) tb.push([name,p,start,stop,vodiy,avto,zapr.toFixed(2),sped]);
+         if(zapr>0.1) tb.push([name,p,start,stop,vodiy,avto,zapr.toFixed(2),sped,lokation]);
           prom=0;
           vodiy ='';
           avto ='';
@@ -9274,60 +9335,147 @@ function zapravki(data) {
           stop = 0;
           sped=0;
           a=drt;
+          p=0;
         }
       }
     }
    if(sped>0){sped='в русі';}else{sped='стоїть';}
-   if(zapr>0.1) tb.push([name,p,start,stop,vodiy,avto,zapr.toFixed(2),sped]);
+   if(zapr>0.1) tb.push([name,p,start,stop,vodiy,avto,zapr.toFixed(2),sped,lokation]);
   
  }
-   let dut=0;
+
+
+ 
  if(tb.length>0){
-  tb.sort();
-  for(let i = 0; i<tb.length; i++){
-    $("#unit_table").append("<tr><td>"+tb[i][0]+"</td><td>"+tb[i][2]+"</td><td>"+tb[i][3]+"</td><td>"+tb[i][7]+"</td><td>"+tb[i][4]+"</td><td>"+tb[i][5]+"</td><td>"+tb[i][6]+"</td><td></td></tr>");
+  tb = tb.sort((a, b) => a[0].localeCompare(b[0]));
+  if (zapravki_F>=1){
+    for(let i = 0; i<tb.length; i++){
+          if((tb[i][4]!= '' &&tb[i][4]!= 'картка-4095' && tb[i][4]!= 'картка-1'&& tb[i][4]!= 'Розкидач AMAZONE інв.№02811 36м') || (tb[i][5]!= '' && tb[i][5]!= 'картка-4095' && tb[i][5]!= 'картка-1'&& tb[i][5]!= 'Розкидач AMAZONE інв.№02811 36м')){
+          }else{
+          tb.splice(i,1)
+          i--;
+          continue;
+       }
+         if (zapravki_F==2){
+           let nam = tb[i][5];
+           if(nam == '' || !list.includes(nam)){
+           tb.splice(i,1)
+           i--;
+           continue;
+           }
+       }
+
+       }     
+  }
+
+  for(let i = 1; i<tb.length; i++){
+      if(tb[i-1][0]==tb[i][0] && tb[i-1][4]==tb[i][4] && tb[i-1][5]==tb[i][5]){
+           let a = tb[i-1][2];
+           let b = parseFloat(tb[i-1][6]);
+           tb[i][2] = a;
+           tb[i][6] = (parseFloat(tb[i][6])+b).toFixed(1);
+           tb.splice(i-1,1)
+           i--;
+           continue;
+         }
+
+        calculateGlobalData(i - 1); 
+         
+  }
+  calculateGlobalData(tb.length - 1);
+
+$("#unit_table").empty(); // Очистить перед рендером, если нужно
+let mainIndex = 0;
+let subIndex = 0;
+let lastVal = null;
+tb.forEach((row, idx) => {
+      if (row[0] !== lastVal) {
+        mainIndex++;     // Увеличиваем основное число (1, 2, 3...)
+        subIndex = 1;    // Сбрасываем подномер
+    } else {
+        subIndex++;      // Увеличиваем подномер (.1, .2...)
+    }
+    
+    let displayIdx = `${mainIndex}.${subIndex}`;
+    lastVal = row[0];
+
+    $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6]+"</td><td>"+row[9] || ''+"</td></tr>");
+});
+
+   function calculateGlobalData(index) {
+    tb[index][9] = " ";
+    for (let j = 0; j < Global_DATA.length; j++) {
+        let namet = Global_DATA[j][0][1];
+        if (tb[index][5] != '' && namet.indexOf(tb[index][5]) >= 0) {
+            let start = Date.parse(tb[index][2]) - 60000;
+            let end = Date.parse(tb[index][3]) + 60000;
+            let l0 = 0, l1 = 0;
+            for (let jj = 1; jj < Global_DATA[j].length; jj++) {
+                if (!Global_DATA[j][jj][2]) continue;
+                if (start <= Global_DATA[j][jj][4]) {
+                    if (l0 == 0) l0 = parseFloat(Global_DATA[j][jj][2]);
+                    l1 = parseFloat(Global_DATA[j][jj][2]);
+                    if (end <= Global_DATA[j][jj][4]) break;
+                }
+            }
+            tb[index][9] = (l1 - l0).toFixed(1).replace(/\./g, ",");
+            break;
+        }
+    }
+}
+
+}
+$('#zapr_zvit').prop('disabled', false);
+$('#zapr_zvit1').prop('disabled', false);
+$('#zapr_zvit2').prop('disabled', false);
+}
+
+   function track_Zapravka(evt){
+    [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
+    this.style.backgroundColor = 'pink';
+    let row = evt.target.parentNode; // get row with data by target parentNode
+    let data=this.id.split(',')[1];
+    let data2=this.id.split(',')[2];
+    let name = this.id.split(',')[0];
+    let idd=0;
+
+    for(var i=0; i < unitslist.length; i++){
+    let nemeee = unitslist[i].getName();
+    if(nemeee.indexOf(name)>=0){
+       idd=unitslist[i].getId();
+       break;
+    }
+    }
+     if(idd!=0){
+     slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+     position(Date.parse(data));
+     treeselect3.value=parseInt(idd);
+     treeselect3.mount();
+     markerByUnit[idd].openPopup();
+     
+     if ($('#grafik').is(':hidden')) {
+      $('#grafik').show();
+      $('#map').css('height', 'calc(100vh - 404px)');
+      $('#marrr').css('height', 'calc(100vh - 404px)');
+      $('#option').css('height', 'calc(100vh - 404px)');
+      $('#unit_info').css('height', 'calc(100vh - 404px)');
+      $('#zupinki').css('height', 'calc(100vh - 404px)');
+      $('#logistika').css('height', 'calc(100vh - 404px)');
+      $('#monitoring').css('height', 'calc(100vh - 404px)');
+    } 
+     show_gr(data,data2);
+     //map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])],map.getZoom(),{animate: false});
+     }else{
+      map.closePopup();
+      treeselect3.value=0;
+      treeselect3.mount();
+      show_gr(data,data2);
+    }
+    
   }
 
 
-    if ($("#zapr_chek").is(":checked")){
-  let tbl=document.getElementById('unit_table');
-    for(let i = 1; i<tbl.rows.length; i++){
-         if(tbl.rows[i-1].cells[3].textContent==tbl.rows[i].cells[3].textContent && tbl.rows[i-1].cells[4].textContent==tbl.rows[i].cells[4].textContent && tbl.rows[i-1].cells[5].textContent==tbl.rows[i].cells[5].textContent){
-           let a = tbl.rows[i-1].cells[1].textContent;
-           let b = parseFloat(tbl.rows[i-1].cells[6].textContent);
-           tbl.rows[i].cells[1].textContent = a;
-           tbl.rows[i].cells[6].textContent = (parseFloat(tbl.rows[i].cells[6].textContent)+b).toFixed(1);
-           tbl.rows[i-1].remove();
-           i--;
 
-         }else{
-          for(let j = 0; j<Global_DATA.length; j++){ 
-            let namet = Global_DATA[j][0][1];
-            if(tbl.rows[i-1].cells[5].textContent!='' && namet.indexOf(tbl.rows[i-1].cells[5].textContent)>=0){
-              let start = Date.parse(tbl.rows[i-1].cells[1].textContent)-60000;
-              let end = Date.parse(tbl.rows[i-1].cells[2].textContent)+60000;
-              let l0=0;
-              let l1=0;
-              for (let jj = 1; jj<Global_DATA[j].length; jj++){
-                if(!Global_DATA[j][jj][2])continue;
-                if(start<=Global_DATA[j][jj][4]){
-                  if(l0==0)l0 = parseFloat(Global_DATA[j][jj][2]);
-                  l1 = parseFloat(Global_DATA[j][jj][2]);
-                  if(end<=Global_DATA[j][jj][4])break;
-                }
-              } 
-              tbl.rows[i-1].cells[7].textContent = (l1-l0).toFixed(1);
-              break;
-            }   
-          }
-         }
-    }
-    }
-  
-
- 
-}
-}
 
 let peregruzchik= true;
 $('#vagy_zvit').click(function() {
