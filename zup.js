@@ -9399,7 +9399,7 @@ tb.forEach((row, idx) => {
     let displayIdx = `${mainIndex}.${subIndex}`;
     lastVal = row[0];
 
-    $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6]+"</td><td>"+row[9] || ''+"</td></tr>");
+    $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
 });
 
    function calculateGlobalData(index) {
@@ -9434,8 +9434,8 @@ $('#zapr_zvit2').prop('disabled', false);
     [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
     this.style.backgroundColor = 'pink';
     let row = evt.target.parentNode; // get row with data by target parentNode
-    let data=this.id.split(',')[1];
-    let data2=this.id.split(',')[2];
+    let data=this.id.split(',')[1]- 60000;
+    let data2=this.id.split(',')[2]+ 60000;
     let name = this.id.split(',')[0];
     let idd=0;
 
@@ -9447,8 +9447,8 @@ $('#zapr_zvit2').prop('disabled', false);
     }
     }
      if(idd!=0){
-     slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-     position(Date.parse(data));
+     slider.value=(Date.parse(data - 60000)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+     position(Date.parse(data - 60000));
      treeselect3.value=parseInt(idd);
      treeselect3.mount();
      markerByUnit[idd].openPopup();
@@ -9463,7 +9463,7 @@ $('#zapr_zvit2').prop('disabled', false);
       $('#logistika').css('height', 'calc(100vh - 404px)');
       $('#monitoring').css('height', 'calc(100vh - 404px)');
     } 
-     show_gr(data,data2);
+     show_gr(data- 60000,data2 + 60000);
      //map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])],map.getZoom(),{animate: false});
      }else{
       map.closePopup();
