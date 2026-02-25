@@ -810,7 +810,7 @@ if(typeof e.detail == 'string' && e.detail.split('_')[0]=='pole'){
 const treeselect = new Treeselect({
   parentHtmlContainer: document.querySelector('.container2'),
   value: [],
-  options: [{ "value": -1, "name": 'ВСІ ГЕОЗОН', children: serch_list_zones },{ "value": -10, "name": '***', children: sr_list_zn_00 }],
+  options: [{ "value": -1, "name": 'ГЕОЗОНИ', children: serch_list_zones },{ "value": -10, "name": '***', children: sr_list_zn_00 }],
   
   //staticList: true,
   //alwaysOpen: true,
@@ -818,7 +818,7 @@ const treeselect = new Treeselect({
   openLevel: 0,
   showTags: false,
   tagsCountText: "вибрано",
-  placeholder: "ГЕОЗОНИ",
+  placeholder: "ГЕОЗОНИ НА МАПІ",
   //appendToBody: true,
   listClassName: 'llll',
 });
@@ -1058,14 +1058,14 @@ serch_list_avto.push({ "value": name, "name": name+" ("+grup_id.length+")", "chi
   const treeselect4 = new Treeselect({
   parentHtmlContainer: document.querySelector('.container4'),
   value: [-1],
-  options: [{ "value": -1, "name": 'ВСІ АВТО', children: serch_list_avto }],
+  options: [{ "value": -1, "name": 'ЗАВАНТАЖИТИ АВТО', children: serch_list_avto }],
   //staticList: true,
   //alwaysOpen: true,
   saveScrollPosition:true,
   openLevel: 1,
   showTags: false,
   tagsCountText: "вибрано",
-  placeholder: "ВИБІР АВТО",
+  placeholder: "ЗАВАНТАЖИТИ АВТО",
   direction: "top",
   //appendToBody: true,
   listClassName: 'llllll',
@@ -1086,14 +1086,14 @@ treeselect4.srcElement.addEventListener('input', (e) => {
    treeselect2 = new Treeselect({
   parentHtmlContainer: document.querySelector('.container1'),
   value: [-1],
-  options: [{ "value": -1, "name": 'ВСІ АВТО', children: serch_list_avto },{ "value": 33, "name": 'Агрегати',isGroupSelectable: false, children: agregats  }],
+  options: [{ "value": -1, "name": 'АВТО НА МАПІ', children: serch_list_avto },{ "value": 33, "name": 'Агрегати',isGroupSelectable: false, children: agregats  }],
   staticList: true,
   //alwaysOpen: true,
   saveScrollPosition:true,
   openLevel: 1,
   showTags: false,
   tagsCountText: "вибрано",
-  placeholder: "ВИБІР АВТО",
+  placeholder: "АВТО НА МАПІ",
   //appendToBody: true,
   listClassName: 'lllll',
  
