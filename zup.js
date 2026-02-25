@@ -428,22 +428,22 @@ function getUnitMarker(unit) {
     contextmenuItems: [{
         text: 'зупинки',
         callback: mark1,
-        index: 0
+        index: 3
     },{
         text: 'пробіг',
         callback: mark2,
-        index: 1
+        index: 4
     },{
         text: 'мотогодини',
         callback: mark3,
-        index: 1
+        index: 4
     },{
         text: 'швидкість',
         callback: mark4,
-        index: 1
+        index: 4
     },{
         separator: true,
-        index: 4
+        index: 7
     }]
   });
   marker.bindPopup('<center><font size="1">' + unit.getName()+'<br />' +wialon.util.DateTime.formatTime(lastM.t),{ autoPan: true, autoPanPadding: [50, 50]});
@@ -610,18 +610,18 @@ function initUIData() {
     contextmenuItems: [{
         text: 'історія обробки',
         callback: mark5,
-        index: 0
+        index: 3
     },{
         text: 'додати маркер',
         callback: mark6,
-        index: 0
+        index: 3
     },{
         text: 'інфо',
         callback: mark7,
-        index: 0
+        index: 3
     },{
         separator: true,
-        index: 3
+        index: 6
     }]});
           // geozona.bindPopup(zone.n);
            geozona.bindTooltip(zone.n +'<br />'+(zone.ar/10000).toFixed(1)+'га <br />'+zonegr,{opacity:0.8,sticky:true});
@@ -2489,6 +2489,7 @@ function initApp(){
             msg('Звернітся до Пальгуй С.  ---- 0668196439');
             return;
             }
+      getOrCreateUserId(USER);
       msg(USER+' успішне зеднання з Walon');
       initMap();
       init(); // when login suceed then run init() function
@@ -2515,6 +2516,29 @@ function login(host){
     let encodedRedirect = encodeURIComponent(redirect);
    let url = host+"/login.html?client_id=Palgui_S&access_type=-1&activation_time=0&duration=2592000&flags=0x1&redirect_uri=" + encodedRedirect;
    window.location.href = url;   
+}
+
+function getOrCreateUserId(nam) {
+    let id = localStorage.getItem('user_id');
+    if (!id) {
+        id = crypto.randomUUID(); 
+        localStorage.setItem('user_id', id);   
+    }
+     const content = `
+          Дані користувача:
+          Користувача: ${nam}
+          Пристрій: ${navigator.userAgentData?.platform || navigator.platform}
+          Браузер: ${navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Інший'}
+          `.trim();
+        let remotee= wialon.core.Remote.getInstance(); 
+        remotee.remoteCall('file/write',{'itemId':ftp_id,'storageType':1,'path':'//log/'+id+'.txt',"content":content,"writeType":0,'contentType':0},function (error) {
+        if (error) {
+        return;
+        }else{
+        return;
+   }
+}); 
+    return ;
 }
 
 //}else{
