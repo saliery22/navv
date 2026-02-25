@@ -9296,7 +9296,7 @@ async function zapravki(data) {
           start = 0;
           stop = 0;
           sped=0;
-          lokation ='';
+          lokation ="невідомо";
           a=drt;
         }
         if(vodiy=='' && data[i][ii][3])vodiy=data[i][ii][3];
@@ -9418,7 +9418,8 @@ tb.forEach((row, idx) => {
                     if (end <= Global_DATA[j][jj][4]) break;
                 }
             }
-            tb[index][9] = (l1 - l0).toFixed(1).replace(/\./g, ",");
+            let res = (l1 - l0).toFixed(1);
+            if(res>0)tb[index][9] = res.replace(/\./g, ",");
             break;
         }
     }
@@ -9434,8 +9435,8 @@ $('#zapr_zvit2').prop('disabled', false);
     [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
     this.style.backgroundColor = 'pink';
     let row = evt.target.parentNode; // get row with data by target parentNode
-    let data=this.id.split(',')[1]- 60000;
-    let data2=this.id.split(',')[2]+ 60000;
+     let data = new Date(Date.parse(this.id.split(',')[1]) - 60000).toLocaleString('sv').replace('T', ' ');;
+     let data2 = new Date(Date.parse(this.id.split(',')[2]) + 60000).toLocaleString('sv').replace('T', ' ');;
     let name = this.id.split(',')[0];
     let idd=0;
 
@@ -9447,8 +9448,8 @@ $('#zapr_zvit2').prop('disabled', false);
     }
     }
      if(idd!=0){
-     slider.value=(Date.parse(data - 60000)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-     position(Date.parse(data - 60000));
+     slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
+     position(Date.parse(data));
      treeselect3.value=parseInt(idd);
      treeselect3.mount();
      markerByUnit[idd].openPopup();
@@ -9463,7 +9464,7 @@ $('#zapr_zvit2').prop('disabled', false);
       $('#logistika').css('height', 'calc(100vh - 404px)');
       $('#monitoring').css('height', 'calc(100vh - 404px)');
     } 
-     show_gr(data- 60000,data2 + 60000);
+     show_gr(data,data2);
      //map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])],map.getZoom(),{animate: false});
      }else{
       map.closePopup();
@@ -10268,6 +10269,10 @@ $( "#vib_zvit" ).on( "change", function() {
   marshrutMarkers=[];
   let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
   if(this.value=='z15') planuvannya_start();
+   if(this.value=='z20') {
+    $("#zapr_time1").val($('#fromtime1').val()); 
+    $("#zapr_time2").val($('#fromtime2').val());
+   }
 } );
 
 
