@@ -1083,7 +1083,7 @@ treeselect4.srcElement.addEventListener('input', (e) => {
 });
 
   
-const treeselect2 = new Treeselect({
+   treeselect2 = new Treeselect({
   parentHtmlContainer: document.querySelector('.container1'),
   value: [-1],
   options: [{ "value": -1, "name": 'ВСІ АВТО', children: serch_list_avto },{ "value": 33, "name": 'Агрегати',isGroupSelectable: false, children: agregats  }],
@@ -2421,19 +2421,21 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
   } 
  }).addTo(map);
 
- L.easyButton('<img src="kamaz.png" title="камази">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="scan.png" title="сканії">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="maz.png" title="мзи">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="benz.png" title="бензовози">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="gaz.png" title="гази">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="nav.png" title="навантажники">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="jd.png" title="трактора">', function(){ fast_grop() }).setPosition('topright').addTo(map);
- L.easyButton('<img src="logist.png" title="логісти">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="kamaz.png" title="Авто Камаз">', function(){ fast_grop(["Авто Камаз"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="scan.png" title="Авто SCANIA">', function(){ fast_grop(["Авто SCANIA"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="maz.png" title="Авто МАЗ">', function(){ fast_grop(["Авто МАЗ"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="benz.png" title="Заправки">', function(){ fast_grop(["Заправки"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="gaz.png" title="Газони">', function(){ fast_grop(["Газони"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
 
 }
 
-function fast_grop(ind){
-
+function fast_grop(idd){
+     treeselect2.value=idd;
+      treeselect2.mount();
+      $('.container1').click();
 }
 
 //let ps = prompt('');
@@ -13062,6 +13064,12 @@ async function logistik_zvit(data){
      }
 
      //=============================================================
+
+     if(!tb.rows[2].cells[2]){
+      alert("Відсутні рух, або авто рухалось занадто мало");
+      $('button').prop("disabled", false);
+      return;
+      }
       begin_marshrut0 =tb.rows[2].cells[2].textContent;
       begin_marshrut = Date.parse(begin_marshrut0)/1000;
      
