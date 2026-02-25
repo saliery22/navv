@@ -2421,6 +2421,19 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
   } 
  }).addTo(map);
 
+ L.easyButton('<img src="kamaz.png" title="камази">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="scan.png" title="сканії">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="maz.png" title="мзи">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="benz.png" title="бензовози">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="gaz.png" title="гази">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="nav.png" title="навантажники">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="jd.png" title="трактора">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="logist.png" title="логісти">', function(){ fast_grop() }).setPosition('topright').addTo(map);
+
+}
+
+function fast_grop(ind){
+
 }
 
 //let ps = prompt('');
