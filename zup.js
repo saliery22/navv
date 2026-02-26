@@ -9195,8 +9195,8 @@ async function zapravki(data) {
  for(let i = 0; i<data.length; i++){
   
     let name = data[i][0][1];
-    let kk=1023;
-    let kkk=0.1;
+    let kk=-1;
+    let kkk=-1;
     let a =-555;
     let b =-555;
     let vodiy ='';
@@ -9209,110 +9209,20 @@ async function zapravki(data) {
     let sped =0;
     let lokation ='';
    
+     let sens = unitslistID[data[i][0][0]].getSensors(); // get unit's sensors
+          for (key in sens) {
+            if (sens[key].t=='impulse fuel consumption') {
+              try {
+              kk = JSON.parse(sens[key].c).fuel_params.maxImpulses;
+              kkk =  sens[key].tbl[0].a;
+              } catch (e) {
+               continue;
+              }
+              
+            } 
+          }
 
-    switch (name) {
-      case "АЗС Некрасове DIESEL":
-      kk=1024;
-      kkk = 0.1;
-
-      break;
-      case "ВМ1250ЕМ Дробниця В. Iveco Паливозаправник":
-      kk=0;
-      kkk = 0.1;
-      break;
-      case "ВМ1251ЕМ Колотуша О. Iveco":
-      kk=1016;
-      kkk = 0.1;
-      break;
-      case "ВМ1252ЕМ Білоус Ю. Iveco Паливозаправник":
-      kk=1023;
-      kkk = 0.1;
-      break;
-      case "ВМ1253ЕМ Iveco Бензовоз":
-      kk=1023;
-      kkk = 0.1;
-      break;
-      case "ВМ1613СР Писаренко О.М. Камаз":
-      kk=1023;
-      kkk = 0.099;
-      break;
-      case "ЗВМ1614СР Білоус Ю.М. Камаз":
-      kk=1023;
-      kkk = 0.1;
-      break;
-      case "ВМ2893ЕН Штацький С.А. Камаз":
-      kk=1016;
-      kkk = 0.036363;
-      break;
-      case "ВМ3861ВО Василько Р. Камаз":
-      kk=1023;
-      kkk = 0.1;
-      break;
-      case "ВМ3862ВО Карпінський М.В. Камаз":
-      kk=1023;
-      kkk = 0.1;
-      break;
-      case "ВМ4156ВС Карпінський А.О. Камаз":
-      kk=1016;
-      kkk = 0.1;
-      break;
-      case "Газова заправка ККЗ":
-      kk=0;
-      kkk = 0.01001;
-      break;
-      case "Газова заправка Райгородок":
-      kk=1016;
-      kkk = 0.010498;
-      break;
-      case "Газова заправка Слоут":
-      kk=1023;
-      kkk = 0.01;
-      break;
-      case "Газова Заправка Слоут НОВА":
-      kk=0;
-      kkk = 0.01;
-      break;
-      case "Заправка AdBlue":
-      kk=1016;
-      kkk = 0.0109289;
-      break;
-      case "Заправка бензин ККЗ":
-      kk=1016;
-      kkk = 0.010112;
-      break;
-      case "Заправка ДП Буйвалове":
-      kk=1023;
-      kkk = 0.0296;
-      break;
-      case "Заправка Криски ДП":
-      kk=1016;
-      kkk = 0.03;
-      break;
-      case "Заправка ККЗ ДП1 більший Напор":
-      kk=1023;
-      kkk = 0.0316;
-      break;
-      case "Заправка ККЗ ДП2 менший Напор":
-      kk=1023;
-      kkk = 0.01;
-      break;
-      case "Заправка Райгородок":
-      kk=1023;
-      kkk = 0.006292;
-      break;
-      case "Заправка Слоут ДП":
-      kk=1023;
-      kkk = 0.0101;
-      break;
-      case "Склад ДП Буйвалове":
-      kk=1016;
-      kkk = 0.0995;
-      break;
-
-    default:
-    kk=1023;
-    kkk=0.1;
-}
+if(kkk==-1) continue;
 
 
     for(let ii = 1; ii<data[i].length; ii++){
