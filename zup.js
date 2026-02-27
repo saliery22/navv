@@ -4509,7 +4509,7 @@ function CollectData(t1,t2,maska,olddata,i,unit,calbek){// execute selected repo
            dataa.push([unit.getId(),unit.getName()]);
           let messages = data.messages;
               if(messages.length > 0){
-                 for(var i=0; i<messages.length; i++){ 
+                 for(var i=1; i<messages.length; i++){ 
                   let xy=null;
                   let sped=0;
                   if(messages[i].pos){
@@ -4543,8 +4543,8 @@ function CollectData(t1,t2,maska,olddata,i,unit,calbek){// execute selected repo
                     }
                   } 
                    }
-                   if (ImpID!=-1) {
-                   imp = unit.getValue(unit.getSensor(ImpID), messages[i]);
+                   if (ImpID!=-1 && i>0) {
+                   imp = unit.calculateSensorValue(unit.getSensor(ImpID), messages[i], messages[i-1]);
                    if(imp == -348201.3876){imp = null;} else {imp = imp.toFixed(2);} 
                    }
                    if (OBDkmID!=-1) {
@@ -9214,7 +9214,7 @@ async function zapravki(data) {
             if (sens[key].t=='impulse fuel consumption') {
               try {
               kk = JSON.parse(sens[key].c).fuel_params.maxImpulses;
-              kkk =  sens[key].tbl[0].a;
+              kkk =  sens[key].tbl[0].a*kk;
               } catch (e) {
                continue;
               }
@@ -9224,9 +9224,7 @@ async function zapravki(data) {
 
 if(kkk==-1) continue;
 
-
     for(let ii = 1; ii<data[i].length; ii++){
-      
       if(!data[i][ii][6])continue;
       let drt =parseFloat(data[i][ii][6]);
 
@@ -9234,7 +9232,7 @@ if(kkk==-1) continue;
       if(b==-555)b = data[i][ii][3];
 
       if(drt!=a){
-        if(b!=data[i][ii][3]){
+        if(b!=data[i][ii][3] && data[i][ii][3] && data[i][ii][3]!='картка-1' && data[i][ii][3]!='картка-4095'&& data[i][ii][3]!= 'Розкидач AMAZONE інв.№02811 36м'){
           if(stop==0)stop = data[i][ii-1][1];
           if(sped>0){sped='в русі';}else{sped='стоїть';}
           if(zapr>0.1) tb.push([name,p,start,stop,vodiy,avto,zapr.toFixed(2),sped]);
@@ -9247,6 +9245,7 @@ if(kkk==-1) continue;
           sped=0;
           lokation ="невідомо";
           a=drt;
+
         }
         if(vodiy=='' && data[i][ii][3])vodiy=data[i][ii][3];
         if(avto=='' && data[i][ii][4])avto=data[i][ii][4];
@@ -9260,13 +9259,12 @@ if(kkk==-1) continue;
           }else{
            lokation = "невідомо";
           }
-          
         }
         stop=0;
         prom=0;
         let l = drt-a;
-        if(l<0)l = kk-a+drt;
-        zapr+=l*kkk;
+        if(l<0)l = kkk-a+drt;
+        zapr+=l;
         sped+=parseInt(data[i][ii][2]);
         a=drt;
         b = data[i][ii][3];
@@ -9286,6 +9284,7 @@ if(kkk==-1) continue;
           a=drt;
           p=0;
         }
+        b = data[i][ii][3];
       }
     }
    if(sped>0){sped='в русі';}else{sped='стоїть';}
@@ -9318,7 +9317,8 @@ if(kkk==-1) continue;
   }
 
   for(let i = 1; i<tb.length; i++){
-      if(tb[i-1][0]==tb[i][0] && tb[i-1][4]==tb[i][4] && tb[i-1][5]==tb[i][5]){
+    if (zapravki_F>=1){
+           if(tb[i-1][0]==tb[i][0] && tb[i-1][4]==tb[i][4] && tb[i-1][5]==tb[i][5]){
            let a = tb[i-1][2];
            let b = parseFloat(tb[i-1][6]);
            tb[i][2] = a;
@@ -9327,9 +9327,8 @@ if(kkk==-1) continue;
            i--;
            continue;
          }
-
-        calculateGlobalData(i - 1); 
-         
+    } 
+        calculateGlobalData(i - 1);      
   }
   calculateGlobalData(tb.length - 1);
 
@@ -9347,8 +9346,12 @@ tb.forEach((row, idx) => {
     
     let displayIdx = `${mainIndex}.${subIndex}`;
     lastVal = row[0];
-
-    $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
+if (zapravki_F>=1){
+$("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
+}else{
+ $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[3]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>"); 
+}
+    
 });
 
    function calculateGlobalData(index) {
