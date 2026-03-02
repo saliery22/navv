@@ -2429,6 +2429,7 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
  L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
 
 }
 
