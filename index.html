@@ -20,8 +20,10 @@
      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
      crossorigin=""></script>
 
-     <link rel="stylesheet" href="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.css" />
-     <script src="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.umd.js"></script>
+     <!-- <link rel="stylesheet" href="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.css" />
+     <script src="https://unpkg.com/@bopen/leaflet-area-selection@0.6.1/dist/index.umd.js"></script> -->
+     <link rel="stylesheet" href="leaflet-area-selection/index.css" />
+     <script src="leaflet-area-selection/index.umd.js"></script>
 
 
      <link
@@ -597,7 +599,9 @@ button:hover {
             <option value="z19">обробка індивідуальна</option>
             <option value="z13">реєстр поля, причепи, водії, транспорт, групи, датчики</option>
 
-         <option disabled>────────────────────────────────────────</option>
+        <option disabled>────────────────────────────────────────</option>
+            <option value="z23">сповіщення ТЕЛЕГРАМ</option>
+        <option disabled>────────────────────────────────────────</option>
 
         <option value="z16">історія обробки полів</option>
         <option value="z14">візуалізація треків за період</option>
@@ -620,17 +624,20 @@ button:hover {
         <div id="zz1" class='zvit'> 
             створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
             <br>
-           <textarea id='unit_palne'  rows="1" cols="60">John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea>   
+           <textarea id='unit_palne'  rows="1" style='width:99%;'>John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea>  
+           <button class = 'drav_geo'>намалювати геозону</button> 
         </div> 
         <div id="zz2" class='zvit'> 
             створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
             <br>
-           <textarea id='unit_geozup'  rows="1" cols="60">SCANIA,Камаз,МАЗ</textarea>  
+           <textarea id='unit_geozup'  rows="1" style='width:99%;'>SCANIA,Камаз,МАЗ</textarea>  
+            <button class = 'drav_geo'>намалювати геозону</button> 
         </div> 
         <div id="zz3" class='zvit'> 
            створіть замкнуту геозону за допомаогою інструменту обміру, в текстовуму полі можна вазати фільтри для техніки яка буде знайдена у геозоні
             <br>
-           <textarea id='unit_moto'  rows="1" cols="60">John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea>   
+           <textarea id='unit_moto'  rows="1" style='width:99%;'>John,JD,NH,CL,CASE,JCB,Manitou,Scorpion,Claas</textarea> 
+            <button class = 'drav_geo'>намалювати геозону</button>   
         </div> 
 
     <div id="zz4" class='zvit'> 
@@ -893,6 +900,98 @@ button:hover {
     <br> 
     <button id='kartki_zvit'> звіт </button> 
     </div>
+
+    <div id="zz23" class='zvit'>
+     <textarea id='tg_name' placeholder="унікальна назва сповішення" rows="1" style='width:49%;'></textarea>
+     <textarea id='tg_reciver' placeholder="фамілія отримувача через кому або назва групи" rows="1" style='width:49%;'></textarea>
+     <textarea id='tg_grup' placeholder="групи авто через кому (точна назва групи з Wialon)" rows="2" style='width:49%;'></textarea>
+     <textarea id='tg_unit' placeholder="номер авто через кому (повна або часткова назва 1435,Водій,JD)" rows="2" style='width:49%;'></textarea>
+     <br> 
+    <div style='display: flex;  align-items: center;'>
+    <input id='tg_stops' type="checkbox"> &nbsp;&nbsp;перевищення зупинки&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+    <input type="number" id="tg_stops_lim" size="3" name="num" step="1" value="10" min="1" max="60" style='width:40px;'>&nbsp;&nbsp;хвилин
+    </div>
+    <div style='display: flex;  align-items: center;'>
+    <input id='tg_sped' type="checkbox"> &nbsp;&nbsp;перевищення швидкості&nbsp;&nbsp;  
+    <input type="number" id="tg_sped_lim" size="3" name="num" step="1" value="80" min="1" max="180" style='width:40px;'>&nbsp;&nbsp;км/год
+    </div>
+    <div style='display: flex;  align-items: center;'>
+    <input id='tg_shnek' type="checkbox"> &nbsp;&nbsp;робота шнеку&nbsp;&nbsp;  
+    </div>
+    <div style='display: flex;  align-items: center;'>
+    <input id='tg_shnek2' type="checkbox"> &nbsp;&nbsp;робота шнеку (без мітки поруч)&nbsp;&nbsp; 
+    </div>
+    <table id="tg_zony" class='table'>
+        <thead>
+            <tr>
+                <th>ВКЛ</th>
+                <th>НАЗВА</th>
+                <th>РЕДАГУВАТИ/СТВОРИТИ</th>
+                <th>ПОВІДОМИТИ ПРО ВЇЗД</th>
+                <th>ПОВІДОМИТИ ПРО ВИЇЗД</th>
+                <th>ІГНОРУВАТИ ЗОНУ</th>
+                <th>ІГНОРУВАТИ ПО ЗА ЗОНОЮ</th>
+            </tr>
+        </thead>
+            <tr>
+                <td><input type='checkbox'></td>
+                <td contenteditable="true">зона1</td>
+                <td> <button> редагувати/створити </button> </td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #72feb5; text-align: center;'><input type='checkbox' ></td>
+                <td hidden></td>
+            </tr>
+            <tr>
+                <td><input type='checkbox'></td>
+                <td contenteditable="true">зона2</td>
+                <td> <button> редагувати/створити </button> </td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #72feb5; text-align: center;'><input type='checkbox' ></td>
+                <td hidden></td>
+            </tr>
+            <tr>
+                <td><input type='checkbox'></td>
+                <td contenteditable="true">зона3</td>
+                <td> <button> редагувати/створити </button> </td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #72feb5; text-align: center;'><input type='checkbox' ></td>
+                <td hidden></td>
+            </tr>
+            <tr>
+                <td><input type='checkbox'></td>
+                <td contenteditable="true">зона4</td>
+                <td> <button> редагувати/створити </button> </td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #72feb5; text-align: center;'><input type='checkbox' ></td>
+                <td hidden></td>
+            </tr>
+            <tr>
+                <td><input type='checkbox'></td>
+                <td contenteditable="true">зона5</td>
+                <td> <button> редагувати/створити </button> </td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
+                <td style='background-color: #72feb5; text-align: center;'><input type='checkbox' ></td>
+                <td hidden></td>
+            </tr>
+        </table> 
+       <button id='tg_save' style='width:98%;'> створити/змінити сповіщення </button> 
+       <div>
+            <table id="tg_spv"class='table'>
+                 <thead><tr><th>I/O</th><th>ЗБЕРЕЖЕНІ СПОВІЩЕННЯ</th><th style='text-align: center;'><button> ОНОВИТИ СПИСОК </button></th><th style='text-align: center;'><button> ВІДПРАВИТИ НА СЕРВЕР </button></th></tr></thead>
+            </table>
+        </div>
+    </div>
+
 
 
  <table id="unit_table"class='table'></table>
