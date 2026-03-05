@@ -9956,7 +9956,126 @@ telegram_zony_row.cells[7].textContent = json_text;
 telegram_zony_row.cells[0].children[0].checked = true;
 telegram_update_zony();
 }
+$("#tg_list").on("click", function (){
+  telegram_list_update();
+});
+async function telegram_list_update(){
+   let data = await async_filelist(ftp_id,'telegram');
+   if(data.length>0){
+    $('#tg_spv tbody').empty();
+    for (let i = 0; i < data.length; i++) {
+       $("#tg_spv").append("<tr><td>"+data[i]+"</td><td><button> редагувати </button></td><td><button> видалити </button></td></tr>"); 
+    }
+   }
+}
+$("#tg_save").on("click", async function (){
+  console.log("sadasdadas")
+  const fileName = $('#tg_name').val();
+  const receiver = $('#tg_reciver').val();
+  const groups = $('#tg_grup').val();
+  const units = $('#tg_unit').val();
+  if(!fileName || !receiver || (!groups && !units)){
+    alert("Не вказано назву, отримувачи, техніку");
+    return;
+  }
+      const data = {
+        // Собираем текстовые поля
+        info: {
+            name: fileName,
+            receiver: $('#tg_reciver').val(),
+            groups: $('#tg_grup').val(),
+            units: $('#tg_unit').val()
+        },
+        // Собираем настройки (чекбоксы и лимиты)
+        settings: {
+            stops: {
+                active: $('#tg_stops').is(':checked'),
+                limit: $('#tg_stops_lim').val()
+            },
+            speed: {
+                active: $('#tg_sped').is(':checked'),
+                limit: $('#tg_sped_lim').val()
+            },
+            shnek: $('#tg_shnek').is(':checked'),
+            shnek2: $('#tg_shnek2').is(':checked')
+        },
+        // Собираем таблицу зон
+        zones: []
+    };
 
+    // Проходим по строкам таблицы (пропуская заголовок)
+    $('#tg_zony tr:gt(0)').each(function() {
+        const $row = $(this);
+        const zone = {
+            enabled: $row.find('td:eq(0) input').is(':checked'),
+            name: $row.find('td:eq(1)').text().trim(),
+            on_enter: $row.find('td:eq(3) input').is(':checked'),
+            on_exit: $row.find('td:eq(4) input').is(':checked'),
+            ignore_in: $row.find('td:eq(5) input').is(':checked'),
+            ignore_out: $row.find('td:eq(6) input').is(':checked'),
+            coordinate: $row.find('td:eq(7)').text().trim()
+        };
+        data.zones.push(zone);
+    });
+
+    const content =  JSON.stringify(data, null, 2); // Возвращаем красивый JSON-текст
+    try {
+        await async_write(ftp_id, 'telegram', fileName + '.json', content);
+    } catch (e) {
+        console.error("Ошибка сохранения:", e);
+    }
+telegram_list_update();
+});
+$("#tg_spv").on("click", async function (evt){
+    let row = evt.target.closest("tr");
+    let cell = evt.target.closest("td");
+    let fileName = row.cells[0].textContent;
+    if (evt.target.tagName === "BUTTON") { 
+      if (cell && cell.cellIndex === 1) {
+          let data = await async_read(ftp_id, 'telegram', fileName);
+          data = typeof data === 'string' ? JSON.parse(data) : data;
+              // 1. Заполняем текстовые поля
+          $('#tg_name').val(data.info.name || "");
+          $('#tg_reciver').val(data.info.receiver || "");
+          $('#tg_grup').val(data.info.groups || "");
+          $('#tg_unit').val(data.info.units || "");
+
+          // 2. Настройки (стопы и скорость)
+          $('#tg_stops').prop('checked', data.settings.stops.active);
+          $('#tg_stops_lim').val(data.settings.stops.limit);
+          
+          $('#tg_sped').prop('checked', data.settings.speed.active);
+          $('#tg_sped_lim').val(data.settings.speed.limit);
+
+          // 3. Шнеки
+          $('#tg_shnek').prop('checked', data.settings.shnek);
+          $('#tg_shnek2').prop('checked', data.settings.shnek2);
+
+          // 4. Таблица зон
+          const rows = $('#tg_zony tr:gt(0)'); // Берем все строки данных
+          
+          data.zones.forEach((zone, index) => {
+              const $row = $(rows[index]); // Находим строку по индексу
+              if ($row.length) {
+                  $row.find('td:eq(0) input').prop('checked', zone.enabled);
+                  $row.find('td:eq(1)').text(zone.name);
+                  $row.find('td:eq(3) input').prop('checked', zone.on_enter);
+                  $row.find('td:eq(4) input').prop('checked', zone.on_exit);
+                  $row.find('td:eq(5) input').prop('checked', zone.ignore_in);
+                  $row.find('td:eq(6) input').prop('checked', zone.ignore_out);
+                  
+                  // Сохраняем координаты в скрытую ячейку (td:last или td:hidden)
+                  $row.find('td:last').text(zone.coordinate || "");
+              }
+          });
+          telegram_update_zony();
+      }
+      if (cell && cell.cellIndex === 2) {
+          async_delete(ftp_id, 'telegram', fileName);
+          telegram_list_update();
+      }
+    }
+});
 $("#tg_zony").on("click", function (evt){
     let row = evt.target.closest("tr");
     let cell = evt.target.closest("td");
@@ -9993,6 +10112,79 @@ if (cell && cell.cellIndex === 2) {
    telegram_update_zony();
   }
 });
+//===========================БазаДаних=======================================================================================
+//===========================БазаДаних=======================================================================================
+//===========================БазаДаних=======================================================================================
+//===========================БазаДаних=======================================================================================
+//===========================БазаДаних=======================================================================================
+
+function async_write(id, folder, fileName, content) {
+    return new Promise((resolve, reject) => {
+        const remote = wialon.core.Remote.getInstance();
+        const path = '//' + (folder ? folder + '/' : '') + fileName;
+        remote.remoteCall('file/write', {itemId: id, storageType: 1, path: path,content: content,  writeType: 0, contentType: 0}, (error) => {
+            if (error) {
+                const errorText = wialon.core.Errors.getErrorText(error);
+                msg(errorText);
+                return reject(errorText);
+            }
+            
+            msg(`Записано в ${path}`);
+            resolve();
+        });
+    });
+}
+function async_read(id, folder, fileName) {
+    return new Promise((resolve, reject) => {
+        const remote = wialon.core.Remote.getInstance();
+        const path = '//' + (folder ? folder + '/' : '') + fileName;
+        remote.remoteCall('file/read', {itemId: id, storageType: 1, path: path, contentType: 0}, (error, data) => {
+            if (error) {
+                const errorText = wialon.core.Errors.getErrorText(error);
+                msg(errorText);
+                return reject(errorText);
+            }
+            msg(`Записано в ${path}`);
+            resolve(data.content);  
+        });
+    });
+}
+function async_filelist(id, folder) {
+    return new Promise((resolve, reject) => {
+        const remote = wialon.core.Remote.getInstance();
+        const path = '//' + (folder ? folder : '');
+        const params = {itemId: id,storageType: 1,path: path,mask: '*',recursive: 0,fullPath: 0};
+
+        remote.remoteCall('file/list', {itemId: id,storageType: 1,path: path,mask: '*',recursive: 0,fullPath: 0}, (error, data) => {
+            if (error) return reject(wialon.core.Errors.getErrorText(error));
+
+             const files = data
+                .filter(item => item.s !== undefined)
+                .map(item => item.n);
+                
+            resolve(files);
+        });
+    });
+}
+function async_delete(id, folder, fileName) {
+    return new Promise((resolve, reject) => {
+        const remote = wialon.core.Remote.getInstance();
+        const path = '//' + (folder ? folder + '/' : '') + fileName;
+        remote.remoteCall('file/rm', {itemId: id, storageType: 1, path: path}, (error) => {
+            if (error) {
+                const errorText = wialon.core.Errors.getErrorText(error);
+                msg("Ошибка удаления: " + errorText);
+                return reject(errorText);
+            }
+            
+            msg(`Файл ${fileName} видалено`);
+            resolve();
+        });
+    });
+}
+
+
+
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
