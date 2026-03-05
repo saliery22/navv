@@ -10109,6 +10109,7 @@ if (cell && cell.cellIndex === 2) {
   }
   if (cell.cellIndex === 0 ) {
    if(!row.cells[7].textContent)   row.cells[0].children[0].checked = false;
+   if(!row.cells[0].children[0].checked) row.cells[7].textContent='';
    telegram_update_zony();
   }
 });
