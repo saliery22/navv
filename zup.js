@@ -2161,7 +2161,7 @@ if(rote_bt){
 });
  let colorr_logistik= -30;
 
-let areaSelection = new leafletAreaSelection.DrawAreaSelection({
+ areaSelection = new leafletAreaSelection.DrawAreaSelection({
   onButtonActivate : (polygon) => {
     $('#draw-panel-help').text('Визначте багатокутник, клацнувши на карті - щоб визначити вершини, або клацніть і перетягніть, щоб отримати прямокутну форму.') ;
   },
@@ -2191,15 +2191,24 @@ let areaSelection = new leafletAreaSelection.DrawAreaSelection({
       marshrut_treck.push(geojson);
       geojson.addTo(map);
       planuvannya_marshrutiv(polygon,colorr);
-    }else{
+      return;
+    }
       if($('#marrr').is(':visible') ) {
         marshruty_gruzovi(polygon,colorr);
-      }else{
+        return;
+      }
         if($('#zz1').is(':visible') || $('#zz2').is(':visible') || $('#zz3').is(':visible')) { 
           marshrut_treck.push(geojson);
           geojson.addTo(map);
           RemainsFuel(polygon,colorr);
-        }else{
+          return;
+        }
+
+        if($('#zz23').is(':visible')) { 
+         telegram_zony(polygon._latlngs);
+          return;
+        }
+
         geojson.addTo(map);
         let centr_lat = (polygon._bounds._northEast.lat+polygon._bounds._southWest.lat)/2;
         let centr_lng = (polygon._bounds._northEast.lng+polygon._bounds._southWest.lng)/2;
@@ -2215,9 +2224,9 @@ let areaSelection = new leafletAreaSelection.DrawAreaSelection({
                 }).addTo(map);
                 zup_mark_data.push(m);
                 zup_mark_data.push(geojson);
-        }
-      }
-    }
+        
+      
+   
     
 
   },
@@ -2431,6 +2440,41 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
  L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
 
+ L.easyButton('<img src="telegram.png" title="TELEGRAM">', function(){
+    if($('#unit_info').is(':hidden')){
+  $('#men4').click();
+  $('.leaflet-container').css('cursor','');
+  $('.zvit').hide();
+  $("#unit_table").empty();
+  $('#zz23').show();
+  $('#vib_zvit').val('z23');
+  clearGEO(); 
+  clearGarbage(garbage);
+  garbage=[];
+  clearGarbage(garbagepoly);
+  garbagepoly=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
+  }else{
+     if($('#zz23').is(':visible')) {
+      $('#men4').click();
+    }else{
+      $('.leaflet-container').css('cursor','');
+      $('.zvit').hide();
+      $("#unit_table").empty();
+      $('#zz23').show();
+      $('#vib_zvit').val('z23');
+      clearGEO(); 
+      clearGarbage(garbage);
+      garbage=[];
+      clearGarbage(garbagepoly);
+      garbagepoly=[];
+      clearGarbage(marshrutMarkers);
+      marshrutMarkers=[];
+    }
+  } 
+ }).addTo(map);
+
 }
 
 function fast_grop(idd){
@@ -2438,6 +2482,15 @@ function fast_grop(idd){
       treeselect2.mount();
       $('.container1').click();
 }
+
+$(".drav_geo").on("click", function (){
+if (areaSelection.phase !== 'inactive') {
+    areaSelection.deactivate();
+  } else {
+    areaSelection.activate();
+     $('#draw-panel-help').text('Намалюйте геозону і активуйте двойним кліком ') ;
+  }
+});
 
 //let ps = prompt('');
 //if(ps==55555){
@@ -9845,6 +9898,101 @@ let html = "<tr><td>"+data[0][0][1]+"</td><td></td><td>відстань</td><td>
  html += "<tr><td>більше 110</td><td style ='background-color: rgb(247, 0, 0)'></td><td>"+(d4/1000).toFixed(2)+"      ("+(d4/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t4)+"      ("+(t4/all_t*100).toFixed()+"%)</td></tr>";
 $("#unit_table").append(html);
 }
+
+//===========================TELEGRAM=======================================================================================
+//===========================TELEGRAM=======================================================================================
+//===========================TELEGRAM=======================================================================================
+//===========================TELEGRAM=======================================================================================
+//===========================TELEGRAM=======================================================================================
+function telegram_update_zony(){
+   const table = document.getElementById('tg_zony');
+if (table) {
+  clearGarbage(marshrut_treck);
+    for (let i = 1; i < table.rows.length; i++) {
+      let rawData = table.rows[i].cells[7].textContent.trim();
+      if(rawData){
+        let name  = table.rows[i].cells[1].textContent;
+        let color = 'rgb(80, 80, 80)';
+        if(table.rows[i].cells[3].children[0].checked || table.rows[i].cells[4].children[0].checked) color = 'rgb(0, 30, 255)';
+        if(table.rows[i].cells[5].children[0].checked) color = 'rgb(255, 0, 0)';
+        if(table.rows[i].cells[6].children[0].checked) color = 'rgb(0, 255, 13)';
+          try {
+                const cord = JSON.parse(rawData);
+                const latLngs = cord[0].map(point => [point.lat, point.lng]);
+                const polygon = L.polygon(latLngs, {
+                    color: color,       // цвет линии
+                    fillColor: color,  // цвет заливки
+                    fillOpacity: 0.3    // прозрачность
+                }).addTo(map);
+                 let centr_lat = (polygon._bounds._northEast.lat+polygon._bounds._southWest.lat)/2;
+                 let centr_lng = (polygon._bounds._northEast.lng+polygon._bounds._southWest.lng)/2;
+              let m =L.marker([centr_lat,centr_lng],{
+                  clickable: true,
+                  draggable: true,
+                  icon: L.divIcon({
+                    iconSize: "auto",
+                    iconAnchor: [25, 8],
+                    className: 'my-labels',
+                    html: "<div><nobr>"+name+"</div>",
+                  })
+                }).addTo(map);
+                marshrut_treck.push(polygon);
+                marshrut_treck.push(m);
+
+            } catch (e) {
+                console.error("Ошибка обработки координат:", e);
+            }
+
+      }
+        
+    }
+}
+}
+let telegram_zony_row ;
+function telegram_zony(poligon){
+  if(!telegram_zony_row)return;
+  let json_text = JSON.stringify(poligon);
+telegram_zony_row.cells[7].textContent = json_text;
+telegram_zony_row.cells[0].children[0].checked = true;
+telegram_update_zony();
+}
+
+$("#tg_zony").on("click", function (evt){
+    let row = evt.target.closest("tr");
+    let cell = evt.target.closest("td");
+    if (evt.target.tagName === "BUTTON") { 
+if (cell && cell.cellIndex === 2) {
+     telegram_zony_row=row;
+ if (areaSelection.phase !== 'inactive') {
+    areaSelection.deactivate();
+  } else {
+    areaSelection.activate();
+     $('#draw-panel-help').text('Намалюйте геозону і двойним кліком занесіть до сповіщення') ;
+  }
+}
+  }
+  if (cell.cellIndex === 3 || cell.cellIndex === 4) {
+    row.cells[5].children[0].checked = false;
+    row.cells[6].children[0].checked = false;
+    telegram_update_zony();
+  }
+    if (cell.cellIndex === 5 ) {
+    row.cells[3].children[0].checked = false;
+    row.cells[4].children[0].checked = false;
+    row.cells[6].children[0].checked = false;
+    telegram_update_zony();
+  }
+   if (cell.cellIndex === 6 ) {
+    row.cells[3].children[0].checked = false;
+    row.cells[4].children[0].checked = false;
+    row.cells[5].children[0].checked = false;
+    telegram_update_zony();
+  }
+  if (cell.cellIndex === 0 ) {
+   if(!row.cells[7].textContent)   row.cells[0].children[0].checked = false;
+   telegram_update_zony();
+  }
+});
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
 //===========================ЖУРНАЛ=======================================================================================
