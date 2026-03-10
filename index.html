@@ -903,10 +903,11 @@ button:hover {
 
     <div id="zz23" class='zvit'>
      <textarea id='tg_name' placeholder="унікальна назва сповішення" rows="1" style='width:49%;'></textarea>
-     <textarea id='tg_reciver' placeholder="фамілія отримувача через кому або назва групи" rows="1" style='width:49%;'></textarea>
+     <textarea id='tg_reciver' placeholder="назва яка буде відображена в повідомлені" rows="1" style='width:49%;'></textarea>
      <textarea id='tg_grup' placeholder="групи авто через кому (точна назва групи з Wialon)" rows="2" style='width:49%;'></textarea>
      <textarea id='tg_unit' placeholder="номер авто через кому (повна або часткова назва 1435,Водій,JD)" rows="2" style='width:49%;'></textarea>
      <br> 
+     <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #ffd3d3; width:97%;">
     <div style='display: flex;  align-items: center;'>
     <input id='tg_stops' type="checkbox"> &nbsp;&nbsp;перевищення зупинки&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
     <input type="number" id="tg_stops_lim" size="3" name="num" step="1" value="10" min="1" max="60" style='width:40px;'>&nbsp;&nbsp;хвилин
@@ -921,6 +922,7 @@ button:hover {
     <div style='display: flex;  align-items: center;'>
     <input id='tg_shnek2' type="checkbox"> &nbsp;&nbsp;робота шнеку (без мітки поруч)&nbsp;&nbsp; 
     </div>
+    </div>
     <table id="tg_zony" class='table'>
         <thead>
             <tr>
@@ -929,8 +931,8 @@ button:hover {
                 <th>РЕДАГУВАТИ/СТВОРИТИ</th>
                 <th>ПОВІДОМИТИ ПРО ВЇЗД</th>
                 <th>ПОВІДОМИТИ ПРО ВИЇЗД</th>
-                <th>ІГНОРУВАТИ ЗОНУ</th>
-                <th>ІГНОРУВАТИ ПО ЗА ЗОНОЮ</th>
+                <th style='background: #ffd3d3;'>ІГНОРУВАТИ ЗОНУ</th>
+                <th style='background: #ffd3d3;'>ІГНОРУВАТИ ПО ЗА ЗОНОЮ</th>
             </tr>
         </thead>
             <tr>
