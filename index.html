@@ -910,17 +910,20 @@ button:hover {
      <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #ffd3d3; width:97%;">
     <div style='display: flex;  align-items: center;'>
     <input id='tg_stops' type="checkbox"> &nbsp;&nbsp;перевищення зупинки&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-    <input type="number" id="tg_stops_lim" size="3" name="num" step="1" value="10" min="1" max="60" style='width:40px;'>&nbsp;&nbsp;хвилин
+    <input type="number" id="tg_stops_lim" size="3" name="num" step="1" value="10" min="1" max="60" style='width:40px;'>&nbsp;&nbsp;хвилин &nbsp;&nbsp;&nbsp;&nbsp; (не більше 45хв)
     </div>
     <div style='display: flex;  align-items: center;'>
     <input id='tg_sped' type="checkbox"> &nbsp;&nbsp;перевищення швидкості&nbsp;&nbsp;  
-    <input type="number" id="tg_sped_lim" size="3" name="num" step="1" value="80" min="1" max="180" style='width:40px;'>&nbsp;&nbsp;км/год
+    <input type="number" id="tg_sped_lim" size="3" name="num" step="1" value="80" min="1" max="180" style='width:40px;'>&nbsp;&nbsp;км/год &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (можна встановити 0 для індикації початку руху)
     </div>
     <div style='display: flex;  align-items: center;'>
-    <input id='tg_shnek' type="checkbox"> &nbsp;&nbsp;робота шнеку&nbsp;&nbsp;  
+    <input id='tg_shnek' type="checkbox"> &nbsp;&nbsp;робота шнеку&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (у розробці)  
     </div>
     <div style='display: flex;  align-items: center;'>
-    <input id='tg_shnek2' type="checkbox"> &nbsp;&nbsp;робота шнеку (без мітки поруч)&nbsp;&nbsp; 
+    <input id='tg_shnek2' type="checkbox"> &nbsp;&nbsp;робота шнеку (без мітки поруч)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (у розробці)  
+    </div>
+    <div style="text-align: center; font-weight: bold;">
+         ці сповіщення можна комбінувати з ІГНОРУВАТИ ЗОНУ та ІГНОРУВАТИ ПО ЗА ЗОНОЮ
     </div>
     </div>
     <table id="tg_zony" class='table'>
