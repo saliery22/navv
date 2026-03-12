@@ -8747,7 +8747,7 @@ if($("#unit_table tr").length==0){
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:weight,opacity:1}).addTo(map);
           temp_layer.push(l);
          }else{
-          let l = L.polyline([[yy,xx],[yy0,xx0]], {color:  rgb(63, 62, 62),weight:weight,opacity:1}).addTo(map);
+          let l = L.polyline([[yy,xx],[yy0,xx0]], {color:  'rgb(63, 62, 62)',weight:weight,opacity:1}).addTo(map);
           temp_layer.push(l);
          }
     
