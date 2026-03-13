@@ -9961,8 +9961,8 @@ $("#tg_list").on("click", function (){
 });
 async function telegram_list_update(){
    let data = await async_filelist(ftp_id,'telegram');
+   $('#tg_spv tbody').empty();
    if(data.length>0){
-    $('#tg_spv tbody').empty();
     for (let i = 0; i < data.length; i++) {
        $("#tg_spv").append("<tr><td>"+data[i]+"</td><td><button> редагувати </button></td><td><button> видалити </button></td></tr>"); 
     }
@@ -9988,6 +9988,10 @@ $("#tg_save").on("click", async function (){
         },
         // Собираем настройки (чекбоксы и лимиты)
         settings: {
+            navigation: {
+                active: $('#tg_nav').is(':checked'),
+                limit: $('#tg_nav_lim').val()
+            },
             stops: {
                 active: $('#tg_stops').is(':checked'),
                 limit: $('#tg_stops_lim').val()
@@ -10041,6 +10045,9 @@ $("#tg_spv").on("click", async function (evt){
           $('#tg_unit').val(data.info.units || "");
 
           // 2. Настройки (стопы и скорость)
+          $('#tg_nav').prop('checked', data.settings.navigation.active);
+          $('#tg_nav_lim').val(data.settings.navigation.limit);
+
           $('#tg_stops').prop('checked', data.settings.stops.active);
           $('#tg_stops_lim').val(data.settings.stops.limit);
           
