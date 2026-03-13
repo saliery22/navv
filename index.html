@@ -474,6 +474,22 @@
 button:hover {
     box-shadow: 0px 0px 4px 2px rgba(83, 83, 83, 0.479);
 }
+ .header-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 5px; }
+ .rules-panel {
+    border: 1px solid #ffb3b3;  background: #fff5f5; margin-bottom: 5px; width: 98%; 
+    display: flex;
+    flex-direction: column;
+}
+
+.rule-row {
+    display: grid;
+    grid-template-columns: 30px 40% 70px 1fr; /* Чекбокс | Текст | Инпут | Ед.изм */
+    align-items: center;
+    gap: 3px;
+    padding: 3px 0;
+    border-bottom: 1px dashed #ffdcdc;
+}
+.info-footer { text-align: center; font-size: 12px; color: #666; margin-top: 5px; padding: 5px; }
         </style>
 
 
@@ -902,46 +918,67 @@ button:hover {
     </div>
 
     <div id="zz23" class='zvit'>
-     <textarea id='tg_name' placeholder="унікальна назва сповішення" rows="1" style='width:49%;'></textarea>
-     <textarea id='tg_reciver' placeholder="Отримувач (Пальгуй,Навігація)" rows="1" style='width:49%;'></textarea>
-     <textarea id='tg_grup' placeholder="групи авто через кому (точна назва групи з Wialon)" rows="2" style='width:49%;'></textarea>
-     <textarea id='tg_unit' placeholder="номер авто через кому (повна або часткова назва 1435,Водій,JD)" rows="2" style='width:49%;'></textarea>
-     <br> 
-     <div style="border: 1px solid #ddd; padding: 10px; border-radius: 5px; background: #ffd3d3; width:97%;">
-    <div style='display: flex;  align-items: center;'>
-    <input id='tg_stops' type="checkbox"> &nbsp;&nbsp;перевищення зупинки&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-    <input type="number" id="tg_stops_lim" size="3" name="num" step="1" value="10" min="1" max="60" style='width:40px;'>&nbsp;&nbsp;хвилин &nbsp;&nbsp;&nbsp;&nbsp; (не більше 45хв)
+     <div class="header-grid">
+        <textarea id='tg_name' placeholder="📝 Унікальна назва сповіщення" rows="2"></textarea>
+        <textarea id='tg_reciver' placeholder="👤 Отримувач (Пальгуй, Навігація)" rows="2"></textarea>
+        <textarea id='tg_grup' placeholder="📂 Групи авто (через кому)" rows="2"></textarea>
+        <textarea id='tg_unit' placeholder="🚜 Номери авто (1435, JD, Водій)" rows="2"></textarea>
     </div>
-    <div style='display: flex;  align-items: center;'>
-    <input id='tg_sped' type="checkbox"> &nbsp;&nbsp;перевищення швидкості&nbsp;&nbsp;  
-    <input type="number" id="tg_sped_lim" size="3" name="num" step="1" value="80" min="1" max="180" style='width:40px;'>&nbsp;&nbsp;км/год &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (можна встановити 0 для індикації початку руху)
+     <div class="rules-panel">
+    <div class="rule-row">
+        <input id='tg_nav' type="checkbox">
+        <label for="tg_nav">🛰️ Втрата зв'язку або супутників</label>
+        <input type="number" id="tg_nav_lim" value="30" min="1">
+        <span class="unit-text">хв</span>
     </div>
-    <div style='display: flex;  align-items: center;'>
-    <input id='tg_shnek' type="checkbox"> &nbsp;&nbsp;робота шнеку&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (у розробці)  
+    
+    <div class="rule-row">
+        <input id='tg_stops' type="checkbox">
+        <label for="tg_stops">🅿️ Перевищення зупинки</label>
+        <input type="number" id="tg_stops_lim" value="10" min="1" max="60">
+        <span class="unit-text">хв (макс 60 хвилин)</span>
     </div>
-    <div style='display: flex;  align-items: center;'>
-    <input id='tg_shnek2' type="checkbox"> &nbsp;&nbsp;робота шнеку (без мітки поруч)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (у розробці)  
+    
+    <div class="rule-row">
+        <input id='tg_sped' type="checkbox">
+        <label for="tg_sped">🚀 Швидкість</label>
+        <input type="number" id="tg_sped_lim" value="80" min="0" max="180">
+        <span class="unit-text">км/г (встановіть 0 для індикації початку руху)</span>
     </div>
-    <div style="text-align: center; font-weight: bold;">
-         ці сповіщення можна комбінувати з ІГНОРУВАТИ ЗОНУ та ІГНОРУВАТИ ПО ЗА ЗОНОЮ
+    
+    <div class="rule-row" style="opacity: 0.6;">
+        <input id='tg_shnek' type="checkbox" disabled>
+        <label>⚙️ Робота шнеку </label>
+        <span>(у розробці)</span>
     </div>
+
+    <div class="rule-row" style="opacity: 0.6;">
+        <input id='tg_shnek2' type="checkbox" disabled>
+        <label>⚙️ Робота шнеку (без мітки поруч)</label>
+        <span>(у розробці)</span> 
+    </div>
+
+    <div class="info-footer">
+        💡 Ці сповіщення можна комбінувати з <b>Безпечними зонами</b> та <b>Зонами контролю</b>
+    </div>
+</div>
     </div>
     <table id="tg_zony" class='table'>
         <thead>
             <tr>
-                <th>ВКЛ</th>
-                <th>НАЗВА</th>
-                <th>РЕДАГУВАТИ/СТВОРИТИ</th>
-                <th>ПОВІДОМИТИ ПРО ВЇЗД</th>
-                <th>ПОВІДОМИТИ ПРО ВИЇЗД</th>
-                <th style='background: #ffd3d3;'>ІГНОРУВАТИ ЗОНУ</th>
-                <th style='background: #ffd3d3;'>ІГНОРУВАТИ ПО ЗА ЗОНОЮ</th>
+                <th style='text-align: center;'>ВКЛ</th>
+                <th style='text-align: center;'>НАЗВА</th>
+                <th style='text-align: center;'>РЕДАГУВАТИ/СТВОРИТИ</th>
+                <th style='text-align: center;'>ПОВІДОМИТИ ПРО ВЇЗД</th>
+                <th style='text-align: center;'>ПОВІДОМИТИ ПРО ВИЇЗД</th>
+                <th style='background: #ffd3d3; text-align: center;'>БЕЗПЕЧНА ЗОНА</th>
+                <th style='background: #ffd3d3; text-align: center;'>ЗОНА КОНТРОЛЮ</th>
             </tr>
         </thead>
             <tr>
                 <td><input type='checkbox'></td>
                 <td contenteditable="true">зона1</td>
-                <td> <button> редагувати/створити </button> </td>
+                <td style='text-align: center;'> <button> редагувати/створити </button> </td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
@@ -951,7 +988,7 @@ button:hover {
             <tr>
                 <td><input type='checkbox'></td>
                 <td contenteditable="true">зона2</td>
-                <td> <button> редагувати/створити </button> </td>
+                <td style='text-align: center;'> <button> редагувати/створити </button> </td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
@@ -961,7 +998,7 @@ button:hover {
             <tr>
                 <td><input type='checkbox'></td>
                 <td contenteditable="true">зона3</td>
-                <td> <button> редагувати/створити </button> </td>
+                <td style='text-align: center;'> <button> редагувати/створити </button> </td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
@@ -971,7 +1008,7 @@ button:hover {
             <tr>
                 <td><input type='checkbox'></td>
                 <td contenteditable="true">зона4</td>
-                <td> <button> редагувати/створити </button> </td>
+                <td style='text-align: center;'> <button> редагувати/створити </button> </td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
@@ -981,7 +1018,7 @@ button:hover {
             <tr>
                 <td><input type='checkbox'></td>
                 <td contenteditable="true">зона5</td>
-                <td> <button> редагувати/створити </button> </td>
+                <td style='text-align: center;'> <button> редагувати/створити </button> </td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #86c5fd; text-align: center;'><input type='checkbox' ></td>
                 <td style='background-color: #ff76bb; text-align: center;'><input type='checkbox' ></td>
@@ -989,10 +1026,10 @@ button:hover {
                 <td hidden></td>
             </tr>
         </table> 
-       <button id='tg_save' style='width:98%;'> створити/змінити сповіщення </button> 
+       <button id='tg_save' style='width:98%;'> 💾 СТВОРИТИ / ЗБЕРЕГТИ СПОВІЩЕННЯ </button> 
        <div>
             <table id="tg_spv"class='table'>
-                 <thead><tr><th>ЗБЕРЕЖЕНІ СПОВІЩЕННЯ</th><th th colspan="2" style='text-align: center;'><button id='tg_list'> ОНОВИТИ СПИСОК </button></th></tr></thead>
+                 <thead><tr><th>ЗБЕРЕЖЕНІ СПОВІЩЕННЯ</th><th th colspan="2" style='text-align: center;'><button id='tg_list'>🔄 ОНОВИТИ СПИСОК </button></th></tr></thead>
             </table>
         </div>
     </div>
