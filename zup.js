@@ -9914,8 +9914,8 @@ if (table) {
         let name  = table.rows[i].cells[1].textContent;
         let color = 'rgb(80, 80, 80)';
         if(table.rows[i].cells[3].children[0].checked || table.rows[i].cells[4].children[0].checked) color = 'rgb(0, 30, 255)';
-        if(table.rows[i].cells[5].children[0].checked) color = 'rgb(255, 0, 0)';
-        if(table.rows[i].cells[6].children[0].checked) color = 'rgb(0, 255, 13)';
+        if(table.rows[i].cells[5].children[0].checked) color = '#38f895';
+        if(table.rows[i].cells[6].children[0].checked) color = '#fffc54';
           try {
                 const cord = JSON.parse(rawData);
                 const latLngs = cord[0].map(point => [point.lat, point.lng]);
