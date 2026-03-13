@@ -9969,7 +9969,6 @@ async function telegram_list_update(){
    }
 }
 $("#tg_save").on("click", async function (){
-  console.log("sadasdadas")
   const fileName = $('#tg_name').val();
   const receiver = $('#tg_reciver').val();
   const groups = $('#tg_grup').val();
