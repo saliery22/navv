@@ -4422,7 +4422,7 @@ function st_zap() {
 	 
     }
    }
-grafik_drav(dataX,dataY,[5400,8000,8000,25000]);
+grafik_drav(dataX,dataY,[5400,8000,8000,25000,8000]);
 }
 
 function grafik_drav(dataX,dataY,dataY2){
