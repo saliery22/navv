@@ -1981,6 +1981,7 @@ function initMap() {
     // disable zooming, because we will use double-click to set up marker
     doubleClickZoom: false,
     zoomAnimation: false,
+	zoomSnap: 0.1,
     animate: false,
     zoomControl: false,
     contextmenu: true,
