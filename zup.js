@@ -2506,10 +2506,10 @@ function initApp(){
   const USER = localStorage.getItem('wialon_user');
   const host = "https://1.gpsagro.info";
   const server = "https://hst-api.wialon.eu";
- if(USER!='KKZ_Gluhiv'){
-  $('option[value="z8"]').hide(); 
-  $('option[value="z5"]').hide(); 
- }
+  if (USER != 'KKZ_Gluhiv' && USER != 'KKZ_ohorona') {
+      $('option[value="z8"]').hide(); 
+      $('option[value="z5"]').hide(); 
+  }
   if(TK){
   wialon.core.Session.getInstance().initSession(server,null,0x800);
   wialon.core.Session.getInstance().loginToken(TK, "", // try to login
