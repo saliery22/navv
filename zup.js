@@ -90,11 +90,41 @@ unitslist.forEach(function(unit) {
           
           }
           
-          pop.setContent('<center><font size="1">' + unit.getName()+'<br />' +wialon.util.DateTime.formatTime(sdsa.t)+'<br />' +sdsa.s+' км/год <br />'+sdsa.sc+' супутників <br />'+fuel+'л' +'<br />водій ' +vodiy+'<br />прицеп ' +agregat);
-          if((Date.now())/1000-parseInt(sdsa.t)>3600 || parseInt(sdsa.sc)<5){
-            pop.setContent('<center><font size="1">' + unit.getName()+'<br /> ВІДСУТНЯ НАВІГАЦІЯ <br /> остані дані <br />'+wialon.util.DateTime.formatTime(sdsa.t)+'<br />'+sdsa.sc+' супутників <br />');
-            unitMarker.setOpacity(0.6);
-          } 
+          var statusText = '';
+          var color = '#000'; // По умолчанию черный
+
+          // Проверка на актуальность данных и спутники
+          if ((Date.now()) / 1000 - parseInt(sdsa.t) > 3600 || parseInt(sdsa.sc) < 5) {
+              color = '#d9534f'; // Красный для проблемных
+              statusText = 
+                  '<table style="width:100%; border-bottom:1px solid #eee; margin-bottom:5px;">' +
+                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:12px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
+                  '</table>' +
+                  '<div style="font-size:12px; text-align:center; line-height:1.4;">' +
+                        unit.getName() + '<br />' +
+                      '<b>🕒:</b> ' + wialon.util.DateTime.formatTime(sdsa.t) + '<br />' +
+                      '<b>📡:</b> <span style="color:' + color + ';">' + sdsa.sc + '</span>' +
+                  '</div>';
+              unitMarker.setOpacity(0.5);
+          } else {
+              statusText = 
+                  '<div style="min-width:50px; font-family: sans-serif;">' +
+                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                          unit.getName() + 
+                      '</div>' +
+                      '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
+                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + wialon.util.DateTime.formatTime(sdsa.t) + '</td></tr>' +
+                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + sdsa.s + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">📡</td><td style="text-align:right;">' + sdsa.sc + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + fuel + ' л</td></tr>' +
+                          '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vodiy || '—') + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (agregat || '—') + '</td></tr>' +
+                      '</table>' +
+                  '</div>';
+              unitMarker.setOpacity(1);
+          }
+
+          pop.setContent(statusText);
          
     if(sdsa)unitMarker.setLatLng([sdsa.y, sdsa.x]);
 
@@ -213,11 +243,41 @@ function online_ON() {
             }
           
 
-          pop.setContent('<center><font size="1">' + unit.getName()+'<br />' +wialon.util.DateTime.formatTime(pos.t)+'<br />' +pos.s+' км/год <br />'+pos.sc+' супутників <br />'+fuel+'л' +'<br />водій ' +vodiy+'<br />прицеп ' +agregat);
-           if((Date.now())/1000-parseInt(pos.t)>3600 || parseInt(pos.sc)<5){
-            pop.setContent('<center><font size="1">' + unit.getName()+'<br /> ВІДСУТНЯ НАВІГАЦІЯ <br /> остані дані <br />'+wialon.util.DateTime.formatTime(pos.t)+'<br />'+pos.sc+' супутників <br />');
-            unitMarker.setOpacity(0.6);
-           } 
+           var statusText = '';
+          var color = '#000'; // По умолчанию черный
+
+          // Проверка на актуальность данных и спутники
+          if ((Date.now()) / 1000 - parseInt(pos.t) > 3600 || parseInt(pos.sc) < 5) {
+              color = '#d9534f'; // Красный для проблемных
+              statusText = 
+                  '<table style="width:100%; border-bottom:1px solid #eee; margin-bottom:5px;">' +
+                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:12px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
+                  '</table>' +
+                  '<div style="font-size:12px; text-align:center; line-height:1.4;">' +
+                        unit.getName() + '<br />' +
+                      '<b>🕒:</b> ' + wialon.util.DateTime.formatTime(pos.t) + '<br />' +
+                      '<b>📡:</b> <span style="color:' + color + ';">' + pos.sc + '</span>' +
+                  '</div>';
+              unitMarker.setOpacity(0.5);
+          } else {
+              statusText = 
+                  '<div style="min-width:50px; font-family: sans-serif;">' +
+                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                          unit.getName() + 
+                      '</div>' +
+                      '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
+                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + wialon.util.DateTime.formatTime(pos.t) + '</td></tr>' +
+                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + pos.s + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">📡</td><td style="text-align:right;">' + pos.sc + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + fuel + ' л</td></tr>' +
+                          '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vodiy || '—') + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (agregat || '—') + '</td></tr>' +
+                      '</table>' +
+                  '</div>';
+              unitMarker.setOpacity(1);
+          }
+
+          pop.setContent(statusText);
          
         }
       }
@@ -3645,9 +3705,22 @@ function position(t)  {
            }
             let avto = '';
             let vod = '';
-             if(Global_DATA[ii][i][5]!=0)avto='<br />'+Global_DATA[ii][i][5];
-             if(Global_DATA[ii][i][6]!=0)vod='<br />'+Global_DATA[ii][i][6];
-            markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ ' км/год <br />' +Global_DATA[ii][i][2]+'л'+ avto + vod);
+             if(Global_DATA[ii][i][5]!=0)avto= Global_DATA[ii][i][5];
+             if(Global_DATA[ii][i][6]!=0)vod= Global_DATA[ii][i][6];
+                  let  statusText = 
+                  '<div style="min-width:50px; font-family: sans-serif;">' +
+                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                          Global_DATA[ii][0][1] + 
+                      '</div>' +
+                      '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
+                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + Global_DATA[ii][i][1] + '</td></tr>' +
+                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + Global_DATA[ii][i][3] + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + Global_DATA[ii][i][2] + ' л</td></tr>' +
+                          '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vod || '—') + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (avto || '—') + '</td></tr>' +
+                      '</table>' +
+                  '</div>';
+             markerrr.bindPopup(statusText);
              if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.3)markerrr.setOpacity(opt*0.97);}}
              if(agregat !=0){
              markerrr.setOpacity(0);
