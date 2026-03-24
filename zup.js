@@ -98,9 +98,9 @@ unitslist.forEach(function(unit) {
               color = '#d9534f'; // Красный для проблемных
               statusText = 
                   '<table style="width:100%; border-bottom:1px solid #eee; margin-bottom:5px;">' +
-                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:12px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
+                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:11px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
                   '</table>' +
-                  '<div style="font-size:12px; text-align:center; line-height:1.4;">' +
+                  '<div style="font-size:11px; text-align:center; line-height:1.4;">' +
                         unit.getName() + '<br />' +
                       '<b>🕒:</b> ' + wialon.util.DateTime.formatTime(sdsa.t) + '<br />' +
                       '<b>📡:</b> <span style="color:' + color + ';">' + sdsa.sc + '</span>' +
@@ -109,10 +109,10 @@ unitslist.forEach(function(unit) {
           } else {
               statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
-                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                      '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
                           unit.getName() + 
                       '</div>' +
-                      '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
+                      '<table style="width:100%; font-size:11px; border-collapse:collapse;">' +
                           '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + wialon.util.DateTime.formatTime(sdsa.t) + '</td></tr>' +
                           '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + sdsa.s + ' км/год</td></tr>' +
                           '<tr><td style="text-align:center;">📡</td><td style="text-align:right;">' + sdsa.sc + '</td></tr>' +
@@ -251,9 +251,9 @@ function online_ON() {
               color = '#d9534f'; // Красный для проблемных
               statusText = 
                   '<table style="width:100%; border-bottom:1px solid #eee; margin-bottom:5px;">' +
-                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:12px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
+                      '<tr><td colspan="2" style="text-align:center; font-weight:bold; font-size:11px; color:' + color + ';">⚠️ ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
                   '</table>' +
-                  '<div style="font-size:12px; text-align:center; line-height:1.4;">' +
+                  '<div style="font-size:11px; text-align:center; line-height:1.4;">' +
                         unit.getName() + '<br />' +
                       '<b>🕒:</b> ' + wialon.util.DateTime.formatTime(pos.t) + '<br />' +
                       '<b>📡:</b> <span style="color:' + color + ';">' + pos.sc + '</span>' +
@@ -262,7 +262,7 @@ function online_ON() {
           } else {
               statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
-                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                      '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
                           unit.getName() + 
                       '</div>' +
                       '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
@@ -3709,10 +3709,10 @@ function position(t)  {
              if(Global_DATA[ii][i][6]!=0)vod= Global_DATA[ii][i][6];
                   let  statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
-                      '<div style="text-align:center; font-size:12px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
+                      '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
                           Global_DATA[ii][0][1] + 
                       '</div>' +
-                      '<table style="width:100%; font-size:12px; border-collapse:collapse;">' +
+                      '<table style="width:100%; font-size:11px; border-collapse:collapse;">' +
                           '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + Global_DATA[ii][i][1] + '</td></tr>' +
                           '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + Global_DATA[ii][i][3] + ' км/год</td></tr>' +
                           '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + Global_DATA[ii][i][2] + ' л</td></tr>' +
