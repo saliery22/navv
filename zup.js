@@ -1188,6 +1188,7 @@ treeselect5 = new Treeselect({
         let idd =allunits[i].getId();
         let  mm = markerByUnit[idd];
              mm.setOpacity(0);
+             if (mm._icon)mm._icon.style.pointerEvents = 'none';  
          }
       agregat=0;
       for (let ii = 0; ii<spisok.length; ii++){
@@ -1195,7 +1196,8 @@ treeselect5 = new Treeselect({
        filtr_data.push(id);
        let mm = markerByUnit[id];
        mm.setZIndexOffset(1000);
-        if(mm  && rux==0)mm.setOpacity(1);  
+        if(mm  && rux==0)mm.setOpacity(1); 
+        if (mm._icon)mm._icon.style.pointerEvents = 'auto';     
       }
       if(vkl){
         for(var i=0; i < allunits.length; i++){
@@ -3646,7 +3648,7 @@ function position(t)  {
              if(Global_DATA[ii][i][5]!=0)avto='<br />'+Global_DATA[ii][i][5];
              if(Global_DATA[ii][i][6]!=0)vod='<br />'+Global_DATA[ii][i][6];
             markerrr.bindPopup('<center><font size="1">'+Global_DATA[ii][0][1] +'<br />' +Global_DATA[ii][i][1]+ '<br />' +Global_DATA[ii][i][3]+ ' км/год <br />' +Global_DATA[ii][i][2]+'л'+ avto + vod);
-             if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.02)markerrr.setOpacity(opt*0.97);}}
+             if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.3)markerrr.setOpacity(opt*0.97);}}
              if(agregat !=0){
              markerrr.setOpacity(0);
              if(agregat == 30){ if (!Global_DATA[ii][i][5]) {if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}break;}
