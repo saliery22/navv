@@ -1227,6 +1227,10 @@ treeselect5 = new Treeselect({
           let nmm =allunits[i].getName();
           let  mm = markerByUnit[idd];
                mm.setOpacity(0);
+               if (mm._icon)mm._icon.style.pointerEvents = 'none'; 
+               if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0 ){
+                    if (mm._icon)mm._icon.style.pointerEvents = 'auto';  
+               }
     
                if (nn=='Без агрегату'){
                 if(nmm.indexOf('John')>=0 || nmm.indexOf('JD')>=0 || nmm.indexOf(' CL ')>=0|| nmm.indexOf('CASE')>=0 || nmm.indexOf(' NH ')>=0 ){
