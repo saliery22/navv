@@ -1213,11 +1213,13 @@ treeselect5 = new Treeselect({
         if (nn=='Боронування'){agregat = 23; }
         if (nn=='Рихлитель'){agregat = 24; }
         if (nn=='Оранка'){agregat = 25; }
-        if (nn=='Розкидачи'){agregat = 27; }
-        if (nn=='Оприскувачи'){agregat = 26; }
+        if (nn=='Розкидачи'){agregat = 26; }
+        if (nn=='Оприскувачи'){agregat = 27; }
         if (nn=='Сівалки'){agregat = 28; }
         if (nn=='Комбайни'){agregat = 29; }
         if (nn=='Без агрегату'){agregat = 30; }
+
+
 
         
         for(var i=0; i < allunits.length; i++){
