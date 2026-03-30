@@ -3707,7 +3707,7 @@ function position(t)  {
             x = Global_DATA[ii][i][8];
             markerrr.setLatLng([y, x]); 
 
-             let avto = '';
+            let avto = '';
             let vod = '';
              if(Global_DATA[ii][i][5]!=0)avto= Global_DATA[ii][i][5];
              if(Global_DATA[ii][i][6]!=0)vod= Global_DATA[ii][i][6];
@@ -3725,10 +3725,10 @@ function position(t)  {
                       '</table>' +
                   '</div>';
              markerrr.bindPopup(statusText);
-             if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.3)markerrr.setOpacity(opt*0.97);}}
+             if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.2)markerrr.setOpacity(opt*0.99);}}else{markerrr.setOpacity(1);}
            }else{
              markerrr.bindPopup('<center><font size="1">' + Global_DATA[ii][0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
-             markerrr.setOpacity(0.4);
+             markerrr.setOpacity(0.2);
            }
              if(agregat !=0){
              markerrr.setOpacity(0);
