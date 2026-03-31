@@ -2081,14 +2081,18 @@ function initMap() {
 
 map.createPane('Fields');
 map.getPane('Fields').style.zIndex = 400; 
+map.createPane('Tracks');
+map.getPane('Tracks').style.zIndex = 450; 
    // Скрываем маркеры, когда начался зум пальцами
 map.on('zoomstart', function() {
   map.getPane('Fields').style.display = 'none';
+  map.getPane('Tracks').style.display = 'none';
 });
 
 // Возвращаем иконки только после того, как зум полностью завершился
 map.on('zoomend', function() {
    map.getPane('Fields').style.display = 'block';
+   map.getPane('Tracks').style.display = 'block';
 });
   // add an OpenStreetMap tile layer
 map.attributionControl.addAttribution('Пальгуй Сергій');
@@ -2774,7 +2778,7 @@ function show_track (time1,time2) {
 				   // map.fitBounds(bounds); // get center and zoom
 				    // create tile-layer and specify the tile template
 					if (!tile_layer)
-						tile_layer = L.tileLayer(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png", {zoomReverse: true, zoomOffset: -1,zIndex: 6}).addTo(map);
+						tile_layer = L.tileLayer(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png", {zoomReverse: true, zoomOffset: -1,pane: 'Tracks'}).addTo(map);
 					else 
 						tile_layer.setUrl(sess.getBaseUrl() + "/adfurl" + renderer.getVersion() + "/avl_render/{x}_{y}_{z}/"+ sess.getId() +".png");
 				    // push this layer in global container
