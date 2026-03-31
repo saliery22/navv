@@ -71,7 +71,7 @@
 
         #shapka{ width: 100%; height:30px;border-bottom: 2px solid #d7dde4;display: flex;  justify-content: space-between; background: #ffffff;}
         #nizz{ width: 100%; height:30px; border-bottom: 2px solid #d7dde4;display: flex;  justify-content: flex-start;}
-        #niz{ border-top: 2px solid #d7dde4; }
+        #niz{ border-top: 2px solid #d7dde4; -webkit-user-select: none;-moz-user-select: none;-ms-user-select: none; user-select: none; }
         #main0 {display: flex;}
         #main1 {width: 300px; height:calc(100vh - 124px); overflow-y: auto; overflow-x: auto;}
         #main2 {width: 100%; height:calc(100vh - 124px);}
@@ -490,6 +490,27 @@ button:hover {
     border-bottom: 1px dashed #ffb3b3;
 }
 .info-footer { text-align: center; font-size: 12px; color: #666; margin-top: 5px; padding: 5px; }
+
+.leaflet-marker-shadow {
+    display: none !important; /* Полностью скрывает все тени маркеров */
+}
+/* 1. Вместо анимации каждого маркера по отдельности, анимируем всю панель маркеров */
+.leaflet-marker-icon {
+    transition: transform 0.1s linear !important;
+    will-change: transform;
+}
+
+.leaflet-popup {
+    /* 0.3s должно совпадать с временем анимации маркера */
+    transition: all 0.1s linear !important; 
+    will-change: transform;
+    pointer-events: none; /* Чтобы попап не "дрожал" при наведении */
+}
+
+
+
+
+
         </style>
 
 
@@ -1287,6 +1308,7 @@ button:hover {
     <button class='main_menu' id='eeew'>Завантажити</button>
     <button class='main_menu' id='vchora'>Вчора</button>
     </div>
+
     <div style ="width: 200px; display: flex; align-items: center;">
     <span id="f"></span>
     </div>
@@ -1307,7 +1329,10 @@ button:hover {
    <div id="scrool_area">   
  <div class="slidecontainer">
    <input type="range" min="1" max="2000" value="2000" class="slider" id="myRange">
- </div>     
+ </div> 
+ 
+
+
                 
 <div id="log" style ="text-align: center;"></div>
 </div>
