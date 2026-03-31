@@ -666,7 +666,7 @@ function initUIData() {
 
            }
            IDzonacord[zone.id]=cord;
-           var geozona =  L.polygon([cord], {color: '#FF00FF', stroke: true,weight: 1, opacity: 0.2, fillOpacity: 0.5, fillColor: color,  contextmenu: true,
+           var geozona =  L.polygon([cord], {pane: 'Fields',color: '#FF00FF', stroke: true,weight: 1, opacity: 0.2, fillOpacity: 0.5, fillColor: color,  contextmenu: true,
     contextmenuItems: [{
         text: 'історія обробки',
         callback: mark5,
@@ -2052,6 +2052,7 @@ function initMap() {
     animate: false,
     zoomControl: false,
     contextmenu: true,
+    preferCanvas: true,
      contextmenuWidth: 140,
        contextmenuItems: [{
          text: 'Очистити треки',
@@ -2078,22 +2079,45 @@ function initMap() {
   
  //L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
 
+map.createPane('Fields');
+map.getPane('Fields').style.zIndex = 400; 
+   // Скрываем маркеры, когда начался зум пальцами
+map.on('zoomstart', function() {
+  map.getPane('Fields').style.display = 'none';
+});
 
+// Возвращаем иконки только после того, как зум полностью завершился
+map.on('zoomend', function() {
+   map.getPane('Fields').style.display = 'block';
+});
   // add an OpenStreetMap tile layer
 map.attributionControl.addAttribution('Пальгуй Сергій');
 
-  var basemaps = {
-    'Google_Streets':L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3']}),
-    'Google_Hybrid':L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3'],layers: 'OSM-Overlay-WMS,TOPO-WMS'}),
-    'Google_Terrain': L.tileLayer('http://{s}.google.com/vt?lyrs=p&x={x}&y={y}&z={z}',{subdomains:['mt0','mt1','mt2','mt3']}),
-    'OSM':L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {}),
-    'Night': L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',	ext: 'png'})
-};
+var basemaps = {
+  'Google Streets': L.tileLayer('https://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps',
+      maxZoom: 20
+  }),
+  'Google Hybrid': L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+      attribution: '&copy; Google Maps',
+      maxZoom: 20
+  }),
+  'OSM': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+  }),
+  'TopPlusOpen_Grey':  L.tileLayer('http://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/web_grau/default/WEBMERCATOR/{z}/{y}/{x}.png', {
+      maxZoom: 18,
+      attribution: 'Map data: &copy; <a href="http://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>'
+  }),
+  };
 
 
 layerControl=L.control.layers(basemaps).addTo(map);
 
-basemaps.Google_Streets.addTo(map);
+basemaps['Google Streets'].addTo(map);
   
     markerstart = L.marker([0,0],{icon: L.icon({iconUrl: '555.png',iconSize:[30, 45],iconAnchor:[15, 45]})}).addTo(map);
     markerend = L.marker([0,0],{icon: L.icon({iconUrl: '444.png',iconSize:[30, 45],iconAnchor:[15, 45]})}).addTo(map);
@@ -3724,10 +3748,10 @@ function position(t)  {
                           '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (avto || '—') + '</td></tr>' +
                       '</table>' +
                   '</div>';
-             markerrr.bindPopup(statusText);
+             markerrr.setPopupContent(statusText);
              if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.2)markerrr.setOpacity(opt*0.99);}}else{markerrr.setOpacity(1);}
            }else{
-             markerrr.bindPopup('<center><font size="1">' + Global_DATA[ii][0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
+             markerrr.setPopupContent('<center><font size="1">' + Global_DATA[ii][0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
              markerrr.setOpacity(0.2);
            }
              if(agregat !=0){
@@ -4503,7 +4527,7 @@ function st_zap() {
 	 
     }
    }
-grafik_drav(dataX,dataY,[5400,8000,8000,25000,8000]);
+grafik_drav(dataX,dataY,[5400,8000,25000,8000,8000]);
 }
 
 function grafik_drav(dataX,dataY,dataY2){
