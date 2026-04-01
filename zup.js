@@ -2080,7 +2080,7 @@ function initMap() {
  //L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
 
 map.createPane('Fields');
-map.getPane('Fields').style.zIndex = 400; 
+map.getPane('Fields').style.zIndex = 350; 
 map.createPane('Tracks');
 map.getPane('Tracks').style.zIndex = 450; 
    // Скрываем маркеры, когда начался зум пальцами
