@@ -3659,7 +3659,7 @@ var slider = document.getElementById("myRange");
 var slider_sp = document.getElementById("sp_play");
 var output = document.getElementById("f");
 
-var scrool_area = document.getElementById("scrool_area");
+var scrool_area = document.getElementById("niz");
 scrool_area.addEventListener("wheel", function(e){
   if (e.deltaY < 0){
      let t=Date.parse($('#f').text())+8000;
@@ -9862,26 +9862,42 @@ function BLE(data){
   let data_ble =[];
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td>Дата</td><td>Перевантажувач</td><td>Локація</td><td>Мітка</td><td>ID мітки</td><td>відстань</td></tr>");
+
+
 for(let i = 0; i<data.length; i++){
   let name = data[i][0][1];
-  if(data[i][0][2][12]!='Робота Шнека')continue;
+  
+  let ind_rob = null;
+   let ind_mitka = null;
+    let ind_dist = null;
+  for(let ii = 0; ii<data[i][0][2].length; ii++){
+    if(data[i][0][2][ii]=='Робота Шнека')ind_rob = ii;
+    if(data[i][0][2][ii]=='Мітка BTT')ind_mitka = ii;
+    if(data[i][0][2][ii]=='Відстань до мітки BTT')ind_dist = ii;
+
+  }
+
+  if(!ind_rob)continue;
   let ble=0;
   let dist= 999999;
   let zav = 0;
   for(let ii = 1; ii<data[i].length; ii++){
     if(!data[i][ii][1])continue;
-    if(!data[i][ii][0])continue;
-    if( parseInt(data[i][ii][12])==0 && zav == 0){
+    if( parseInt(data[i][ii][ind_rob])==0 && zav == 0){
       data_ble.push(["-----","-----","-----","-----","-----","-----"]);
       zav=1;
     }
-    if( parseInt(data[i][ii][12])==1 ){
+    if( parseInt(data[i][ii][ind_rob])==1 ){
      //if(data[i][ii][4]!=ble && parseFloat(data[i][ii][13])<=20){
       ble=data[i][ii][4];
+      let zn = "-----";
+      if(data[i][ii][0]){
       let y = parseFloat(data[i][ii][0].split(',')[0]);
       let x = parseFloat(data[i][ii][0].split(',')[1]);
-      let zn = point_in_region(y,x);
-       data_ble.push([data[i][ii][1],name,zn,ble.split('_')[0],data[i][ii][11],data[i][ii][13]]);
+       zn = point_in_region(y,x);
+      }
+
+       data_ble.push([data[i][ii][1],name,zn,ble.split('_')[0],data[i][ii][ind_mitka],data[i][ii][ind_dist]]);
        zav=0;
      //}
     }   
