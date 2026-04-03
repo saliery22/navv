@@ -2793,7 +2793,7 @@ function show_track (time1,time2) {
 		"timeTo": to, // interval end
 		"tripDetector": 0, //use trip detector: 0 - no, 1 - yes
 		"trackColor": color, //track color in ARGB format (A - alpha channel or transparency level)
-		"trackWidth": 2, // track line width in pixels
+		"trackWidth": 1, // track line width in pixels
 		"arrows": 1, //show course of movement arrows: 0 - no, 1 - yes
 		"points": 0, // show points at places where messages were received: 0 - no, 1 - yes
 		"pointColor": color, // points color
