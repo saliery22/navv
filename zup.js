@@ -2052,7 +2052,7 @@ function initMap() {
     animate: false,
     zoomControl: false,
     contextmenu: true,
-    preferCanvas: true,
+    //preferCanvas: true,
      contextmenuWidth: 140,
        contextmenuItems: [{
          text: 'Очистити треки',
@@ -2080,9 +2080,9 @@ function initMap() {
  //L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{ subdomains:['mt0','mt1','mt2','mt3']}).addTo(map);
 
 map.createPane('Fields');
-map.getPane('Fields').style.zIndex = 350; 
+map.getPane('Fields').style.zIndex = 300; 
 map.createPane('Tracks');
-map.getPane('Tracks').style.zIndex = 450; 
+map.getPane('Tracks').style.zIndex = 350; 
    // Скрываем маркеры, когда начался зум пальцами
 map.on('zoomstart', function() {
   map.getPane('Fields').style.display = 'none';
@@ -2793,7 +2793,7 @@ function show_track (time1,time2) {
 		"timeTo": to, // interval end
 		"tripDetector": 0, //use trip detector: 0 - no, 1 - yes
 		"trackColor": color, //track color in ARGB format (A - alpha channel or transparency level)
-		"trackWidth": 1, // track line width in pixels
+		"trackWidth": 2, // track line width in pixels
 		"arrows": 1, //show course of movement arrows: 0 - no, 1 - yes
 		"points": 0, // show points at places where messages were received: 0 - no, 1 - yes
 		"pointColor": color, // points color
