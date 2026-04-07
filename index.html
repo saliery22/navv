@@ -199,7 +199,7 @@
         .table3 { border: none;}
         .table3 tbody td {border: none; padding: 2px 5px;  white-space: nowrap; overflow: hidden;}
         
-        #log { width: 99%; border: 0px solid #c6c6c6; height:10px; overflow-y: hidden; margin: 0px 0px 0px 0px;font-family: Arial, Tahoma, sans-serif; color: #464646; font-size: 9px;}
+         #log { width: 99%; border: 0px solid #c6c6c6; height:10px; overflow-y: hidden;  margin: 10px auto 0 auto; font-family: Arial, Tahoma, sans-serif; color: #464646; font-size: 9px;}
         #log2 { width: 99%; border: 0px solid #c6c6c6; height:10px; overflow-y: hidden;  overflow-x: hidden; margin: 0px 0px 0px 0px;font-family: Arial, Tahoma, sans-serif; color: #464646; font-size: 9px;}
         #mars_table{max-height:60vh; overflow-y: auto;}
         #control_table{max-height:60vh; overflow-y: auto;}
@@ -490,6 +490,105 @@ button:hover {
     border-bottom: 1px dashed #ffb3b3;
 }
 .info-footer { text-align: center; font-size: 12px; color: #666; margin-top: 5px; padding: 5px; }
+.scroll-timeline {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    cursor: grab; /* Курсор-рука для перетаскивания */
+    -ms-overflow-style: none;  /* IE и Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.scroll-timeline::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+.scroll-timeline:active {
+    cursor: grabbing;
+}
+
+
+.pleyer-box {
+    position: relative;
+    width: calc(100% - 4px);
+    /* 1. Увеличиваем общую высоту, чтобы было место для маневра */
+    height: 50px; 
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Стандартное свойство */
+}
+
+#scroll-content {
+     --tick-width: 50px;
+    display: flex;
+    /* 2. Прижимаем палочки к полу */
+    align-items: flex-end; 
+    padding: 0 50% 2px 50%; /* Снизу 15px отступ для красоты */
+    
+    /* 3. Указываем фиксированную высоту контента меньше, чем у родителя */
+    height: 30px; 
+    margin-top: 20px; /* Принудительный отступ от верхнего края */
+    
+    box-sizing: border-box;
+    min-width: max-content;
+}
+
+.time-tick {
+    width: var(--tick-width);       /* Теперь это строгие 10px вместе с линией */
+    height: 20px;
+    border-left: 1px solid #5c5c5c;
+    flex-shrink: 0;
+    position: relative;
+    box-sizing: border-box; /* КРИТИЧНО: граница внутри ширины */
+    margin: 0;    
+     border-bottom: 1px solid #5c5c5c;        /* Исключаем лишние зазоры */
+}
+
+.time-tick.major {
+    height: 30px; /* Длинная палка */
+    border-left: 2px solid #333;
+}
+
+.time-label {
+    position: absolute;
+    /* 4. Текст теперь гарантированно внутри видимой зоны pleyer-box */
+    top: -12px; 
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: bold;
+    color: #333;
+    white-space: nowrap;
+}
+
+.center-pointer {
+    position: absolute;
+    left: 50%;
+    bottom: 2px; /* Должен совпадать с padding-bottom шкалы */
+    width: 2px;
+    height: 43px;
+    background: red;
+    z-index: 1000;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.time-now {
+    position: absolute;
+    top: -5px; /* Выносим надпись выше красной линии */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 0, 0, 0.9); /* Красный фон для акцента */
+    color: white;
+    padding: 2px 2px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: monospace; /* Моноширинный шрифт, чтобы цифры не прыгали */
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
 
 .leaflet-marker-shadow {
     display: none !important; /* Полностью скрывает все тени маркеров */
@@ -1302,6 +1401,20 @@ button:hover {
 
 
  <div id="niz">
+
+     <div class="pleyer-box" id="pleyer">
+    <div class="scroll-timeline" id="timeline">
+   <!-- Генерируем много пустых блоков для создания длины прокрутки -->
+   <div class="scroll-content" id="scroll-content">
+       <!-- Сюда JS добавит деления -->
+   </div>
+</div>
+<div class="center-pointer">
+    <div id="current-time-display" class="time-now">00:00:00</div>
+</div>
+</div>
+
+
     <div id="nizz" style ="display: flex;  justify-content: space-between;">
         <div style ="display: flex;">
     <input id="fromtime1" type="datetime-local"/>
@@ -1313,6 +1426,8 @@ button:hover {
     <button class='main_menu' id='vchora'>Вчора</button>
     </div>
 
+
+    <div id="log" style ="text-align: center;"></div>
     <div style ="width: 200px; display: flex; align-items: center;">
     <span id="f"></span>
     </div>
@@ -1330,31 +1445,12 @@ button:hover {
       </div>
     </div> 
 
-   <div id="scrool_area">   
- <div class="slidecontainer">
-   <input type="range" min="1" max="2000" value="2000" class="slider" id="myRange">
- </div> 
+
  
 
 
                 
-<div id="log" style ="text-align: center;"></div>
-</div>
-<!-- для плавного перемішення програвача використовуйте клавіші "A" "D" -->
-<!-- <button id='v21'>Диски</button> 
-<button id='v22'>Культиватори</button> 
-<button id='v23'>Боронування</button>
-<button id='v24'>Рихлитель</button>
-<button id='v25'>Оранка</button>  
-<button id='v26'>Розкидачи</button>
-<button id='v27'>Оприскувачи</button> 
-<button id='v28'>Сівалки</button> 
-<button id='v29'>Комбайни</button>  
-<button id='v30'>Без агрегату</button>  -->
 
-
-<!-- <button id='geo_serch'>>></button> -->
-<!-- <input id='geo_data' type="text" onkeydown="this.style.width = ((this.value.length + 1) * 8) + 'px';" placeholder='Пошук міста'value="Пошук міста"> -->
 </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
   <script src="zup.js"></script> 
