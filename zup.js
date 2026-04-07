@@ -3948,7 +3948,6 @@ function position(t)  {
   var x,y,markerrr;
     for(let ii = 0; ii<Global_DATA.length; ii++){
      if(Global_DATA[ii].length<5) continue;
-     let ind=1;
      id=Global_DATA[ii][0][0];
 
      if (filtr === true && !filterSet.has(id)) {
@@ -3970,16 +3969,17 @@ let ind = 0;
               high = mid - 1; // Идем в левую половину
           }
       }
+            let avto = '';
+            let vod = '';
+             if(data[ind][5]!=0)avto= data[ind][5];
+             if(data[ind][6]!=0)vod= data[ind][6];
 
            if(data[ind][7]){
             y = data[ind][7];
             x = data[ind][8];
             markerrr.setLatLng([y, x]); 
 
-            let avto = '';
-            let vod = '';
-             if(data[ind][5]!=0)avto= data[ind][5];
-             if(data[ind][6]!=0)vod= data[ind][6];
+            
                   let  statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
                       '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
@@ -3996,7 +3996,20 @@ let ind = 0;
              markerrr.bindPopup(statusText);
              if(rux == 1){if (data[ind][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.2)markerrr.setOpacity(opt*0.99);}}else{markerrr.setOpacity(1);}
            }else{
-             markerrr.bindPopup('<center><font size="1">' + data[0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
+            let  errorText = 
+                  '<div style="min-width:50px; font-family: sans-serif;">' +
+                      '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">⚠️' + 
+                          data[0][1] + 
+                      '⚠️</div>' +
+                      '<table style="width:100%; font-size:11px; border-collapse:collapse;">' +
+                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + data[ind][1] + '</td></tr>' +
+                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + data[ind][3] + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + data[ind][2] + ' л</td></tr>' +
+                          '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vod || '—') + '</td></tr>' +
+                          '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (avto || '—') + '</td></tr>' +
+                      '</table>' +
+                  '</div>';
+             markerrr.bindPopup(errorText);
              markerrr.setOpacity(0.2);
            }
              if(agregat !=0){
