@@ -42,7 +42,8 @@ $('#vchora').click(function() {
    $('#fromtime1').val(from111);
    $('#fromtime2').val(from222);
    from111=0;
-    max_min_sek()
+    max_min_sek();
+    fillTimeline(from111s, from222s);
 
 });
 
