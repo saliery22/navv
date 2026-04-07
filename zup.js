@@ -44,7 +44,7 @@ $('#vchora').click(function() {
    from111=0;
     max_min_sek();
     fillTimeline(from111s, from222s);
-
+     firstTick = document.querySelector('.time-tick');
 });
 
 
