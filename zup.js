@@ -42,6 +42,7 @@ $('#vchora').click(function() {
    $('#fromtime1').val(from111);
    $('#fromtime2').val(from222);
    from111=0;
+    max_min_sek()
 
 });
 
@@ -52,6 +53,267 @@ $('#log_time_inp').val(new Date().toJSON().slice(0,10));
 $('#track_time1').val(from111);
 $('#track_time2').val(from222);
 
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+let from111s = Date.parse($('#fromtime1').val());
+let from222s = Date.parse($('#fromtime2').val());
+let Global_time = from222s;
+
+
+$('#fromtime1, #fromtime2').on('change', function() {
+        max_min_sek();
+        fillTimeline(from111s, from222s);
+        firstTick = document.querySelector('.time-tick');
+});
+
+
+function max_min_sek() {
+ from111s = Date.parse($('#fromtime1').val());
+ from222s = Date.parse($('#fromtime2').val());
+}
+
+let timeline = document.getElementById('timeline');
+const display = document.getElementById('current-time-display');
+fillTimeline(from111s, from222s)
+let firstTick = document.querySelector('.time-tick');
+
+let isDown = false;
+let startX;
+let scrollLeft;
+let velocity = 0; // Скорость движения
+let lastX = 0;    // Предыдущая позиция для расчета скорости
+let animationId;  // ID анимации для остановки
+
+// Функция плавного затухания
+function momentum() {
+    if (Math.abs(velocity) < 0.5) {
+      isProgrammaticScroll =true;
+      return; // Останавливаемся, когда скорость почти 0
+    }else{
+       if (Math.abs(velocity) > 100)   velocity = (velocity > 0) ? 100 : -100;
+    }
+    
+    timeline.scrollLeft -= velocity;
+    velocity *= 0.97; // Коэффициент трения (чем меньше, тем быстрее остановится)
+    
+    animationId = requestAnimationFrame(momentum);
+}
+
+timeline.addEventListener('mousedown', (e) => {
+    isDown = true;
+    cancelAnimationFrame(animationId); // Прерываем инерцию при клике
+    startX = e.pageX - timeline.offsetLeft;
+    scrollLeft = timeline.scrollLeft;
+    lastX = e.pageX;
+    velocity = 0;
+});
+
+
+
+document.addEventListener('mouseup', () => {
+   if (!isDown) return;
+    isDown = false;
+    if (Math.abs(velocity) < 10) {
+      velocity = 0; // Полный стоп
+      isProgrammaticScroll =true;
+      return; 
+  }
+    momentum(); // Запускаем инерцию после отпускания
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    isProgrammaticScroll =false;
+    const x = e.pageX - timeline.offsetLeft;
+    const walk = (x - startX);
+    
+    // Рассчитываем мгновенную скорость
+    velocity = e.pageX - lastX;
+    lastX = e.pageX;
+    
+    timeline.scrollLeft = scrollLeft - walk;
+});
+
+function fillTimeline(startTime, endTime) {
+  const container = $('#scroll-content');
+  const timeline = $('#timeline');
+  container.empty();
+
+  const start = new Date(startTime).getTime();
+  const end = new Date(endTime).getTime();
+  
+  const stepMs = 10 * 60000; // Шаг 10 минут
+  let htmlBuffer = '';
+
+  // Идем по времени с шагом в 10 минут
+  for (let currentMs = start; currentMs <= end; currentMs += stepMs) {
+      const currentMoment = new Date(currentMs);
+      const minutes = currentMoment.getMinutes();
+      const hours = currentMoment.getHours();
+      
+      // Метка (текст) каждые 30 минут, как в вашем условии
+      const isMajor = minutes % 30 === 0; 
+      
+      const timeLabel = isMajor ? `<span class="time-label">${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}</span>` : '';
+      const tickClass = isMajor ? 'time-tick major' : 'time-tick';
+
+      // Накапливаем строку, а не вставляем в DOM
+      htmlBuffer += `
+          <div class="${tickClass}" data-time="${currentMoment.toISOString()}">
+              ${timeLabel}
+          </div>`;
+  }
+
+  // ОДИН вызов вставки для всей шкалы
+  container.append(htmlBuffer);
+
+  // Скролл в конец (используем нативный элемент или jQuery)
+   timeline[0].scrollLeft = timeline[0].scrollWidth;
+}
+
+function extendTimelineToEnd(newEndTime) {
+  const container = $('#scroll-content');
+  
+  // 1. Находим время последней палочки на шкале
+  const lastTick = container.find('.time-tick').last();
+  let lastTime;
+  
+  if (lastTick.length > 0) {
+      lastTime = new Date(lastTick.attr('data-time'));
+  } else {
+      // Если шкала пуста, используем globalStartTime
+      lastTime = new Date(from111s);
+  }
+
+  const end = new Date(newEndTime);
+  
+  // 2. Считаем, сколько минут нужно добавить
+  const diffMs = end - lastTime;
+  const minutesToAdd = Math.floor(diffMs / 60000);
+
+  if (minutesToAdd <= 0) return; // Новое время не больше текущего
+
+  let htmlBuffer = '';
+  for (let i = 1; i <= minutesToAdd; i++) {
+      const currentMoment = new Date(lastTime.getTime() + i * 60000);
+      const minutes = currentMoment.getMinutes();
+      const hours = currentMoment.getHours();
+      
+      const isTenMins = minutes % 10 === 0;
+      const isFullHour = minutes === 0;
+      
+      let timeLabel = '';
+      let tickClass = 'time-tick';
+
+      if (isTenMins) {
+          const displayTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+          timeLabel = `<span class="time-label">${displayTime}</span>`;
+          tickClass += isFullHour ? ' major' : ' medium';
+      }
+
+      htmlBuffer += `
+          <div class="${tickClass}" data-time="${currentMoment.toISOString()}">
+              ${timeLabel}
+          </div>
+      `;
+  }
+
+  // Добавляем новые элементы в конец
+  container.append(htmlBuffer);
+  
+}
+
+
+// Вывод при движении (mousemove или scroll)
+
+
+let isProgrammaticScroll = false; // Флаг
+let throttleTimeout = null;
+
+timeline.addEventListener('scroll', () => {
+   if (isProgrammaticScroll || !firstTick || !display) return;
+  if (throttleTimeout) return;
+  // Сверхточный замер ширины одной минуты
+  throttleTimeout = setTimeout(() => {
+    const tickWidth = firstTick.getBoundingClientRect().width;
+    const msPerPx = 600000 / tickWidth; 
+
+    Global_time = from111s + (timeline.scrollLeft * msPerPx);
+    const exactTime = new Date(Global_time);
+
+    const h = String(exactTime.getHours()).padStart(2, '0');
+    const m = String(exactTime.getMinutes()).padStart(2, '0');
+    const s = String(exactTime.getSeconds()).padStart(2, '0');
+
+    display.innerText = `${h}:${m}:${s}`;
+    position(Global_time);
+
+    throttleTimeout = null; // Снимаем замок
+  }, 100); 
+});
+
+
+function scrollToPercent() {
+  isProgrammaticScroll = true;
+  velocity=0;
+  // Вычисляем максимальную дистанцию прокрутки
+  const maxScroll = timeline.scrollWidth - timeline.clientWidth;
+  // Рассчитываем целевую точку (ограничиваем от 0 до maxScroll)
+  const targetScroll = (Global_time-from111s)/(from222s-from111s) * maxScroll;
+  // Плавно перемещаем шкалу
+      timeline.scrollLeft = targetScroll; // Это быстрее, чем scrollTo({left: ...})
+      lastScrollTarget = Math.round(targetScroll);
+      const exactTime = new Date(Global_time);
+      const h = String(exactTime.getHours()).padStart(2, '0');
+      const m = String(exactTime.getMinutes()).padStart(2, '0');
+      const s = String(exactTime.getSeconds()).padStart(2, '0');
+      display.innerText = `${h}:${m}:${s}`;
+      position(Global_time);
+ 
+  
+
+}
+
+var scrool_area = document.getElementById("niz");
+scrool_area.addEventListener("wheel", function(e){
+  if (e.deltaY < 0){
+    Global_time+=8000;
+    if(Global_time>from222s)Global_time=from222s;
+    scrollToPercent();
+    
+  }else{
+    Global_time-=8000;
+    if(Global_time<from111s)Global_time=from111s
+    scrollToPercent();
+  }
+  e.preventDefault();
+  e.stopPropagation();
+})
+
+
+document.addEventListener('keydown', function(event) {
+	if(event.code == "KeyA"){
+    Global_time-=8000;
+    if(Global_time<from111s)Global_time=from111s;
+    scrollToPercent();
+    
+  }
+  if(event.code == "KeyD"){
+    Global_time+=8000;
+    if(Global_time>from222s)Global_time=from222s;
+    scrollToPercent();
+  }
+});
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 function online_upd() {
 unitslist.forEach(function(unit) {          
@@ -1284,6 +1546,8 @@ treeselect5 = new Treeselect({
         for (const key in online_mark) {  map.removeLayer(online_mark[key])}
         online_upd();
         }
+
+         filterSet = new Set(filtr_data); 
  })
    
 
@@ -1743,7 +2007,6 @@ $("#men8").on("click", function (){
   clearGarbage(marshrut_zony_temp);
   marshrut_zony_temp=[];
 
-  let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
     map.invalidateSize();
 });
 
@@ -1796,7 +2059,7 @@ $("#men8").on("click", function (){
   $('#add').click(Marshrut); // by button
   $("#marshrut").on("click", ".close_btn", delete_track); //click, when need delete current track
   $("#marshrut").on("click", ".run_btn", load_marshrut); //click, when need delete current track
-  $('#eeew').click(function() { UpdateGlobalData(0,0);});
+  $('#eeew').click(function() { UpdateGlobalData(0,0); });
   
   $("#marshrut").on("click", ".marr", vibormarshruta);
   $("#zvit").on("click", ".mar_trak", track_marshruta);
@@ -2093,6 +2356,20 @@ map.on('zoomstart', function() {
 map.on('zoomend', function() {
    map.getPane('Fields').style.display = 'block';
    map.getPane('Tracks').style.display = 'block';
+
+    const el = $('#scroll-content')[0]; 
+    if (!el) return;
+     const currentZoom = map.getZoom();
+     let newTickWidth=50;
+    if(currentZoom>=15)newTickWidth=600;
+    if(currentZoom==14)newTickWidth=300;
+    if(currentZoom==13)newTickWidth=160;
+    if(currentZoom==12)newTickWidth=90;
+    if(currentZoom==11)newTickWidth=60;
+    el.style.setProperty('--tick-width', newTickWidth + 'px');
+    requestAnimationFrame(() => {
+        scrollToPercent();
+    });
 });
   // add an OpenStreetMap tile layer
 map.attributionControl.addAttribution('Пальгуй Сергій');
@@ -3510,6 +3787,9 @@ function UpdateGlobalData(t2=0,i=0){
       }else{ 
         if(auto_play==true)from222 =(new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
        $('#fromtime2').val(from222);
+        max_min_sek();
+        fillTimeline(from111s, from222s);
+        firstTick = document.querySelector('.time-tick');
        t2=Date.parse($('#fromtime2').val())/1000;
       }
 
@@ -3659,123 +3939,83 @@ var slider = document.getElementById("myRange");
 var slider_sp = document.getElementById("sp_play");
 var output = document.getElementById("f");
 
-var scrool_area = document.getElementById("niz");
-scrool_area.addEventListener("wheel", function(e){
-  if (e.deltaY < 0){
-     let t=Date.parse($('#f').text())+8000;
-    if(t>Date.parse($('#fromtime2').val()))t=Date.parse($('#fromtime2').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
-  }else{
-    let t=Date.parse($('#f').text())-8000;
-    if(t<Date.parse($('#fromtime1').val()))t=Date.parse($('#fromtime1').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
-  }
-  e.preventDefault();
-  e.stopPropagation();
-})
 
-output.innerHTML = from222; // Display the default slider value
 
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
-    var interval = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*this.value;
-    position(interval);
-}
-
-document.addEventListener('keydown', function(event) {
-	if(event.code == "KeyA"){
-    let t=Date.parse($('#f').text())-3000;
-    if(t<Date.parse($('#fromtime1').val()))t=Date.parse($('#fromtime1').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
-  }
-  if(event.code == "KeyD"){
-    let t=Date.parse($('#f').text())+3000;
-    if(t>Date.parse($('#fromtime2').val()))t=Date.parse($('#fromtime2').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
-  }
-});
 
 function position(t)  {
   var interval = t;
   var id=0;
-  var calk=true;
-  var cur_day1111 = new Date(interval);
-  var month2 = cur_day1111.getMonth()+1;   
-  var from2222 = cur_day1111.getFullYear() + '-' + (month2 < 10 ? '0' : '') + month2 + '-' + cur_day1111.getDate()+ ' ' + cur_day1111.getHours()+ ':' + cur_day1111.getMinutes()+ ':' + cur_day1111.getSeconds();
-  output.innerHTML = from2222;
   var x,y,markerrr;
     for(let ii = 0; ii<Global_DATA.length; ii++){
      if(Global_DATA[ii].length<5) continue;
      let ind=1;
      id=Global_DATA[ii][0][0];
-     if(filtr==true){
-      calk=false;
-      for(let v = 0; v<filtr_data.length; v++){ 
-        if(filtr_data[v]==id){
-          calk=true;
-          break;
-        } 
-      } 
-     }
-     if(calk==false) continue;
+
+     if (filtr === true && !filterSet.has(id)) {
+         continue; 
+         }
 
      markerrr = markerByUnit[id];
      if (markerrr){
-     for(let iii = Global_DATA[ii].length-1; iii>0; iii-=200){
-     if(interval>Global_DATA[ii][iii][4]) {ind=iii;break;}
-     }
-     for(let i = ind; i<Global_DATA[ii].length; i++){
-         if(interval<Global_DATA[ii][i][4]){
-           if(Global_DATA[ii][i][7]){
-            y = Global_DATA[ii][i][7];
-            x = Global_DATA[ii][i][8];
+const data = Global_DATA[ii];
+let low = 0;
+let high = data.length - 1;
+let ind = 0;
+      while (low <= high) {
+          let mid = Math.floor((low + high) / 2);
+          if (data[mid][4] < interval) {
+              ind = mid;     // Запоминаем последний подходящий индекс
+              low = mid + 1; // Идем в правую половину
+          } else {
+              high = mid - 1; // Идем в левую половину
+          }
+      }
+
+           if(data[ind][7]){
+            y = data[ind][7];
+            x = data[ind][8];
             markerrr.setLatLng([y, x]); 
 
             let avto = '';
             let vod = '';
-             if(Global_DATA[ii][i][5]!=0)avto= Global_DATA[ii][i][5];
-             if(Global_DATA[ii][i][6]!=0)vod= Global_DATA[ii][i][6];
+             if(data[ind][5]!=0)avto= data[ind][5];
+             if(data[ind][6]!=0)vod= data[ind][6];
                   let  statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
                       '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
-                          Global_DATA[ii][0][1] + 
+                          data[0][1] + 
                       '</div>' +
                       '<table style="width:100%; font-size:11px; border-collapse:collapse;">' +
-                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + Global_DATA[ii][i][1] + '</td></tr>' +
-                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + Global_DATA[ii][i][3] + ' км/год</td></tr>' +
-                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + Global_DATA[ii][i][2] + ' л</td></tr>' +
+                          '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + data[ind][1] + '</td></tr>' +
+                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + data[ind][3] + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + data[ind][2] + ' л</td></tr>' +
                           '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vod || '—') + '</td></tr>' +
                           '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (avto || '—') + '</td></tr>' +
                       '</table>' +
                   '</div>';
-             markerrr.setPopupContent(statusText);
-             if(rux == 1){if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.2)markerrr.setOpacity(opt*0.99);}}else{markerrr.setOpacity(1);}
+             markerrr.bindPopup(statusText);
+             if(rux == 1){if (data[ind][3]>0 ) {markerrr.setOpacity(1);}else{var opt = markerrr.options.opacity;if(opt>0.2)markerrr.setOpacity(opt*0.99);}}else{markerrr.setOpacity(1);}
            }else{
-             markerrr.setPopupContent('<center><font size="1">' + Global_DATA[ii][0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
+             markerrr.bindPopup('<center><font size="1">' + data[0][1]+'<br /> ⚠️ ВІДСУТНЯ НАВІГАЦІЯ ⚠️');
              markerrr.setOpacity(0.2);
            }
              if(agregat !=0){
              markerrr.setOpacity(0);
-             if(agregat == 30){ if (!Global_DATA[ii][i][5]) {if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}break;}
-             if(!Global_DATA[ii][i][5])break;
-             
-             if(agregat == 21 && Global_DATA[ii][i][5][0]=='Д'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 22 && Global_DATA[ii][i][5][0]=='К'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 23 && Global_DATA[ii][i][5][0]=='Б'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 24 && Global_DATA[ii][i][5][0]=='Г'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 25 && Global_DATA[ii][i][5][0]=='П'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 26 && Global_DATA[ii][i][5][0]=='Р'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             //if(rux == 27){ if (Global_DATA[ii][i][5][0]=='О' ) {markerrr.setOpacity(1);}else{markerrr.setOpacity(0);}}
-             if(agregat == 28 && Global_DATA[ii][i][5][0]=='С'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
-             if(agregat == 29 && Global_DATA[ii][i][5][0]=='Ж'){if(rux == 0){markerrr.setOpacity(1);}else{if (Global_DATA[ii][i][3]>0 ) {markerrr.setOpacity(1);}}break;}
+             if(agregat == 30){ if (!data[ind][5]) {if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}}
+             if(data[ind][5]){
+             if(agregat == 21 && data[ind][5][0]=='Д'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 22 && data[ind][5][0]=='К'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 23 && data[ind][5][0]=='Б'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 24 && data[ind][5][0]=='Г'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 25 && data[ind][5][0]=='П'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 26 && data[ind][5][0]=='Р'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 28 && data[ind][5][0]=='С'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             if(agregat == 29 && data[ind][5][0]=='Ж'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
+             }
             }
-            break;
-          }
-     }
+
+         
+     //if (markerrr.getPopup() && markerrr.isPopupOpen()) map.setView([y, x], map.getZoom(), { animate: true });
     }
   }
 }
@@ -3790,12 +4030,10 @@ setInterval(function() {
   if (sec2 <= 0 ) {jurnal_online();sec2=2000;}
 
 if(auto_play==true) {
-  //msg(sec/10);
-    let t=Date.parse($('#f').text())+parseInt(slider_sp.value);
+    
     sec++;
     tik++;
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    if (slider.value >= 1999) {tik =1800;slider.value=tik; t = Date.parse($('#fromtime1').val())+(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))/2000*tik;}
+   
     if (sec > 1500) {
     if(upd==false){
       sec =0;
@@ -3807,24 +4045,25 @@ if(auto_play==true) {
     if(online_chek==false) {
     if (sec == 700 && $("#monitoring_gif").is(":checked") && upd==false) {Monitoring2();}
     if (sec == 500 && newWindow && newWindow.closed==false && upd==false) {update_popUP();}
-    
-    if(t>Date.parse($('#fromtime2').val()))t=Date.parse($('#fromtime2').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
+    Global_time+=Number(slider_sp.value);
+    if(Global_time>from222s)Global_time=from222s-7200000;
+    if(Global_time<from111s)Global_time=from111s;
+    velocity=0;
+    scrollToPercent();
     }
   }
 
-  if(kn==2){
-    let t=Date.parse($('#f').text())-3000;
-    if(t<Date.parse($('#fromtime1').val()))t=Date.parse($('#fromtime1').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
+if(kn==2){
+    Global_time-=3000;
+    if(Global_time<from111s)Global_time=from111s;
+    velocity=0;
+    scrollToPercent();
 }
 if(kn==1){
-      let t=Date.parse($('#f').text())+3000;
-    if(t>Date.parse($('#fromtime2').val()))t=Date.parse($('#fromtime2').val());
-    slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-    position(t);
+    Global_time+=3000;
+    if(Global_time>from222s)Global_time=from222s;
+    velocity=0;
+    scrollToPercent();
 }
   }, 60);
  
@@ -3975,8 +4214,8 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
   var t2=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])+3600000+loo);
   
    show_track(t1,t2);
-   slider.value=(Date.parse(e.target._popup._content.split('<br />')[1])-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-   position(Date.parse(e.target._popup._content.split('<br />')[1]));
+   Global_time = Date.parse(e.target._popup._content.split('<br />')[1]);
+   scrollToPercent();
   
                    });
               }
@@ -4028,8 +4267,8 @@ if(data_zup[i][3].split(':').reverse().reduce((acc, n, iy) => acc + n * (60 ** i
   var t2=  new Date(Date.parse(e.target._popup._content.split('<br />')[1])+3600000+loo);
  
    show_track(t1,t2);
-    slider.value=(Date.parse(e.target._popup._content.split('<br />')[1])-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-   position(Date.parse(e.target._popup._content.split('<br />')[1]));
+   Global_time = Date.parse(e.target._popup._content.split('<br />')[1]);
+   scrollToPercent();
    e.target.setIcon(L.icon({iconUrl: '333.png',iconSize:   [24, 24],iconAnchor: [12, 24]}));
    localStorage.setItem('arhivzup', JSON.stringify(zup_hist)); 
                  });
@@ -4085,6 +4324,7 @@ function clear2(){
 
  let filtr=false;
  let filtr_data=[];
+ let filterSet = new Set();
 function chuse(a,vibor) {
   if (this.id=='v9'){
     if(rux==0){
@@ -4097,8 +4337,7 @@ for(var i=0; i < allunits.length; i++){
 
     }else{
       rux = 0;
-      let t=Date.parse($('#f').text());
-      position(t);
+      position(Global_time);
       $('#v9').css({'background':'#ffffffff'});
       if(filtr_data.length>0){
         for(let v = 0; v<filtr_data.length; v++){ 
@@ -4501,8 +4740,8 @@ meChart = new Chart(ctx, {
        onHover: function (e, item) {
         if (item.length) {
               let t = item[0].element.$context.parsed.x
-              slider.value=(t-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-              position(t);
+              Global_time = t;
+              scrollToPercent();
         }
       }
   }
@@ -4857,8 +5096,8 @@ function Naryady_start(ver){
    let en = this.id.split(',')[2];
    if(st == '0')st = $('#fromtime1').val();
    if(en == '0')en = $('#fromtime2').val();
-   slider.value=(Date.parse(st)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-   position(Date.parse(st));
+    Global_time = Date.parse(st);
+    scrollToPercent();
     treeselect3.value=parseInt(id);
     treeselect3.mount();
     clear();
@@ -6083,7 +6322,7 @@ for(let i = 0; i<data._latlngs[0].length; i++){
     for(let i = 0; i<unitslist.length; i++){
       let namet = unitslist[i].getName();
       let id = unitslist[i].getId();
-      let time = Date.parse($('#f').text());
+      let time = Global_time;
       str.forEach((element) => {if(namet.indexOf(element)>=0){
         let markerr= markerByUnit[unitslist[i].getId()];
         if(markerr){
@@ -6879,8 +7118,8 @@ if(svdata22)sliv_history=svdata22;
     sliv_history.push(row.cells[0].textContent+row.cells[1].textContent);
     if(sliv_history.length>1000){sliv_history.shift();}
     localStorage.setItem('arhivsliv', JSON.stringify(sliv_history)); 
-    slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-     position(Date.parse(data));
+     Global_time = Date.parse(data);
+     scrollToPercent();
      treeselect3.value=parseInt(this.id.split(',')[0]);
      treeselect3.mount();
      markerByUnit[this.id.split(',')[0]].openPopup();
@@ -8803,13 +9042,13 @@ let str = 'geohis/'+(currentDate.getMonth()+1)+'.'+currentDate.getFullYear()+'.t
 
 
 $('#prob_bt1').click(function() {
-  let d = Date.parse(output.innerHTML);
-  let tzoffset1 = (new Date(output.innerHTML)).getTimezoneOffset() * 60000;
+  let d = Global_time;
+  let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
   $('#prob_from').val(new Date(d- tzoffset1).toISOString().slice(0, -8));
 });
 $('#prob_bt2').click(function() {
-  let d = Date.parse(output.innerHTML);
-  let tzoffset1 = (new Date(output.innerHTML)).getTimezoneOffset() * 60000;
+  let d = Global_time;
+  let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
   $('#prob_to').val(new Date(d- tzoffset1).toISOString().slice(0, -8));
 });
 $('#prob_bt3').click(function() {
@@ -8932,13 +9171,13 @@ napr.addEventListener('input', function() {
     $('#ga_sh').val($('#agregat_lis').val())
         });
 $('#ga_bt1').click(function() {
-  let d = Date.parse(output.innerHTML);
-  let tzoffset1 = (new Date(output.innerHTML)).getTimezoneOffset() * 60000;
+  let d = Global_time;
+  let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
   $('#ga_from').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
 $('#ga_bt2').click(function() {
-  let d = Date.parse(output.innerHTML);
-  let tzoffset1 = (new Date(output.innerHTML)).getTimezoneOffset() * 60000;
+  let d = Global_time;
+  let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
   $('#ga_to').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
 $('#ga_bt3').click(function() {
@@ -9563,8 +9802,8 @@ $('#zapr_zvit2').prop('disabled', false);
     }
     }
      if(idd!=0){
-     slider.value=(Date.parse(data)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-     position(Date.parse(data));
+     Global_time = Date.parse(data);
+     scrollToPercent();
      treeselect3.value=parseInt(idd);
      treeselect3.mount();
      markerByUnit[idd].openPopup();
@@ -10401,7 +10640,7 @@ function jurnal(obj,unit){
   jurnal_update();
 }
 function jurnal_update(){
-  let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
+  let tt = new Date(Global_time).toJSON().slice(0,10);
   $('#jurnal_time').val(tt);
   update_jurnal(ftp_id,'jurnal.txt',function (data) { 
     let nam_js = $("#jurnal_name").text();
@@ -10692,7 +10931,6 @@ $( "#vib_zvit" ).on( "change", function() {
   garbagepoly=[];
   clearGarbage(marshrutMarkers);
   marshrutMarkers=[];
-  let tt = new Date(Date.parse($('#f').text())).toJSON().slice(0,10);
   if(this.value=='z15') planuvannya_start();
    if(this.value=='z20') {
     $("#zapr_time1").val($('#fromtime1').val()); 
@@ -11009,8 +11247,8 @@ $("#log_marh_tb").on("click", function (evt){
               treeselect3.mount();
               layers[0]=0;
               show_track(t0,t2);
-              slider.value=(Date.parse(t1)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-              position(Date.parse(t1));
+              Global_time = Date.parse(t1);
+              scrollToPercent();
               }
               for(i = 0; i < marshrut_garbage.length; i++){
                marshrut_garbage[i].getTooltip().setOpacity(0.5);
@@ -11515,8 +11753,8 @@ if(id_rote>100){id_rote=0;}
               treeselect3.mount();
               layers[0]=0;
               show_track(t0,t2);
-              slider.value=(Date.parse(t1)-Date.parse($('#fromtime1').val()))/(Date.parse($('#fromtime2').val())-Date.parse($('#fromtime1').val()))*2000;
-              position(Date.parse(t1));
+              Global_time = Date.parse(t1);
+              scrollToPercent();
 
                for(i = 0; i < marshrut_garbage.length; i++){
                marshrut_garbage[i].getTooltip().setOpacity(0.5);
