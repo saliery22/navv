@@ -391,6 +391,8 @@ unitslist.forEach(function(unit) {
          
     if(sdsa)unitMarker.setLatLng([sdsa.y, sdsa.x]);
 
+    if(online_mark[unit.getId()]) map.removeLayer(online_mark[unit.getId()]);
+
     if((Date.now())/1000-parseInt(sdsa.t)>3600 || parseInt(sdsa.sc)<5){
                          if((Date.now())/1000-parseInt(sdsa.t)>21600){
                           let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
@@ -3944,6 +3946,7 @@ var output = document.getElementById("f");
 
 
 function position(t)  {
+  if(online_chek)return;
   var interval = t;
   var id=0;
   var x,y,markerrr;
@@ -9637,9 +9640,7 @@ async function zapravki(data) {
               
             } 
           }
-
 if(kkk==-1) continue;
-
     for(let ii = 1; ii<data[i].length; ii++){
       if(!data[i][ii][6])continue;
       let drt =parseFloat(data[i][ii][6]);
