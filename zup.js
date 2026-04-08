@@ -2684,12 +2684,17 @@ L.easyButton('<img src="route.png" title="очистити мапу від тр�
             stateName: 'zoom-to-forest',        // name the state
             icon:      '<img src="omline.png">',               // and define its properties
             title:     'ввімкнути онлайн стеження',      // like its title
-            onClick: function(btn, map) {       // and its callback
+            onClick: function(btn, map) { 
+    if(rux==1){
+      rux = 0;
+      $('#v9').css({'background':'#ffffffff'});
+      } 
              online_chek=true;
               online_ON();
                 $('#niz').hide();
                 $('#map').css('height', 'calc(100vh - 34px)');
                 btn.state('zoom-to-school');    // change state on click!
+
             }
         }, {
             stateName: 'zoom-to-school',
