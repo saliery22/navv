@@ -8045,55 +8045,79 @@ $('#vodiyi_kkz').click(function() {
     SendDataInCallback(fr,to,str,[],0,show_all_tracks_data);
     });
 
-    function show_all_tracks_data(data){
-      $("#unit_table").empty();
-      clear();
-      let trak_color = Math.floor(Math.random() * 360);
-      for (let i = 0; i<data.length; i++){
-        let name = data[i][0][1];
-        let line =[];
-        let km = 0;
-        let kk=0;
+function show_all_tracks_data(data) {
+  $("#unit_table").empty();
+  clear();
+  let trak_color = Math.floor(Math.random() * 360);
 
-        for (let ii = 1; ii<data[i].length-1; ii++){
-          if(!data[i][ii][0])continue;
-          if(!data[i][ii+1][0])continue;
+  for (let i = 0; i < data.length; i++) {
+    let name = data[i][0][1];
+    let line = [];
+    let km = 0;
+    let kk = 0;
 
-          if(parseInt(data[i][ii][2])==0)continue;
-          kk++;
-          let vod = data[i][ii][3];
-          let dat = data[i][ii][1];
+    for (let ii = 1; ii < data[i].length; ii++) {
+      if (!data[i][ii][0]) continue;
 
-          let y = parseFloat(data[i][ii][0].split(',')[0]);
-          let x = parseFloat(data[i][ii][0].split(',')[1]);
+      let coords = data[i][ii][0].split(',');
+      let y = parseFloat(coords[0]);
+      let x = parseFloat(coords[1]);
+      let vod = data[i][ii][3] || "";
+      let dat = data[i][ii][1] || "";
 
-          let yy = parseFloat(data[i][ii+1][0].split(',')[0]);
-          let xx = parseFloat(data[i][ii+1][0].split(',')[1]);
+      // Проверяем дистанцию только если в линии уже есть хотя бы одна точка
+      if (line.length > 0) {
+        let lastPoint = line[line.length - 1];
+        let dis = wialon.util.Geometry.getDistance(lastPoint[0], lastPoint[1], y, x);
 
-          km += wialon.util.Geometry.getDistance(y,x,yy,xx);
-            line.push ([y,x]);
-
-            if(kk>20){
-              let l = L.polyline([line], {color: `hsl(${245}, ${100}%, ${45}%)`,weight:1,opacity:1}).bindTooltip(''+dat+'<br>'+name+'<br>'+vod+'',{opacity:0.8, sticky: true}).addTo(map);
-              l.name = name;
-              temp_layer.push(l);
-              kk=0;
-              line=[];
-              line.push ([y,x]);
-            }
-
+        if (dis > 500000 || dis <= 0) {
+          // Если прыжок > 500км — рисуем накопленное и СБРАСЫВАЕМ линию
+          if (line.length > 1) {
+            renderPolyline(line, name, dat, vod);
+          }
+          line = [];
+          kk = 0;
+          // Важно: не пушим текущую точку, если она "прыгнула" слишком далеко от предыдущей
+          // или пушим её как начало СОВСЕМ новой линии
+        } else {
+          km += dis;
         }
-        if(line.length>0){
-          trak_color += 60+Math.floor(Math.random() * 30);
-          let l = L.polyline([line], {color: `hsl(${245}, ${100}%, ${45}%)`,weight:1,opacity:1}).bindTooltip(''+name+'',{opacity:0.8, sticky: true}).addTo(map);
-          l.name = name;
-          temp_layer.push(l);
-        }
+      }
 
-        $("#unit_table").append("<tr><td>"+name+"</td><td>"+(km/1000).toFixed(1)+" км</td></tr>");
+      line.push([y, x]);
+      kk++;
 
+      // Отрисовка сегмента по количеству точек (оптимизация)
+      if (kk > 20) {
+        renderPolyline(line, name, dat, vod);
+        line = [[y, x]]; // Оставляем последнюю точку для связки
+        kk = 0;
       }
     }
+
+    // Отрисовка остатка
+    if (line.length > 1) {
+      renderPolyline(line, name, "", "");
+    }
+
+    if (km / 1000 > 1) {
+      $("#unit_table").append("<tr><td>" + name + "</td><td>" + (km / 1000).toFixed(1) + " км</td></tr>");
+    }
+  }
+
+  // Вспомогательная функция для отрисовки, чтобы не дублировать код
+  function renderPolyline(points, objName, date, driver) {
+    let tooltipContent = date ? `${date}<br>${objName}<br>${driver}` : objName;
+    let l = L.polyline(points, {
+      color: `hsl(${245}, 100%, 45%)`, // Можно заменить 245 на trak_color для разных цветов
+      weight: 2,
+      opacity: 1
+    }).bindTooltip(tooltipContent, { opacity: 0.8, sticky: true }).addTo(map);
+    
+    l.name = objName;
+    temp_layer.push(l);
+  }
+}
 
 
 $('#track_lis_bt').click(function() {
