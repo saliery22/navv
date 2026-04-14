@@ -32,7 +32,7 @@ var isUIActive = true;
 var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
 
 
-var from111 = new Date().toJSON().slice(0,11) + '05:00';
+var from111 = new Date().toJSON().slice(0,11) + '00:00';
 var from222 = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -8);
 
 
@@ -78,6 +78,7 @@ function max_min_sek() {
 
 let timeline = document.getElementById('timeline');
 const display = document.getElementById('current-time-display');
+const slider_fast = document.getElementById('myRange');
 fillTimeline(from111s, from222s)
 let firstTick = document.querySelector('.time-tick');
 
@@ -251,10 +252,11 @@ timeline.addEventListener('scroll', () => {
     const s = String(exactTime.getSeconds()).padStart(2, '0');
 
     display.innerText = `${h}:${m}:${s}`;
+    slider_fast.value =Math.round((Global_time-from111s)/(from222s-from111s)*2000);
     position(Global_time);
 
     throttleTimeout = null; // Снимаем замок
-  }, 100); 
+  }, 20); 
 });
 
 
@@ -264,19 +266,18 @@ function scrollToPercent() {
   // Вычисляем максимальную дистанцию прокрутки
   const maxScroll = timeline.scrollWidth - timeline.clientWidth;
   // Рассчитываем целевую точку (ограничиваем от 0 до maxScroll)
-  const targetScroll = (Global_time-from111s)/(from222s-from111s) * maxScroll;
+  const targetScroll = (Global_time-from111s)/(from222s-from111s);
   // Плавно перемещаем шкалу
-      timeline.scrollLeft = targetScroll; // Это быстрее, чем scrollTo({left: ...})
-      lastScrollTarget = Math.round(targetScroll);
+      timeline.scrollLeft = targetScroll* maxScroll; // Это быстрее, чем scrollTo({left: ...})
+      lastScrollTarget = Math.round(targetScroll* maxScroll);
       const exactTime = new Date(Global_time);
       const h = String(exactTime.getHours()).padStart(2, '0');
       const m = String(exactTime.getMinutes()).padStart(2, '0');
       const s = String(exactTime.getSeconds()).padStart(2, '0');
       display.innerText = `${h}:${m}:${s}`;
+      slider_fast.value =Math.round(targetScroll*2000);
       position(Global_time);
  
-  
-
 }
 
 var scrool_area = document.getElementById("niz");
@@ -308,6 +309,22 @@ document.addEventListener('keydown', function(event) {
     if(Global_time>from222s)Global_time=from222s;
     scrollToPercent();
   }
+});
+
+slider_fast.addEventListener('input', (event) => {
+  Global_time = Math.round(from111s+(from222s-from111s)*event.target.value/2000);
+  isProgrammaticScroll = true;
+  velocity=0;
+  const maxScroll = timeline.scrollWidth - timeline.clientWidth;
+  const targetScroll = (Global_time-from111s)/(from222s-from111s);
+  timeline.scrollLeft = targetScroll* maxScroll; // Это быстрее, чем scrollTo({left: ...})
+  lastScrollTarget = Math.round(targetScroll* maxScroll);
+  const exactTime = new Date(Global_time);
+  const h = String(exactTime.getHours()).padStart(2, '0');
+  const m = String(exactTime.getMinutes()).padStart(2, '0');
+  const s = String(exactTime.getSeconds()).padStart(2, '0');
+  display.innerText = `${h}:${m}:${s}`;
+  position(Global_time);
 });
 
 
@@ -1271,23 +1288,61 @@ if (Date.parse($('#fromtime1').val())/1000 > unit.getPosition().t){rest_units.pu
    row.style.backgroundColor = 'pink';
 
   if(row.cells[0].textContent!="-->"){
-    if(row.cells[0].innerHTML=="▼"){
-      row.cells[0].innerHTML="&#9650";
-       row.style.backgroundColor = 'rgba(0, 131, 253, 0.3)';
+    if(evt.target.closest('td').textContent=="-->"){
+    $('#track_time2').val(from222);
+    $('#track_time1').val(from111);
+    let str='';
+    if($('#unit_info').is(':hidden')){
+      $('#men4').click();
+      $('.leaflet-container').css('cursor','');
+      $('.zvit').hide();
+      $("#unit_table").empty();
+      $('#zz14').show();
+      $('#vib_zvit').val('z14');
+      clearGEO(); 
+      clearGarbage(garbage);
+      garbage=[];
+      clearGarbage(garbagepoly);
+      garbagepoly=[];
+      clearGarbage(marshrutMarkers);
+      marshrutMarkers=[];
+      }else{
+          $('.leaflet-container').css('cursor','');
+          $('.zvit').hide();
+          $("#unit_table").empty();
+          $('#zz14').show();
+          $('#vib_zvit').val('z14');
+          clearGEO(); 
+          clearGarbage(garbage);
+          garbage=[];
+          clearGarbage(garbagepoly);
+          garbagepoly=[];
+          clearGarbage(marshrutMarkers);
+          marshrutMarkers=[]; 
+      } 
+    $("#track_lis").chosen().val(row.cells[2].textContent);
+    $("#track_lis").trigger("chosen:updated");
+    document.getElementById('track_lis_bt2').click();
+ 
     }else{
-      row.cells[0].innerHTML="&#9660";
-       row.style.backgroundColor = '';
+      if(row.cells[0].innerHTML=="▼"){
+        row.cells[0].innerHTML="&#9650";
+         row.style.backgroundColor = 'rgba(0, 131, 253, 0.3)';
+      }else{
+        row.cells[0].innerHTML="&#9660";
+         row.style.backgroundColor = '';
+      }
+      let index = row.sectionRowIndex; 
+      let ln = parseInt(row.cells[1].textContent);
+        for(let i = index+1; i<=index+ln; i++){
+          if(tbl.rows[i].style.display == 'none'){
+            tbl.rows[i].style.display = 'table-row';
+          }else{
+            tbl.rows[i].style.display = 'none';
+          }
+        } 
     }
-    let index = row.sectionRowIndex; 
-    let ln = parseInt(row.cells[1].textContent);
-      for(let i = index+1; i<=index+ln; i++){
-        if(tbl.rows[i].style.display == 'none'){
-          tbl.rows[i].style.display = 'table-row';
-        }else{
-          tbl.rows[i].style.display = 'none';
-        }
-
-      }  
+ 
   }else{
     
      let idd= parseInt(row.cells[3].textContent);
@@ -1316,7 +1371,7 @@ if (Date.parse($('#fromtime1').val())/1000 > unit.getPosition().t){rest_units.pu
       let auto_list = [];
       let grup_id = data.items[i].$$user_units;
       if(!grup_id)continue;
-       $("#auto_list").append("<tr style= 'cursor: pointer;'><td>&#9660</td><td>"+grup_id.length+"</td><td nowrap align='left'><b>"+name+"</b></td></tr>");
+       $("#auto_list").append("<tr style= 'cursor: pointer;'><td>&#9660</td><td>"+grup_id.length+"</td><td nowrap align='left'><b>"+name+"</b></td><td>--></td></tr>");
       for(let ii = 0; ii<grup_id.length; ii++){
         if (!markerByUnit[grup_id[ii]]) continue;
         gr+=markerByUnit[grup_id[ii]]._tooltip._content+',';
@@ -2704,7 +2759,7 @@ L.easyButton('<img src="route.png" title="очистити мапу від тр�
               online_chek=false;
               online_OFF();
                 $('#niz').show();
-                $('#map').css('height', 'calc(100vh - 124px)');
+                $('#map').css('height', 'calc(100vh - 136px)');
                 btn.state('zoom-to-forest');
             }
     }]
@@ -3842,7 +3897,7 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
             //console.log(id_unit+"///"+unit.getName()+"///"+sens[key].n+"///"+sens[key].t);
         }
 
-    Global_DATA.push([[id_unit,unit.getName(),Date.parse($('#fromtime1').val())/1000,FuelID,VodiyID,PrichepID]])
+    Global_DATA.push([[id_unit,unit.getName(),Date.parse($('#fromtime1').val())/1000,FuelID,VodiyID,PrichepID,null,null,null]])
   }
   let t1=Global_DATA[ii][0][2];
 
@@ -3888,13 +3943,16 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
                     let x = null;
                     let s = null;
                     let xy=null;
-                    if (messages[i].pos){
-                      y=messages[i].pos.y;
-                      x=messages[i].pos.x;
-                      s=messages[i].pos.s;
-                      xy=messages[i].pos.y+','+messages[i].pos.x;
+                    if (messages[i].pos && messages[i].pos.x >20 && messages[i].pos.x <40){
+                        y=messages[i].pos.y;
+                        x=messages[i].pos.x;
+                        s=messages[i].pos.s;
+                        xy=messages[i].pos.y+','+messages[i].pos.x;
+                    }else{
+                        y=Global_DATA[ii][Global_DATA[ii].length-1][7];
+                        x=Global_DATA[ii][Global_DATA[ii].length-1][8];
                     }
-                  let date= new Date(messages[i].t*1000- tzoffset0).toISOString().slice(0, -5).replace("T", "  ");
+                  let date = wialon.util.DateTime.formatTime(messages[i].t);
                   let fuel = null;
                   let vodiy = null;
                   let prichep = null;
@@ -3920,7 +3978,6 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
                   }
           
               Global_DATA[ii].push([xy,date,fuel,s,messages[i].t*1000,prichep,vodiy,y,x]);
-
               Global_DATA[ii][0][2]=messages[i].t+1;
                       
             }
@@ -3966,9 +4023,9 @@ function position(t)  {
      markerrr = markerByUnit[id];
      if (markerrr){
 const data = Global_DATA[ii];
-let low = 0;
+let low = 1;
 let high = data.length - 1;
-let ind = 0;
+let ind = 1;
       while (low <= high) {
           let mid = Math.floor((low + high) / 2);
           if (data[mid][4] < interval) {
@@ -3983,12 +4040,7 @@ let ind = 0;
              if(data[ind][5]!=0)avto= data[ind][5];
              if(data[ind][6]!=0)vod= data[ind][6];
 
-           if(data[ind][7]){
-            y = data[ind][7];
-            x = data[ind][8];
-            markerrr.setLatLng([y, x]); 
-
-            
+           if(data[ind][0] || interval<data[ind][4]+600000){
                   let  statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
                       '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
@@ -4012,7 +4064,7 @@ let ind = 0;
                       '⚠️</div>' +
                       '<table style="width:100%; font-size:11px; border-collapse:collapse;">' +
                           '<tr><td style="text-align:center;">🕒</td><td style="text-align:right;">' + data[ind][1] + '</td></tr>' +
-                          '<tr><td style="text-align:center;">🚀</td><td style="text-align:right; font-weight:bold;">' + data[ind][3] + ' км/год</td></tr>' +
+                          '<tr><td style="text-align:center;">⚠️</td><td style="text-align:right; font-weight:bold; color:#dc3545;"> ВІДСУТНЯ НАВІГАЦІЯ</td></tr>' +
                           '<tr><td style="text-align:center;">⛽</td><td style="text-align:right; font-weight:bold; color:#28a745;">' + data[ind][2] + ' л</td></tr>' +
                           '<tr><td style="text-align:center;">👤</td><td style="text-align:right;">' + (vod || '—') + '</td></tr>' +
                           '<tr><td style="text-align:center;">⚙️</td><td style="text-align:right;">' + (avto || '—') + '</td></tr>' +
@@ -4021,6 +4073,10 @@ let ind = 0;
              markerrr.bindPopup(errorText);
              markerrr.setOpacity(0.2);
            }
+           y = data[ind][7];
+           x = data[ind][8];
+           if(y && x)markerrr.setLatLng([y, x]); 
+
              if(agregat !=0){
              markerrr.setOpacity(0);
              if(agregat == 30){ if (!data[ind][5]) {if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}}
@@ -4510,26 +4566,26 @@ for ( j = 1; j < tableRow.length; j++){
       function menu10() {
     if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
-      $('#map').css('height', 'calc(100vh - 404px)');
-      $('#marrr').css('height', 'calc(100vh - 404px)');
-      $('#option').css('height', 'calc(100vh - 404px)');
-      $('#unit_info').css('height', 'calc(100vh - 404px)');
-      $('#zupinki').css('height', 'calc(100vh - 404px)');
-      $('#logistika').css('height', 'calc(100vh - 404px)');
-      $('#monitoring').css('height', 'calc(100vh - 404px)');
-      $('#geomodul').css('height', 'calc(100vh - 404px)');
+      $('#map').css('height', 'calc(100vh - 416px)');
+      $('#marrr').css('height', 'calc(100vh - 416px)');
+      $('#option').css('height', 'calc(100vh - 416px)');
+      $('#unit_info').css('height', 'calc(100vh - 416px)');
+      $('#zupinki').css('height', 'calc(100vh - 416px)');
+      $('#logistika').css('height', 'calc(100vh - 416px)');
+      $('#monitoring').css('height', 'calc(100vh - 416px)');
+      $('#geomodul').css('height', 'calc(100vh - 416px)');
       this.style.background = '#3399FF';
       show_gr();
     }else{
       $('#grafik').hide();
-      $('#map').css('height', 'calc(100vh - 124px)');
-      $('#marrr').css('height', 'calc(100vh - 124px)');
-       $('#option').css('height', 'calc(100vh - 124px)');
-      $('#unit_info').css('height', 'calc(100vh - 124px)');
-      $('#zupinki').css('height', 'calc(100vh - 124px)');
-      $('#logistika').css('height', 'calc(100vh - 124px)');
-      $('#monitoring').css('height', 'calc(100vh - 124px)');
-      $('#geomodul').css('height', 'calc(100vh - 124px)');
+      $('#map').css('height', 'calc(100vh - 136px)');
+      $('#marrr').css('height', 'calc(100vh - 136px)');
+       $('#option').css('height', 'calc(100vh - 136px)');
+      $('#unit_info').css('height', 'calc(100vh - 136px)');
+      $('#zupinki').css('height', 'calc(100vh - 136px)');
+      $('#logistika').css('height', 'calc(100vh - 136px)');
+      $('#monitoring').css('height', 'calc(100vh - 136px)');
+      $('#geomodul').css('height', 'calc(100vh - 136px)');
       this.style.background = '#ffffffff';
        this.style.color = '#000000ff';
     }
@@ -4798,13 +4854,13 @@ grafik_drav(dataX,dataY,[5400,8000,25000,8000,8000]);
 function grafik_drav(dataX,dataY,dataY2){
 if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
-      $('#map').css('height', 'calc(100vh - 404px)');
-      $('#marrr').css('height', 'calc(100vh - 404px)');
-      $('#option').css('height', 'calc(100vh - 404px)');
-      $('#unit_info').css('height', 'calc(100vh - 404px)');
-      $('#zupinki').css('height', 'calc(100vh - 404px)');
-      $('#logistika').css('height', 'calc(100vh - 404px)');
-      $('#monitoring').css('height', 'calc(100vh - 404px)');
+      $('#map').css('height', 'calc(100vh - 416px)');
+      $('#marrr').css('height', 'calc(100vh - 416px)');
+      $('#option').css('height', 'calc(100vh - 416px)');
+      $('#unit_info').css('height', 'calc(100vh - 416px)');
+      $('#zupinki').css('height', 'calc(100vh - 416px)');
+      $('#logistika').css('height', 'calc(100vh - 416px)');
+      $('#monitoring').css('height', 'calc(100vh - 416px)');
       $('#v11').css({'background':'#3399FF'});
     } 
 
@@ -7148,13 +7204,13 @@ if(svdata22)sliv_history=svdata22;
      
      if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
-      $('#map').css('height', 'calc(100vh - 404px)');
-      $('#marrr').css('height', 'calc(100vh - 404px)');
-      $('#option').css('height', 'calc(100vh - 404px)');
-      $('#unit_info').css('height', 'calc(100vh - 404px)');
-      $('#zupinki').css('height', 'calc(100vh - 404px)');
-      $('#logistika').css('height', 'calc(100vh - 404px)');
-      $('#monitoring').css('height', 'calc(100vh - 404px)');
+      $('#map').css('height', 'calc(100vh - 416px)');
+      $('#marrr').css('height', 'calc(100vh - 416px)');
+      $('#option').css('height', 'calc(100vh - 416px)');
+      $('#unit_info').css('height', 'calc(100vh - 416px)');
+      $('#zupinki').css('height', 'calc(100vh - 416px)');
+      $('#logistika').css('height', 'calc(100vh - 416px)');
+      $('#monitoring').css('height', 'calc(100vh - 416px)');
     } 
      show_gr(data,data2);
      //map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])],map.getZoom(),{animate: false});
@@ -8042,13 +8098,14 @@ $('#vodiyi_kkz').click(function() {
   if($("#lis0 :selected").html()=='—')return;
   str = $("#lis0 :selected").html();
 }
-    SendDataInCallback(fr,to,str,[],0,show_all_tracks_data);
+    SendDataInCallback(fr-43200,to,str,[],0,show_all_tracks_data);
     });
 
 function show_all_tracks_data(data) {
   $("#unit_table").empty();
   clear();
-  let trak_color = Math.floor(Math.random() * 360);
+  
+  let fr = Date.parse($('#track_time1').val()); // get begin time - beginning of day
 
   for (let i = 0; i < data.length; i++) {
     let name = data[i][0][1];
@@ -8058,6 +8115,8 @@ function show_all_tracks_data(data) {
 
     for (let ii = 1; ii < data[i].length; ii++) {
       if (!data[i][ii][0]) continue;
+      let trak_color = `#0000FF`;
+      if( Date.parse(data[i][ii][1])<fr) trak_color = `#FF0000`;
 
       let coords = data[i][ii][0].split(',');
       let y = parseFloat(coords[0]);
@@ -8070,11 +8129,12 @@ function show_all_tracks_data(data) {
         let lastPoint = line[line.length - 1];
         let dis = wialon.util.Geometry.getDistance(lastPoint[0], lastPoint[1], y, x);
 
-        if (dis > 500000 || dis <= 0) {
+        if (dis > 20000 || dis <= 0) {
           // Если прыжок > 500км — рисуем накопленное и СБРАСЫВАЕМ линию
           if (line.length > 1) {
-            renderPolyline(line, name, dat, vod);
+            renderPolyline(line, name, dat, vod,trak_color,2);
           }
+           if (dis > 20000 ) renderPolyline([[y, x],[lastPoint[0], lastPoint[1]]], name, dat, vod,`#808080`,1);
           line = [];
           kk = 0;
           // Важно: не пушим текущую точку, если она "прыгнула" слишком далеко от предыдущей
@@ -8089,7 +8149,7 @@ function show_all_tracks_data(data) {
 
       // Отрисовка сегмента по количеству точек (оптимизация)
       if (kk > 20) {
-        renderPolyline(line, name, dat, vod);
+        renderPolyline(line, name, dat, vod,trak_color,2);
         line = [[y, x]]; // Оставляем последнюю точку для связки
         kk = 0;
       }
@@ -8097,7 +8157,7 @@ function show_all_tracks_data(data) {
 
     // Отрисовка остатка
     if (line.length > 1) {
-      renderPolyline(line, name, "", "");
+      renderPolyline(line, name, "", "",trak_color,2);
     }
 
     if (km / 1000 > 1) {
@@ -8106,11 +8166,11 @@ function show_all_tracks_data(data) {
   }
 
   // Вспомогательная функция для отрисовки, чтобы не дублировать код
-  function renderPolyline(points, objName, date, driver) {
+  function renderPolyline(points, objName, date, driver,color,weight) {
     let tooltipContent = date ? `${date}<br>${objName}<br>${driver}` : objName;
     let l = L.polyline(points, {
-      color: `hsl(${245}, 100%, 45%)`, // Можно заменить 245 на trak_color для разных цветов
-      weight: 2,
+      color: color, // Можно заменить 245 на trak_color для разных цветов
+      weight: weight,
       opacity: 1
     }).bindTooltip(tooltipContent, { opacity: 0.8, sticky: true }).addTo(map);
     
@@ -8721,10 +8781,10 @@ $("#unit_table").on("click", function (evt){
       if(!temp_layer[v].name)continue;
       if(temp_layer[v].name==name){
         temp_layer[v].bringToFront();
-        temp_layer[v].setStyle({color: 'red'});
+        temp_layer[v].setStyle({weight: 3});
         //map.fitBounds(temp_layer[v].getBounds());
       }else{
-        temp_layer[v].setStyle({color: `hsl(${245}, ${100}%, ${45}%)`});
+        temp_layer[v].setStyle({weight: 1});
       }
     }
   }
@@ -9226,6 +9286,13 @@ $('#ga_bt2').click(function() {
   let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
   $('#ga_to').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
+
+function getAngleDiff(a, b) {
+    let diff = Math.abs(a - b) % 360;
+    return diff > 180 ? 360 - diff : diff;
+}
+
+
 $('#ga_bt3').click(function() {
   
 
@@ -9275,8 +9342,10 @@ $('#ga_bt3').click(function() {
             let p0 = turf.point([xx0,yy0]);
             let p2 = turf.point([xx,yy]);
             let ang =(turf.bearing(p0, p2) + 360) % 360;
+            let diff1 = getAngleDiff(ang, alfa1);
+            let diff2 = getAngleDiff(ang, alfa2);
 
-            if(Math.abs(ang-alfa1)<20 || Math.abs(ang-alfa2)<20){
+            if(diff1 <20 || diff2 <20){
               let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:3,opacity:1}).addTo(map);
               temp_layer.push(l);
                if(spline.length==0)spline.push([xx0,yy0]);
@@ -9550,13 +9619,13 @@ let str='';
 function dut_ruh(id) {
 if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
-      $('#map').css('height', 'calc(100vh - 404px)');
-      $('#marrr').css('height', 'calc(100vh - 404px)');
-      $('#option').css('height', 'calc(100vh - 404px)');
-      $('#unit_info').css('height', 'calc(100vh - 404px)');
-      $('#zupinki').css('height', 'calc(100vh - 404px)');
-      $('#logistika').css('height', 'calc(100vh - 404px)');
-      $('#monitoring').css('height', 'calc(100vh - 404px)');
+      $('#map').css('height', 'calc(100vh - 416px)');
+      $('#marrr').css('height', 'calc(100vh - 416px)');
+      $('#option').css('height', 'calc(100vh - 416px)');
+      $('#unit_info').css('height', 'calc(100vh - 416px)');
+      $('#zupinki').css('height', 'calc(100vh - 416px)');
+      $('#logistika').css('height', 'calc(100vh - 416px)');
+      $('#monitoring').css('height', 'calc(100vh - 416px)');
     } 
 
     var unid =  id;
@@ -9854,13 +9923,13 @@ $('#zapr_zvit2').prop('disabled', false);
      
      if ($('#grafik').is(':hidden')) {
       $('#grafik').show();
-      $('#map').css('height', 'calc(100vh - 404px)');
-      $('#marrr').css('height', 'calc(100vh - 404px)');
-      $('#option').css('height', 'calc(100vh - 404px)');
-      $('#unit_info').css('height', 'calc(100vh - 404px)');
-      $('#zupinki').css('height', 'calc(100vh - 404px)');
-      $('#logistika').css('height', 'calc(100vh - 404px)');
-      $('#monitoring').css('height', 'calc(100vh - 404px)');
+      $('#map').css('height', 'calc(100vh - 416px)');
+      $('#marrr').css('height', 'calc(100vh - 416px)');
+      $('#option').css('height', 'calc(100vh - 416px)');
+      $('#unit_info').css('height', 'calc(100vh - 416px)');
+      $('#zupinki').css('height', 'calc(100vh - 416px)');
+      $('#logistika').css('height', 'calc(100vh - 416px)');
+      $('#monitoring').css('height', 'calc(100vh - 416px)');
     } 
      show_gr(data,data2);
      //map.setView([parseFloat(this.id.split(',')[1]), parseFloat(this.id.split(',')[2])],map.getZoom(),{animate: false});
