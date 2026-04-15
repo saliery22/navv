@@ -4106,6 +4106,7 @@ let ind = 1;
       $('#tr_visible').css("background", '#3399FF');
       }else{
       trak_visible = false; 
+      online_tracks.clearLayers(); 
       $('#tr_visible').css({'background':'#ffffffff'}); 
       }      
    });
