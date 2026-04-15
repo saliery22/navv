@@ -2363,6 +2363,7 @@ let rote_bt = false;
 
 
 var layerControl=0;
+let online_tracks=0;
 function initMap() {
   
   // create a map in the "map" div, set the view to a given place and zoom
@@ -2455,6 +2456,7 @@ var basemaps = {
 
 
 layerControl=L.control.layers(basemaps).addTo(map);
+online_tracks = L.layerGroup().addTo(map);
 
 basemaps['Google Streets'].addTo(map);
   
@@ -4090,14 +4092,73 @@ let ind = 1;
              if(agregat == 28 && data[ind][5][0]=='С'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
              if(agregat == 29 && data[ind][5][0]=='Ж'){if(rux == 0){markerrr.setOpacity(1);}else{if (data[ind][3]>0 ) {markerrr.setOpacity(1);}}}
              }
-            }
-
-         
+            }    
      //if (markerrr.getPopup() && markerrr.isPopupOpen()) map.setView([y, x], map.getZoom(), { animate: true });
+    } 
+  }
+   if(trak_visible) trak_offline();
+}
+  let trak_visible = false;
+  $('#tr_visible').click(function() {
+    if(!trak_visible){
+      trak_visible = true;
+      trak_offline();
+      $('#tr_visible').css("background", '#3399FF');
+      }else{
+      trak_visible = false; 
+      $('#tr_visible').css({'background':'#ffffffff'}); 
+      }      
+   });
+
+
+let lastCall = 0;
+let draw_trak =false;
+function trak_offline() {
+  if(draw_trak)return;
+  const now = Date.now();
+  if (now - lastCall < 100) return; // 1000ms — оптимально для памяти
+  lastCall = now;
+      if (!online_tracks || typeof online_tracks.clearLayers !== 'function') { return;}
+  draw_trak=true;
+  online_tracks.clearLayers(); 
+
+  for (let i = 0; i < Global_DATA.length; i++) {
+    const data = Global_DATA[i];
+    if (!data || data.length < 5) continue;
+
+    const id = data[0][0];
+    if (filtr === true && !filterSet.has(id)) continue;
+
+    let line = [];
+    let lastPointStr = ""; // Для быстрой проверки дублей
+
+    for (let ii = 1; ii < data.length; ii++) {
+      const point = data[ii];
+      // Проверяем время и наличие координат
+      if (point[4] < Global_time && point[7] && point[8]) {
+        const currentPointStr = point[7] + "," + point[8];
+        
+        // Добавляем только если точка изменилась (экономим память)
+        if (currentPointStr !== lastPointStr) {
+          line.push([point[7], point[8]]);
+          lastPointStr = currentPointStr;
+        }
+      }
+    }
+
+    if (line.length > 1) {
+      // 3. Добавляем линию сразу в группу слоев
+      L.polyline(line, {
+        color: '#0026ff',
+        weight: 1,
+        smoothFactor: 1.5 // Важно для производительности!
+      }).addTo(online_tracks);
     }
   }
+  draw_trak =false;
 }
-    
+
+
 
 var tik =0;
 var sec =700;
