@@ -407,6 +407,7 @@ unitslist.forEach(function(unit) {
           pop.setContent(statusText);
          
     if(sdsa)unitMarker.setLatLng([sdsa.y, sdsa.x]);
+     if(trak_visible) trak_online(unit.getId(),sdsa.y,sdsa.x);
 
     if(online_mark[unit.getId()]) map.removeLayer(online_mark[unit.getId()]);
 
@@ -466,6 +467,7 @@ function online_ON() {
           if(unitMarker.options.opacity>0){
              unitMarker.setOpacity(1);
           unitMarker.setLatLng([pos.y, pos.x]);
+          if(trak_visible) trak_online(unit.getId(),pos.y,pos.x);
          let pop = unitMarker.getPopup();
         
         
@@ -1606,6 +1608,7 @@ treeselect5 = new Treeselect({
         }
 
          filterSet = new Set(filtr_data); 
+         if(trak_visible)trak_update();
  })
    
 
@@ -2363,7 +2366,7 @@ let rote_bt = false;
 
 
 var layerControl=0;
-let online_tracks=0;
+let online_tracks=null;
 function initMap() {
   
   // create a map in the "map" div, set the view to a given place and zoom
@@ -2874,6 +2877,7 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
  L.easyButton('<img src="gaz.png" title="Газони">', function(){ fast_grop(["Газони"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["Обприскувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
 
@@ -4096,13 +4100,13 @@ let ind = 1;
      //if (markerrr.getPopup() && markerrr.isPopupOpen()) map.setView([y, x], map.getZoom(), { animate: true });
     } 
   }
-   if(trak_visible) trak_offline();
+   if(trak_visible) trak_offline(Global_time);
 }
   let trak_visible = false;
   $('#tr_visible').click(function() {
     if(!trak_visible){
       trak_visible = true;
-      trak_offline();
+      trak_update();
       $('#tr_visible').css("background", '#3399FF');
       }else{
       trak_visible = false; 
@@ -4111,17 +4115,24 @@ let ind = 1;
       }      
    });
 
+  function trak_update() { 
+     trackCache = {};
+     online_tracks.clearLayers(); 
+    if(online_chek){trak_offline(from222s);}else{trak_offline(Global_time);}
+  }
+
 
 let lastCall = 0;
 let draw_trak =false;
-function trak_offline() {
+let trackCache = {};
+function trak_offline(t) {
   if(draw_trak)return;
   const now = Date.now();
   if (now - lastCall < 100) return; // 1000ms — оптимально для памяти
   lastCall = now;
-      if (!online_tracks || typeof online_tracks.clearLayers !== 'function') { return;}
+      if (!online_tracks) { return;}
   draw_trak=true;
-  online_tracks.clearLayers(); 
+  //online_tracks.clearLayers(); 
 
   for (let i = 0; i < Global_DATA.length; i++) {
     const data = Global_DATA[i];
@@ -4136,7 +4147,7 @@ function trak_offline() {
     for (let ii = 1; ii < data.length; ii++) {
       const point = data[ii];
       // Проверяем время и наличие координат
-      if (point[4] < Global_time && point[7] && point[8]) {
+      if (point[4] < t && point[7] && point[8]) {
         const currentPointStr = point[7] + "," + point[8];
         
         // Добавляем только если точка изменилась (экономим память)
@@ -4148,17 +4159,55 @@ function trak_offline() {
     }
 
     if (line.length > 1) {
-      // 3. Добавляем линию сразу в группу слоев
-      L.polyline(line, {
-        color: '#0026ff',
-        weight: 1,
-        smoothFactor: 1.5 // Важно для производительности!
-      }).addTo(online_tracks);
+      if (trackCache[id]) {
+         trackCache[id].setLatLngs(line);
+      }else{
+         trackCache[id] =   L.polyline(line, {
+                              color: '#0026ff',
+                              weight: 1,
+                              smoothFactor: 1.5 
+                            }).addTo(online_tracks);
+      }
     }
   }
   draw_trak =false;
 }
 
+
+function trak_online(idd,y,x) {
+   if (!online_tracks ) { return;}
+   for (let i = 0; i < Global_DATA.length; i++) {
+    const data = Global_DATA[i];
+    const id = data[0][0];
+    if(idd==id){
+        let line = [];
+        let lastPointStr = ""; // Для быстрой проверки дублей
+    for (let ii = 1; ii < data.length; ii++) {
+      const point = data[ii];
+      if (point[7] && point[8]) {
+        const currentPointStr = point[7] + "," + point[8];
+        if (currentPointStr !== lastPointStr) {
+          line.push([point[7], point[8]]);
+          lastPointStr = currentPointStr;
+        }
+      }
+    }
+      line.push([y,x]);
+    if (line.length > 1) {
+      if (trackCache[idd]) {
+         trackCache[idd].setLatLngs(line);
+      }else{
+         trackCache[idd] =   L.polyline(line, {
+                              color: '#0026ff',
+                              weight: 1,
+                              smoothFactor: 1.5 
+                            }).addTo(online_tracks);
+      }
+    }
+    break;
+    }
+  }
+}
 
 
 var tik =0;
