@@ -2877,7 +2877,7 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
  L.easyButton('<img src="gaz.png" title="Газони">', function(){ fast_grop(["Газони"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["Обприскувачі"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["*Обприскувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
 
@@ -4139,6 +4139,7 @@ function trak_offline(t) {
     if (!data || data.length < 5) continue;
 
     const id = data[0][0];
+    const name = data[0][1];
     if (filtr === true && !filterSet.has(id)) continue;
 
     let line = [];
@@ -4166,7 +4167,12 @@ function trak_offline(t) {
                               color: '#0026ff',
                               weight: 1,
                               smoothFactor: 1.5 
-                            }).addTo(online_tracks);
+                            }).bindTooltip(name,{sticky: true}).addTo(online_tracks).on('mouseover', function (e) {
+    this.setStyle({ weight: 3, color: '#ff0000' });
+}).on('mouseout', function (e) {
+    // Возвращаем исходный стиль
+    this.setStyle({weight: 1,color: '#0026ff'});
+});
       }
     }
   }
@@ -4179,6 +4185,7 @@ function trak_online(idd,y,x) {
    for (let i = 0; i < Global_DATA.length; i++) {
     const data = Global_DATA[i];
     const id = data[0][0];
+    const name = data[0][1];
     if(idd==id){
         let line = [];
         let lastPointStr = ""; // Для быстрой проверки дублей
@@ -4201,7 +4208,12 @@ function trak_online(idd,y,x) {
                               color: '#0026ff',
                               weight: 1,
                               smoothFactor: 1.5 
-                            }).addTo(online_tracks);
+                            }).bindTooltip(name,{sticky: true}).addTo(online_tracks).on('mouseover', function (e) {
+    this.setStyle({ weight: 3, color: '#ff0000' });
+}).on('mouseout', function (e) {
+    // Возвращаем исходный стиль
+    this.setStyle({weight: 1,color: '#0026ff'});
+});
       }
     }
     break;
@@ -4713,13 +4725,29 @@ for ( j = 1; j < tableRow.length; j++){
                 $('#v11').css({'background':'#3399FF'});
                 let data_gr = [];
                 let data_gr2 = [];
+                 let data_gr3 = [];
                 if(unid){
                   for(let i = 0; i<Global_DATA.length; i++){ 
                   let idd = Global_DATA[i][0][0];
                   if(idd==unid){
+                    let windowSize = 30; 
                     for (let ii = 1; ii<Global_DATA[i].length-1; ii+=1){
-                      data_gr=data_gr.concat({x: Global_DATA[i][ii][1].replace(/ +/g, ' '), y: parseFloat(Global_DATA[i][ii][2])});
-                      data_gr2=data_gr2.concat({x: Global_DATA[i][ii][1].replace(/ +/g, ' '), y: parseInt(Global_DATA[i][ii][3])});
+                       const label = Global_DATA[i][ii][1].replace(/\s+/g, ' ');
+                      data_gr.push({x: label, y: parseFloat(Global_DATA[i][ii][2])});
+                      data_gr2.push({x: label, y: parseInt(Global_DATA[i][ii][3])});
+                       
+                      // let sum = 0;
+                      // let count = 0;
+                      //     for (let k = 0; k < windowSize; k++) {
+                      //         if (ii - k >= 1) { // Проверяем, чтобы не выйти за границы данных
+                      //           if(!Global_DATA[i][ii - k][2])continue;
+                      //             sum += parseFloat(Global_DATA[i][ii - k][2]);
+                      //             count++;
+                      //         }
+                      //     }
+                      //         data_gr3.push({x: label,y: Math.round(sum / count)});
+
+
                     } 
                     break;
                   }   
@@ -4728,12 +4756,12 @@ for ( j = 1; j < tableRow.length; j++){
                      let d1 = Date.parse($('#fromtime1').val());
                      let d2 = Date.parse($('#fromtime2').val());
                      for (let i = d1; i<d2; i+=3000){
-                      data_gr2=data_gr2.concat({x: i, y: 60});
+                      data_gr2.push({x: i, y: 60});
                  }
                 }
                 
                // drawChart(data_graf);
-                grafik (data_gr,data_gr2);
+                grafik (data_gr,data_gr2,data_gr3);
           }
 
        
@@ -4743,7 +4771,7 @@ for ( j = 1; j < tableRow.length; j++){
 let s1,s2;       
 let graf_klik =null;
 let meChart = null;
-function grafik (data_gr,data_gr2){
+function grafik (data_gr,data_gr2,data_gr3){
    let sliv_start =null;
    let sliv_end =null;
    let sliv_start_range =null;
@@ -4855,7 +4883,20 @@ meChart = new Chart(ctx, {
           return 'rgba(255, 69, 69, 0.2)'
         }),
       },
-    }],
+    },
+    // {
+    //      label: 'сгладжене',
+    //      data: data_gr3,
+    //      fill: false,
+    //      borderColor: 'rgb(255, 1, 1)',
+    //      backgroundColor:  'rgb(255, 1, 1)',
+    //      pointStyle: false,
+    //      //spanGaps: true,
+    //      borderWidth: 1,
+    //       yAxisID: 'y',
+      
+    // },
+  ],
 
 },
   options: {
@@ -6114,7 +6155,7 @@ if(!unitslist[ii].getPosition())continue;
       
     
     }
-   console.log(no_aktiv)
+
   
   for (let i = 0; i < data.length; i++) {
     let pos=0;
@@ -7634,7 +7675,6 @@ async function marshrut_avto(){
       let st=0;
       for(let i=2;i<data[0].length;i++){
         if(!data[0][i][0])continue;
-        console.log(parseInt(data[0][i][2]))
         if( parseInt(data[0][i][2])==0){
           let t = Date.parse(data[0][i][1])-Date.parse(data[0][i-1][1]);
           stop+=t;
@@ -8136,7 +8176,6 @@ $('#vodiyi_kkz').click(function() {
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td>№</td><td>назва</td><td>код</td><td>телефон</td><td>поточна техніка</td><td>остання техніка</td><td>коментар</td><td>створено</td><td>змінено</td></tr>");
   for (key in drivers) {
-    console.log(drivers[key]);
     let drv = drivers[key];
     let now="----";
     let then="----";
@@ -8209,7 +8248,7 @@ $('#vodiyi_kkz').click(function() {
   if($("#lis0 :selected").html()=='—')return;
   str = $("#lis0 :selected").html();
 }
-    SendDataInCallback(fr-43200,to,str,[],0,show_all_tracks_data);
+    SendDataInCallback(fr-86400,to,str,[],0,show_all_tracks_data);
     });
 
 function show_all_tracks_data(data) {
