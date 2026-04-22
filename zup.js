@@ -7979,7 +7979,9 @@ let kx=0;
 $('#men7').css({'background':'#fffd7e'});
 }
 $('#bbd').click(function() {
-  let n=unitsgrup.легкові_нові;
+  let n=unitsgrup["легкові_нові"];
+
+
   if(!n)return;
   let fr =Date.parse($('#obd_time1').val())/1000;
   let to =Date.parse($('#obd_time2').val())/1000;
@@ -7988,12 +7990,13 @@ $('#bbd').click(function() {
   });
 function avto_OBD(data){
   $("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку км.</td><td>пробіг по одометру км.</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>максимальна швидкість</td><td>швидкість > 110 понад 1хв</td><td>витрата пального л.</td><td>витрата пального л/100км</td><td>заправлено л.</td></tr>");
+  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку км.</td><td>пробіг по одометру км.</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>максимальна швидкість</td><td>швидкість > 90 понад 1хв</td><td>витрата пального л.</td><td>витрата пального л/100км</td><td>заправлено л.</td></tr>");
   for (let i = 0; i<data.length; i++){
     let name = data[i][0][1];
     let hl0 = 0;
     let hl1 = 0;
     let st = 0;
+    let st_odo = 0;
     let km = 0;
     let km_odo_start = 0;
     let km_odo = 0;
@@ -8008,6 +8011,7 @@ function avto_OBD(data){
     let zapr=0;
     let zapr00 = 0;
     let stoy = 0;
+
     for (let ii = 1; ii<data[i].length-1; ii++){
       if(!data[i][ii][1])continue;
       if(!data[i][ii+1][1])continue;
@@ -8060,8 +8064,8 @@ function avto_OBD(data){
       if(d<60000)km+=d;
       
       let sped = parseInt(data[i][ii][2]);
-      if(sped>sped_max)sped_max=sped;
-      if(sped>110){
+      if(sped>sped_max && sped<120)sped_max=sped;
+      if(sped>90 && sped<120){
         sped_hr_interval+=time2-time1;
         if(sped_hr_interval>61){
           sped_hr+=time2-time1;
@@ -8078,16 +8082,20 @@ function avto_OBD(data){
 
       if(!rpm1)continue;
       if(!rpm2)continue;
-        if(rpm1>300 && rpm2>300){moto_hr+= time2-time1;}     
+        if(rpm1>300 && rpm2>300 ){moto_hr+= time2-time1;}     
       if(y==yy && x==xx ){
         if(rpm1>300 && rpm2>300){
+          if(!st_odo)st_odo = parseInt(data[i][ii][7]);
           st+=time2-time1;
           hl0+=time2-time1;     
         if(st>300)hl1+=time2-time1;
         }
       }else{
-        if(st>300 && d>1000){
-        hl1-=st-300;
+         if(st>0){
+           if(st_odo && parseInt(data[i][ii][7]) && parseInt(data[i][ii][7]) - st_odo >0) d =1111;
+        }
+        if(st>0 && d>1000 ){ 
+        if(st>300)hl1-=st-300;
         hl0-=st;
         }else{
           if($("#bbd_chek").is(":checked") && st>300){
@@ -8105,6 +8113,7 @@ function avto_OBD(data){
         }
 
         st=0;
+        st_odo=0;
       }
      
 
