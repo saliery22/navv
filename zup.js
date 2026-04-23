@@ -246,12 +246,12 @@ timeline.addEventListener('scroll', () => {
 
     Global_time = from111s + (timeline.scrollLeft * msPerPx);
     const exactTime = new Date(Global_time);
-
     const h = String(exactTime.getHours()).padStart(2, '0');
     const m = String(exactTime.getMinutes()).padStart(2, '0');
     const s = String(exactTime.getSeconds()).padStart(2, '0');
-
-    display.innerText = `${h}:${m}:${s}`;
+    const day = String(exactTime.getDate()).padStart(2, '0');
+    const month = String(exactTime.getMonth() + 1).padStart(2, '0');
+    display.innerText = `${day}.${month} ${h}:${m}:${s}`;
     slider_fast.value =Math.round((Global_time-from111s)/(from222s-from111s)*2000);
     position(Global_time);
 
@@ -274,7 +274,9 @@ function scrollToPercent() {
       const h = String(exactTime.getHours()).padStart(2, '0');
       const m = String(exactTime.getMinutes()).padStart(2, '0');
       const s = String(exactTime.getSeconds()).padStart(2, '0');
-      display.innerText = `${h}:${m}:${s}`;
+      const day = String(exactTime.getDate()).padStart(2, '0');
+      const month = String(exactTime.getMonth() + 1).padStart(2, '0');
+      display.innerText = `${day}.${month} ${h}:${m}:${s}`;
       slider_fast.value =Math.round(targetScroll*2000);
       position(Global_time);
  
@@ -323,7 +325,9 @@ slider_fast.addEventListener('input', (event) => {
   const h = String(exactTime.getHours()).padStart(2, '0');
   const m = String(exactTime.getMinutes()).padStart(2, '0');
   const s = String(exactTime.getSeconds()).padStart(2, '0');
-  display.innerText = `${h}:${m}:${s}`;
+  const day = String(exactTime.getDate()).padStart(2, '0');
+  const month = String(exactTime.getMonth() + 1).padStart(2, '0');
+  display.innerText = `${day}.${month} ${h}:${m}:${s}`;
   position(Global_time);
 });
 
