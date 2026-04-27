@@ -2756,6 +2756,7 @@ L.easyButton('<img src="route.png" title="очистити мапу від тр�
              online_chek=true;
               online_ON();
                 $('#niz').hide();
+                $('#grafik').hide();
                 $('#map').css('height', 'calc(100vh - 34px)');
                 btn.state('zoom-to-school');    // change state on click!
 
@@ -2768,6 +2769,7 @@ L.easyButton('<img src="route.png" title="очистити мапу від тр�
               online_chek=false;
               online_OFF();
                 $('#niz').show();
+                $('#grafik').hide();
                 $('#map').css('height', 'calc(100vh - 136px)');
                 btn.state('zoom-to-forest');
             }
