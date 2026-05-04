@@ -417,15 +417,15 @@ unitslist.forEach(function(unit) {
 
     if((Date.now())/1000-parseInt(sdsa.t)>3600 || parseInt(sdsa.sc)<5){
                          if((Date.now())/1000-parseInt(sdsa.t)>21600){
-                          let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                          let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                           online_mark[unit.getId()] = markerstarton;
                          }else{
                            if(parseInt(sdsa.sc)<5){
-                           let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop3.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                           let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop3.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                            online_mark[unit.getId()] = markerstarton;
                            }else{
                              if((Date.now())/1000-parseInt(sdsa.t)>3600){
-                             let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop2.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                             let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop2.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                              online_mark[unit.getId()] = markerstarton;
                              }
                          }
@@ -513,23 +513,27 @@ function online_ON() {
            if(online_mark[unit.getId()]) map.removeLayer(online_mark[unit.getId()]);
             if((Date.now())/1000-parseInt(pos.t)>3600 || parseInt(pos.sc)<5){
                          if((Date.now())/1000-parseInt(pos.t)>21600){
-                          let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                          let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                           online_mark[unit.getId()] = markerstarton;
                          }else{
                            if(parseInt(pos.sc)<5){
-                           let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop3.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                           let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop3.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                            online_mark[unit.getId()] = markerstarton;
                            }else{
                              if((Date.now())/1000-parseInt(pos.t)>3600){
-                             let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop2.png",iconSize:[16,16],iconAnchor:[8, 8]})}).addTo(map);
+                             let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop2.png",iconSize:[12,12],iconAnchor:[6, 6]})}).addTo(map);
                              online_mark[unit.getId()] = markerstarton;
                              }
                          }
                          }
             }else{
-            if(parseInt(pos.s)>0){
+                if(parseInt(pos.s)>0){
             let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[50,50],iconAnchor:[25, 25]})}).addTo(map);
              markerstarton.setRotationAngle(parseInt(pos.c)-90);
+            online_mark[unit.getId()] = markerstarton;
+            }else{
+            let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "stop_onl.png",iconSize:[10,10],iconAnchor:[-8, 5]})}).addTo(map);
+            markerstarton.setRotationAngle(parseInt(pos.c)-90);
             online_mark[unit.getId()] = markerstarton;
             }
             }
