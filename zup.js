@@ -435,6 +435,10 @@ unitslist.forEach(function(unit) {
             let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[50,50],iconAnchor:[25, 25]})}).addTo(map);
              markerstarton.setRotationAngle(parseInt(sdsa.c)-90);
             online_mark[unit.getId()] = markerstarton;
+            }else{
+            let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "stop_onl.png",iconSize:[10,10],iconAnchor:[-8, 5]})}).addTo(map);
+            markerstarton.setRotationAngle(parseInt(sdsa.c)-90);
+            online_mark[unit.getId()] = markerstarton;
             }
             }
           }
@@ -10511,7 +10515,7 @@ $('#kartki_zvit2').click(function() {
                      km =0;
                   }
                   vod=Global_DATA[i][ii][6];
-                  if(vod==0 || vod=="картка-4095")vod = "картка відсутня"
+                  if(vod==0 || vod=="картка-4095" ||!vod)vod = "картка відсутня код  "+ vod;
                   tr="<tr><td style='white-space: nowrap;'>"+vod+"</td><td>"+Global_DATA[i][ii][1]+"</td>"
                   vod=Global_DATA[i][ii][6];
                   tm=Global_DATA[i][ii][4];
