@@ -13823,6 +13823,7 @@ async function logistik_zvit(data){
                   let r =  100;
                   let c = adres[0][4];
                   if(wialon.util.Geometry.getDistance(y000,x000,yp,xp)<300){
+                    if(!tb.rows[2].cells[(kkk*3)-2])continue;
                     let interval = parseInt(tb.rows[2].cells[(kkk*3)-2].textContent.split(',')[1]);
                     interval+=stoyanka0;
                     tb.rows[2].cells[(kkk*3)-2].textContent=id+','+interval;
