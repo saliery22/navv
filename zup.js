@@ -3950,7 +3950,7 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
            //console.log( new Date().toLocaleTimeString() +"     "+unit.getName() +"     "+ messages.length); 
               if(messages.length > 0){
                  for(var i=0; i<messages.length; i++){ 
-                 //if (!messages[i].pos)continue;
+                 if (messages[i].tp!="ud")continue;
                     let y =null;
                     let x = null;
                     let s = null;
@@ -10479,6 +10479,52 @@ $('#kartki_zvit').click(function() {
               }
 });
 
+$('#kartki_zvit2').click(function() {
+ $("#unit_table").empty();
+            for(let i = 0; i<Global_DATA.length; i++){ 
+            if(Global_DATA[i].length<2)continue;
+            let namet = Global_DATA[i][0][1];
+            $("#unit_table").append("<tr class='fail_trak' id='"+Global_DATA[i][0][0]+"," + 0 +","+ 0 + "'><td style='white-space: nowrap;'>"+namet+"</td><td>"+from111.replace('T', ' ')+"</td><td>"+from222.replace('T', ' ')+"</td></tr>");  
+            let tr="";
+            let vod = '';
+            let km=0;
+            let tm=0;
+            let tm0 =0;
+            let tm00 =0;
+              for (let ii = 1; ii<Global_DATA[i].length-1; ii++){
+                if(!Global_DATA[i][ii][0])continue;
+                if(!Global_DATA[i][ii+1][0])continue;
+                let y = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+                let x = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+                let yy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
+                let xx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
+      
+                let d = wialon.util.Geometry.getDistance(y,x,yy,xx);
+                if(d<60000)km+=d;
+                tm0 = Global_DATA[i][ii][1];
+                tm00 = Global_DATA[i][ii][4];
+                 if(Global_DATA[i][ii][6]!=vod){
+                  if(tr){
+                    let sec= Global_DATA[i][ii][4] - tm;
+                     tr+="<td>"+Global_DATA[i][ii][1]+"</td><td>"+sec_to_time(sec/1000)+"</td><td>"+(km/1000).toFixed(1)+"км</td></tr>"
+                     $("#unit_table").append(tr);
+                     km =0;
+                  }
+                  vod=Global_DATA[i][ii][6];
+                  if(vod==0 || vod=="картка-4095")vod = "картка відсутня"
+                  tr="<tr><td style='white-space: nowrap;'>"+vod+"</td><td>"+Global_DATA[i][ii][1]+"</td>"
+                  vod=Global_DATA[i][ii][6];
+                  tm=Global_DATA[i][ii][4];
+                 }
+              } 
+              if(tr){
+                let sec=tm00 - tm;
+                tr+="<td>"+tm0+"</td><td>"+sec_to_time(sec/1000)+"</td><td>"+(km/1000).toFixed(1)+"км</td></tr>"
+                $("#unit_table").append(tr);
+              }
+              }
+});
+
 
 
 function Speed_data(data){
@@ -13205,7 +13251,8 @@ if(row.rowIndex>0 && evt.target.innerText !='ремонт-зняти' &&  evt.ta
   //marshrut_rote(marshrut_point,-100);
 }
 
-let name = evt.target.innerText.split(' ')[0];
+const roww = evt.target.closest('tr');
+let name =roww.cells[0].innerText.split(' ')[0];
 
      for (let i = 0; i<unitslist.length; i++){
       let nm=unitslist[i].getName();
@@ -13818,6 +13865,7 @@ async function logistik_zvit(data){
                   }else{
                     adres=await point_in_global(y1,x1); 
                     if(wialon.util.Geometry.getDistance(y000,x000,y1,x1)<300){
+                      if(!tb.rows[2].cells[(kkk*3)-2])continue;
                     let interval = parseInt(tb.rows[2].cells[(kkk*3)-2].textContent.split(',')[1]);
                     interval+=stoyanka0;
                     tb.rows[2].cells[(kkk*3)-2].textContent=id+','+interval;
