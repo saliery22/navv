@@ -13273,7 +13273,7 @@ let name =roww.cells[0].innerText.split(' ')[0];
       treeselect3.mount();
       markerByUnit[id].openPopup();
       layers[0]=0;
-      show_track();
+      //show_track();
         break;
      }
      }
