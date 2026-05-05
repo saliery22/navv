@@ -432,7 +432,7 @@ unitslist.forEach(function(unit) {
                          }
             }else{
             if(parseInt(sdsa.s)>0){
-            let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[50,50],iconAnchor:[25, 25]})}).addTo(map);
+            let markerstarton = L.marker([sdsa.y, sdsa.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[40,40],iconAnchor:[18, 20]})}).addTo(map);
              markerstarton.setRotationAngle(parseInt(sdsa.c)-90);
             online_mark[unit.getId()] = markerstarton;
             }else{
@@ -528,7 +528,7 @@ function online_ON() {
                          }
             }else{
                 if(parseInt(pos.s)>0){
-            let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[50,50],iconAnchor:[25, 25]})}).addTo(map);
+            let markerstarton = L.marker([pos.y, pos.x],{interactive: false, icon: L.icon({iconUrl: "move.png",iconSize:[40,40],iconAnchor:[18, 20]})}).addTo(map);
              markerstarton.setRotationAngle(parseInt(pos.c)-90);
             online_mark[unit.getId()] = markerstarton;
             }else{
