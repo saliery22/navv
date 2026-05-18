@@ -69,7 +69,7 @@
     <style>
 
 
-        #shapka{ width: 100%; height:30px;border-bottom: 2px solid #d7dde4;display: flex;  justify-content: space-between; background: #ffffff;}
+        #shapka{ width: 100%; min-height:30px; border-bottom: 2px solid #d7dde4;display: flex;  justify-content: space-between; background: #ffffff;}
         #nizz{ width: 100%; height:30px; border-bottom: 2px solid #d7dde4; border-top: 2px solid #d7dde4; display: flex;  justify-content: flex-start;}
         #niz{ border-top: 2px solid #d7dde4; -webkit-user-select: none;-moz-user-select: none;-ms-user-select: none; user-select: none; }
         #main0 {display: flex;}
@@ -652,7 +652,7 @@ button:hover {
 </div> -->
 <div class='container3' style='width:400px; z-index: 99999;'></div>
 
-<div style ="display: flex;  ">
+<div style ="display: flex; flex-wrap: wrap; ">
     <button class='main_menu' id='v11'style = "min-width: 70px;">Графік &#128200</button>
     <button class='main_menu' id='men5'style = "min-width: 70px;">Зупинки &#9940</button>
     <button class='main_menu' id='men4'style = "min-width: 70px;">Звіти &#128204</button>
@@ -743,6 +743,7 @@ button:hover {
 
         <option disabled>────────────────────────────────────────</option>
             <option value="z23">сповіщення ТЕЛЕГРАМ</option>
+            <option value="z24">сервісна служба</option>
         <option disabled>────────────────────────────────────────</option>
 
         <option value="z16">історія обробки полів</option>
@@ -1179,9 +1180,50 @@ button:hover {
             </table>
         </div>
     </div>
+    <div id="zz24" class='zvit'>
+    <button id='bt_mh_naryad' style='width:19%;'>🛠️ ТО</button>
+    <button id='bt_mh_remont' style='width:19%;'>🔧 Ремонт</button>
+    <button id='bt_mh_zamina' style='width:19%;'>🔄 Заміна</button>
+    <button id='bt_mh_dovidnuk' style='width:19%;'>📚 Довідник</button>
+    <button id='bt_mh_zvit' style='width:19%;'>📊 Звіти</button>
 
+        <div id='naryad_div' style="display: none;">
+            <table id="mh_naryad" class='table'>
+            <tr><td>🚜 транспорт</td><td contenteditable="true">номер/екіпаж/серія</td></tr>
+            <tr><td>🛠️ ТО</td><td contenteditable="true">вид</td></tr>
+            <tr><td>🆔 1С</td><td contenteditable="true">ідентификатор 1С</td></tr>
+            <tr><td>⌛ мотогодини</td><td contenteditable="true">загальні</td></tr>
+            <tr><td>📍 локація</td><td contenteditable="true">населений пункт</td></tr>
+            <tr><td>👷 замовник</td><td contenteditable="true">замовник</td></td></tr>
+            <tr><td>💬 коментар</td><td contenteditable="true"></td></tr>
+            </table>
+             <button id='bt_mh_crt' style='width:70%;'> ➕ НОВИЙ НАРЯД </button> 
+             <button id='bt_mh_save' style='width:26%;'> 💾 НАДІСЛАТИ </button> 
+            <div style='text-align: center; font-weight: bold; margin-top: 10px;'>
+                ВІДКРИТІ НАРЯДИ
+                  <table id="mh_naryady" class='table'>
+            <tr><td>📅 дата створення</td><td>🆔 наряд</td><td>🚦 статус</td><td>👤 виконавець</td></tr>
+            
+            </table>
+            </div>
+        </div>
+
+        <div id='dovidnyk_div' style="display: none;">
+            <br>
+            <button id='bt_dv_traktora' style='width:32%;'> 🚜 техніка/екіпажі </button> 
+            <button id='bt_dv_to' style='width:32%;'> ⚙️ види ТО </button> 
+            <button id='bt_dv_ludi' style='width:32%;'> 👷 сервісні інженери </button> 
+            <br>
+            <table id="dv_table" class='table'>
+            </table>
+            <button id='bt_dv_crt' style='width:70%; display: none;'> ➕ ДОДАТИ </button> 
+            <button id='bt_dv_save' style='width:26%; display: none;'> 💾 ЗБЕРІГТИ ЗМІНИ </button>  
+        </div>
+
+    </div>
  </div>
  <table id="unit_table"class='table'></table>
+ </table>
  </div>
 
  <div id="zupinki">
