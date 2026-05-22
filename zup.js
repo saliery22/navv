@@ -8402,7 +8402,13 @@ function show_all_tracks_data(data,gr) {
           if (line.length > 1) {
             renderPolyline(line, name, dat, vod,trak_color,2);
           }
-           if (dis > 20000 ) renderPolyline([[y, x],[lastPoint[0], lastPoint[1]]], name, dat, vod,`#a6a6a6`,1);
+           if (dis > 20000 ){
+            //renderPolyline([[y, x],[lastPoint[0], lastPoint[1]]], name, dat, vod,`#a6a6a6`,1);
+            let point = L.circleMarker([y, x], { radius: 4,  fillColor: `#b8b8b8`, fillOpacity: 1, stroke: true, weight: 1,  color: '#000000' }).addTo(map); 
+            temp_layer.push(point); 
+            point = L.circleMarker([lastPoint[0], lastPoint[1]], { radius: 4,  fillColor: `#b8b8b8`, fillOpacity: 1, stroke: true, weight: 1,  color: '#000000'}).addTo(map); 
+            temp_layer.push(point); 
+           } 
           line = [];
           kk = 0;
           // Важно: не пушим текущую точку, если она "прыгнула" слишком далеко от предыдущей
