@@ -611,8 +611,15 @@ button:hover {
 .leaflet-popup-close-button {
     pointer-events: auto;
 } */
-
-
+.leaflet-control.easy-button-container {
+    margin-bottom: 2px !important; /* Расстояние между блоками кнопок */
+}
+.leaflet-bar button.my-wide-button {
+    width: max-content !important; /* Либо укажите фиксированную: width: 130px !important; */
+    height: 25px !important; /* Либо укажите фиксированную: width: 130px !important; */
+    padding: 0px 0px 0px 0px;               /* Отступы по бокам от текста */
+    margin: 2px !important;
+}
 
         </style>
 
@@ -864,17 +871,24 @@ button:hover {
     </div> 
 
     <div id="zz14" class='zvit'> 
+        Завантажувати данні не обовязково!
+        <br>
     <input id="track_time1" type="datetime-local"/>
     <input id="track_time2" type="datetime-local"/>
+      відобразити попередньо годин 
+      <input type="number" id="track_time_dop" size="3"  step="1" value="24" min="1" style='width:50px;'>
     <br>
     <br>
     <select class='livesearch' id='track_lis'style='width:100%;' multiple></select>
     <br>
     <br>
-        <button id='track_lis_bt' style='width:100%;'>швидко відобразити треки (не більше 50 одиниць техніки)</button> 
+        <button id='track_lis_bt2' style='width:49%;'>відобразити треки (без обмежань)</button> 
+        <button id='track_lis_bt' style='width:49%;'>швидко відобразити треки (не більше 50 одиниць техніки)</button> 
         <br>
         <br>
-        <button id='track_lis_bt2' style='width:100%;'>відобразити треки (без обмежань)</button> 
+        <button id='track_lis_bt3' style='width:32%; display: none;'>градієнт по часу</button>
+        <button id='track_lis_bt4' style='width:32%; display: none;'>градієнт по дням</button>
+        <button id='track_lis_bt5' style='width:32%; display: none;'>без градієнту</button>
     </div> 
     <div id="zz15" class='zvit'> 
         створіть замкнуту геозону за допомаогою інструменту обміру
