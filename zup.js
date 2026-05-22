@@ -1334,6 +1334,9 @@ if (Date.parse($('#fromtime1').val())/1000 > unit.getPosition().t){rest_units.pu
           clearGarbage(marshrutMarkers);
           marshrutMarkers=[]; 
       } 
+
+
+
     $("#track_lis").chosen().val(row.cells[2].textContent);
     $("#track_lis").trigger("chosen:updated");
     document.getElementById('track_lis_bt2').click();
@@ -2884,16 +2887,41 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
   } 
  }).addTo(map);
 
- L.easyButton('<img src="kamaz.png" title="Авто Камаз">', function(){ fast_grop(["Авто Камаз"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="scan.png" title="Авто SCANIA">', function(){ fast_grop(["Авто SCANIA"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="maz.png" title="Авто МАЗ">', function(){ fast_grop(["Авто МАЗ"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="benz.png" title="Заправки">', function(){ fast_grop(["Заправки"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="gaz.png" title="Газони">', function(){ fast_grop(["Газони"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["*Обприскувачі"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
- L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
+  L.easyButton('<img src="tracks.png" title="треки">', function(){
+    if($('#unit_info').is(':hidden')){
+  $('#men4').click();
+  $('.leaflet-container').css('cursor','');
+  $('.zvit').hide();
+  $("#unit_table").empty();
+  $('#zz14').show();
+  $('#vib_zvit').val('z14');
+  clearGEO(); 
+  clearGarbage(garbage);
+  garbage=[];
+  clearGarbage(garbagepoly);
+  garbagepoly=[];
+  clearGarbage(marshrutMarkers);
+  marshrutMarkers=[];
+  }else{
+     if($('#zz14').is(':visible')) {
+      $('#men4').click();
+    }else{
+      $('.leaflet-container').css('cursor','');
+      $('.zvit').hide();
+      $("#unit_table").empty();
+      $('#zz14').show();
+      $('#vib_zvit').val('z14');
+      clearGEO(); 
+      clearGarbage(garbage);
+      garbage=[];
+      clearGarbage(garbagepoly);
+      garbagepoly=[];
+      clearGarbage(marshrutMarkers);
+      marshrutMarkers=[];
+    }
+  } 
+ }).addTo(map);
+
 
  L.easyButton('<img src="telegram.png" title="TELEGRAM">', function(){
     if($('#unit_info').is(':hidden')){
@@ -2929,6 +2957,17 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
     }
   } 
  }).addTo(map);
+
+  L.easyButton('<img src="kamaz.png" title="Авто Камаз">', function(){ fast_grop(["Авто Камаз"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="scan.png" title="Авто SCANIA">', function(){ fast_grop(["Авто SCANIA"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="maz.png" title="Авто МАЗ">', function(){ fast_grop(["Авто МАЗ"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="benz.png" title="Заправки">', function(){ fast_grop(["Заправки"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="gaz.png" title="Газони">', function(){ fast_grop(["Газони"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="nav.png" title="Навантажувачі">', function(){ fast_grop(["Навантажувачі"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="jd.png" title="John Deere">', function(){ fast_grop(["John Deere"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["*Обприскувачі"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
+ L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
 
 }
 
@@ -8004,7 +8043,7 @@ $('#bbd').click(function() {
   });
 function avto_OBD(data){
   $("#unit_table").empty();
-  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку км.</td><td>пробіг по одометру км.</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>максимальна швидкість</td><td>швидкість > 90 понад 1хв</td><td>витрата пального л.</td><td>витрата пального л/100км</td><td>заправлено л.</td></tr>");
+  $("#unit_table").append("<tr><td>ТЗ</td><td>пробіг по треку км.</td><td>пробіг по одометру км.</td><td>кінцевий одометр</td><td>мотогодини</td><td>холостий хід</td><td>холостий хід більше 5хв</td><td>максимальна швидкість</td><td>швидкість > 90 понад 1хв</td><td>витрата пального л.</td><td>витрата пального л/100км</td><td>заправлено л.</td></tr>");
   for (let i = 0; i<data.length; i++){
     let name = data[i][0][1];
     let hl0 = 0;
@@ -8014,6 +8053,7 @@ function avto_OBD(data){
     let km = 0;
     let km_odo_start = 0;
     let km_odo = 0;
+    let km_odo_last = 0;
     let moto_hr = 0;
     let sped_hr_interval = 0;
     let sped_hr = 0;
@@ -8063,6 +8103,7 @@ function avto_OBD(data){
       if(parseInt(data[i][ii][7])){
         if(km_odo_start==0) km_odo_start = parseInt(data[i][ii][7]);
         km_odo = parseInt(data[i][ii][7])-km_odo_start;
+        km_odo_last = parseInt(data[i][ii][7]);
       }
       
       let time1 = Date.parse(data[i][ii][1])/1000;
@@ -8140,7 +8181,7 @@ function avto_OBD(data){
   if(sped_hr>0){sped_hr =sec_to_time(sped_hr);}else{sped_hr = "----";}
 
 
-  $("#unit_table").append("<tr><td align='left'>"+name+"</td><td>"+ (km/1000).toFixed()+"</td><td>"+km_odo+"</td><td>"+sec_to_time(moto_hr)+"</td><td>"+sec_to_time(hl0)+"</td><td>"+hl1+"</td><td>"+sped_max+"</td><td>"+sped_hr+"</td><td>"+dut0.toFixed(2).toString().replace(/\./g, ",")+"</td><td>"+sr+"</td><td>"+zapr.toFixed(2).toString().replace(/\./g, ",")+"</td></tr>");
+  $("#unit_table").append("<tr><td align='left'>"+name+"</td><td>"+ (km/1000).toFixed()+"</td><td>"+km_odo+"</td><td>"+km_odo_last+"</td><td>"+sec_to_time(moto_hr)+"</td><td>"+sec_to_time(hl0)+"</td><td>"+hl1+"</td><td>"+sped_max+"</td><td>"+sped_hr+"</td><td>"+dut0.toFixed(2).toString().replace(/\./g, ",")+"</td><td>"+sr+"</td><td>"+zapr.toFixed(2).toString().replace(/\./g, ",")+"</td></tr>");
   }
 }
 function sec_to_time(sek){
@@ -8254,6 +8295,7 @@ $('#vodiyi_kkz').click(function() {
   $('#track_lis_bt2').click(function() {
     let to = Date.parse($('#track_time2').val())/1000; // end of day in seconds
     let fr = Date.parse($('#track_time1').val())/1000; // get begin time - beginning of day
+    let dop = parseInt($('#track_time_dop').val())*60*60; // end of day in seconds
     if(!fr){fr=0; to=0;}
     let str='';
     let vibor = $("#track_lis").chosen().val();
@@ -8271,14 +8313,33 @@ $('#vodiyi_kkz').click(function() {
   if($("#lis0 :selected").html()=='—')return;
   str = $("#lis0 :selected").html();
 }
-    SendDataInCallback(fr-86400,to,str,[],0,show_all_tracks_data);
+    SendDataInCallback(fr-dop,to,str,[],0,show_all_tracks_data);
     });
 
-function show_all_tracks_data(data) {
+
+    $('#track_lis_bt3').click(function() {
+       show_all_tracks_data(trak_data,1)
+    });
+
+    $('#track_lis_bt4').click(function() {
+       show_all_tracks_data(trak_data,2)
+    });
+
+    $('#track_lis_bt5').click(function() {
+       show_all_tracks_data(trak_data,0)
+    });
+
+    let trak_data = [];
+function show_all_tracks_data(data,gr) {
+  $('#track_lis_bt3').show();
+  $('#track_lis_bt4').show();
+  $('#track_lis_bt5').show();
+  trak_data=data;
   $("#unit_table").empty();
   clear();
   
   let fr = Date.parse($('#track_time1').val()); // get begin time - beginning of day
+  let to = Date.parse($('#track_time2').val()); // get end time - end of day
 
   for (let i = 0; i < data.length; i++) {
     let name = data[i][0][1];
@@ -8289,7 +8350,41 @@ function show_all_tracks_data(data) {
     for (let ii = 1; ii < data[i].length; ii++) {
       if (!data[i][ii][0]) continue;
       let trak_color = `#0000FF`;
-      if( Date.parse(data[i][ii][1])<fr) trak_color = `#FF0000`;
+       if( Date.parse(data[i][ii][1])<fr){
+         trak_color = `#FF0000`;
+       }else{
+            if(gr==1){
+            let percent = (Date.parse(data[i][ii][1]) - fr) / (to - fr);
+            // Синий уменьшается (255 -> 0), зеленый растет (0 -> 255)
+            let r = 0;
+            let g = Math.round(255 * percent);
+            let b = Math.round(255 * (1 - percent));
+            
+            // Переводим в hex-формат с добавлением ведущих нулей
+            trak_color = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+          }
+            if (gr == 2) {
+                const MS_PER_DAY = 24 * 60 * 60 * 1000; 
+                let currentPoint = Date.parse(data[i][ii][1]);
+                let totalTimeDiff = to - fr;
+                if (totalTimeDiff <= MS_PER_DAY) {
+                    trak_color = `#0000FF`;
+                } else {
+                    let totalDays = Math.max(1, Math.ceil(totalTimeDiff / MS_PER_DAY));
+                    let currentDayIndex = Math.floor((currentPoint - fr) / MS_PER_DAY);
+                    if (currentDayIndex < 0) currentDayIndex = 0;
+                    if (currentDayIndex >= totalDays) currentDayIndex = totalDays - 1;
+                    let dayPercent = totalDays > 1 ? currentDayIndex / (totalDays - 1) : 0;
+                    // Общая дистанция: 330 - 120 = 210 градусов
+                    let hue = 330 - (210 * dayPercent);
+                    trak_color = `hsl(${Math.round(hue)}, 100%, 50%)`;
+                }
+            }
+          
+       }
+
+       
+
 
       let coords = data[i][ii][0].split(',');
       let y = parseFloat(coords[0]);
@@ -8307,7 +8402,7 @@ function show_all_tracks_data(data) {
           if (line.length > 1) {
             renderPolyline(line, name, dat, vod,trak_color,2);
           }
-           if (dis > 20000 ) renderPolyline([[y, x],[lastPoint[0], lastPoint[1]]], name, dat, vod,`#808080`,1);
+           if (dis > 20000 ) renderPolyline([[y, x],[lastPoint[0], lastPoint[1]]], name, dat, vod,`#a6a6a6`,1);
           line = [];
           kk = 0;
           // Важно: не пушим текущую точку, если она "прыгнула" слишком далеко от предыдущей
@@ -8354,6 +8449,9 @@ function show_all_tracks_data(data) {
 
 
 $('#track_lis_bt').click(function() {
+  $('#track_lis_bt3').hide();
+  $('#track_lis_bt4').hide();
+  $('#track_lis_bt5').hide();
   $("#unit_table").empty();
   clear();
   let sess = wialon.core.Session.getInstance(); // get instance of current Session	
@@ -15108,3 +15206,64 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
         });
 }
 
+
+
+
+
+
+
+$('#zz24 > button').click(function() {
+
+    $('#zz24 > button').css('background', '');
+    $(this).css('background', '#d1e7dd');
+
+
+    if (this.id === 'bt_mh_naryad') {
+        $('#naryad_div').show();
+        $('#dovidnyk_div').hide();
+    }
+    if (this.id === 'bt_mh_dovidnuk') {
+        $('#naryad_div').hide();
+        $('#dovidnyk_div').show();
+    }
+    if (this.id === 'bt_mh_remont') {
+        $('#naryad_div').hide();
+        $('#dovidnyk_div').hide();
+    }
+    if (this.id === 'bt_mh_zamina') {
+        $('#naryad_div').hide();
+        $('#dovidnyk_div').hide();
+    }
+    if (this.id === 'bt_mh_zvit') {
+        $('#naryad_div').hide();
+        $('#dovidnyk_div').hide();
+    }
+});
+
+
+
+$('#bt_dv_traktora, #bt_dv_to, #bt_dv_ludi').click(function() {
+
+    $('#bt_dv_traktora, #bt_dv_to, #bt_dv_ludi').css('background', '');
+    $(this).css('background', '#d1e7dd');
+
+        if (this.id === 'bt_dv_traktora') {
+        $('#dv_table').empty();
+        $('#dv_table').append('<tr><th>ТЗ</th><th>механізатор1</th><th>механізатор2</th><th>серія</th></tr>');
+        }
+        if (this.id === 'bt_dv_to') {
+        $('#dv_table').empty();
+        $('#dv_table').append('<tr><th>назва</th><th>запчастини</th><th></th><th></th></tr>');
+        }
+        if (this.id === 'bt_dv_ludi') {
+        $('#dv_table').empty();
+        $('#dv_table').append('<tr><th>сервісний інженер</th><th>ID Telegram</th><th></th><th></th></tr>');
+        }
+
+    $('#bt_dv_crt').show();
+    $('#bt_dv_save').show();
+});
+
+$('#bt_dv_crt').click(function() {
+ $('#dv_table').append('<tr><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>');
+  });
