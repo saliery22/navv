@@ -1424,9 +1424,12 @@ serch_list_avto.push({ "value": name, "name": name+" ("+grup_id.length+")", "chi
          }
          //$('#lis1').append($('<option>').text(name+" ("+data.items[i].$$user_units.length+")").val(name)); 
          
-        
-
-         
+        if(name[0]=="*"){
+               L.easyButton('<span>'+name+'</span>', function(){ 
+                  fast_grop([name]); 
+              }).setPosition('bottomright').addTo(map).button.classList.add('my-wide-button');
+        }
+  
       }
     }
 
@@ -2968,6 +2971,7 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
  L.easyButton('<img src="opr.png" title="Обприскувачи">', function(){ fast_grop(["*Обприскувачі"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="logist.png" title="Логісти">', function(){ fast_grop(["Логісти"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="ALL.png" title="11_ККЗ Загальна">', function(){ fast_grop(["11_ККЗ Загальна"]) }).setPosition('topright').addTo(map);
+
 
 }
 
