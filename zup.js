@@ -927,6 +927,7 @@ let serch_list_avto=[];
 let serch_list_zones =[];
 let treeselect3;
 let context_menu_zone;
+let zone20km_yx =[[51.6265015168, 33.8280764899],[51.6109403814, 33.8177768073],[51.5588234304, 33.8444059716],[51.5161138974, 33.9116972314],[51.4874760858, 33.9508360253],[51.4185862552, 33.9391630517],[51.3228470784, 33.9722732997],[51.3225665255, 34.3552714825],[51.581016535, 34.2921000958],[51.6696807033, 34.1712504865],[51.6977783207, 34.4761210919],[51.8295187788, 34.4692546368],[52.0259867018, 34.1575175763],[52.1786687536, 34.134171629],[52.3794764441, 33.8457805158],[52.4021046507, 33.1563884261],[52.2560748335, 32.9270488265],[52.0943786465, 33.063004637],[52.1357007283, 33.2332927229],[52.161823491, 33.3101970198],[52.1247414599, 33.4708720686],[52.1238983276, 33.6370402815],[52.056184899, 33.6998721049],[52.0095062864, 33.7843295023],[51.9264839954, 33.8270781978],[51.8726755166, 33.8813231929],[51.828841569, 33.9470277989],[51.8143511896, 34.0545854123],[51.7714570826, 34.0460023435],[51.7165658566, 34.0629067472],[51.671064582, 34.0080105422],[51.6712775018, 33.9599453567],[51.6712775018, 33.9451824782],[51.6461460579, 33.948272383],[51.6409920212, 33.882321485],[51.6354520809, 33.840436109],[51.6265015168, 33.8280764899]];
 function initUIData() {
   var session = wialon.core.Session.getInstance();
   var resource = wialon.core.Session.getInstance().getItem(601000284); //601000284   "11_ККЗ"  601000448  "KKZ_Gluhiv"
@@ -1248,8 +1249,9 @@ treeselect.srcElement.addEventListener('input', (e) => {
     }
 });
 
+ 
+let zonnnnna = L.polygon(zone20km_yx, {color: 'blue', stroke: true,weight: 2, opacity: 0.5, fillOpacity: 0.1, fillColor: '#FF00FF'});
 
-let zonnnnna = L.polygon([[51.6265015168, 33.8280764899],[51.6109403814, 33.8177768073],[51.5588234304, 33.8444059716],[51.5161138974, 33.9116972314],[51.4874760858, 33.9508360253],[51.4185862552, 33.9391630517],[51.3228470784, 33.9722732997],[51.3225665255, 34.3552714825],[51.581016535, 34.2921000958],[51.6696807033, 34.1712504865],[51.6977783207, 34.4761210919],[51.8295187788, 34.4692546368],[52.0259867018, 34.1575175763],[52.1786687536, 34.134171629],[52.3794764441, 33.8457805158],[52.4021046507, 33.1563884261],[52.2560748335, 32.9270488265],[52.0943786465, 33.063004637],[52.1357007283, 33.2332927229],[52.161823491, 33.3101970198],[52.1247414599, 33.4708720686],[52.1238983276, 33.6370402815],[52.056184899, 33.6998721049],[52.0095062864, 33.7843295023],[51.9264839954, 33.8270781978],[51.8726755166, 33.8813231929],[51.828841569, 33.9470277989],[51.8143511896, 34.0545854123],[51.7714570826, 34.0460023435],[51.7165658566, 34.0629067472],[51.671064582, 34.0080105422],[51.6712775018, 33.9599453567],[51.6712775018, 33.9451824782],[51.6461460579, 33.948272383],[51.6409920212, 33.882321485],[51.6354520809, 33.840436109],[51.6265015168, 33.8280764899]], {color: 'blue', stroke: true,weight: 2, opacity: 0.5, fillOpacity: 0.1, fillColor: '#FF00FF'});
 layerControl.addOverlay(zonnnnna, "20км зона");
 
 
@@ -8299,7 +8301,7 @@ $('#vodiyi_kkz').click(function() {
   $('#track_lis_bt2').click(function() {
     let to = Date.parse($('#track_time2').val())/1000; // end of day in seconds
     let fr = Date.parse($('#track_time1').val())/1000; // get begin time - beginning of day
-    let dop = parseInt($('#track_time_dop').val())*60*60; // end of day in seconds
+    let dop = parseInt($('#track_time_dop').val())*60*60; 
     if(!fr){fr=0; to=0;}
     let str='';
     let vibor = $("#track_lis").chosen().val();
@@ -9070,6 +9072,25 @@ $("#unit_table").on("click", function (evt){
     }
   }
 
+    if(ename=='перебування в 20-ти км зоні'){
+    [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
+    row.style.backgroundColor = 'pink';
+    let name = row.cells[1].textContent;
+        for (let i = 0; i<unitslist.length; i++){
+      let nm=unitslist[i].getName();
+      if(nm==name){
+        let id=unitslist[i].getId();
+        let from = row.cells[0].textContent +'T'+ row.cells[2].textContent +'Z';
+        let to = row.cells[0].textContent +'T'+ row.cells[3].textContent +'Z';
+        treeselect3.value=id;
+        treeselect3.mount();
+        layers[0]=0;
+        show_track(from,to);
+        break;
+     }
+     }
+  }
+
   if(ename=='історія обробки полів'){
     if (evt.target.cellIndex>0 ){
       [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
@@ -9431,12 +9452,12 @@ let str = 'geohis/'+(currentDate.getMonth()+1)+'.'+currentDate.getFullYear()+'.t
 $('#prob_bt1').click(function() {
   let d = Global_time;
   let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
-  $('#prob_from').val(new Date(d- tzoffset1).toISOString().slice(0, -8));
+  $('#prob_from').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
 $('#prob_bt2').click(function() {
   let d = Global_time;
   let tzoffset1 = (new Date(Global_time)).getTimezoneOffset() * 60000;
-  $('#prob_to').val(new Date(d- tzoffset1).toISOString().slice(0, -8));
+  $('#prob_to').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
 $('#prob_bt3').click(function() {
   let unitId = treeselect3.value;
@@ -9537,7 +9558,73 @@ $('#prob_bt4').click(function() {
   $('#prob_to').val(null)
 });
 
+//==========================================================================================================================================================================
+//==========================================================================================================================================================================
+//==========================================================================================================================================================================
+//==========================================================================================================================================================================
+//==========================================================================================================================================================================
 
+$('#zona20_bt').click(function() {
+     $("#unit_table").append("<tr><td>дата</td><td>ТЗ</td><td>початок</td><td>кінець</td><td>пробіг км</td><td>час</td><td>час в русі</td><td>простій</td><td>коментар</td></tr>");
+     let buferpoly =[];
+      zone20km_yx.forEach(function(item, arr) {
+      buferpoly.push({x:item[0], y:item[1]}); 
+    });
+
+  for(let i = 0; i<Global_DATA.length; i++){ 
+            let unitName = Global_DATA[i][0][1];
+            let t_m=0;
+            let start=0;
+            let end=0;
+            let km =0;
+            let yy = 0;
+            let xx = 0;
+            let yy0 = 0;
+            let xx0 = 0;
+            let dis =0;
+        for (let ii = 3; ii<Global_DATA[i].length-1; ii+=1){ 
+        if(!Global_DATA[i][ii][0])continue;
+        if(!Global_DATA[i][ii][4])continue;
+        if(!Global_DATA[i][ii-1][0])continue;
+        if(!Global_DATA[i][ii-1][4])continue;
+
+         yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+         xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+         if(wialon.util.Geometry.pointInShape(buferpoly, 0, yy, xx)){
+            if(Global_DATA[i][ii][3]>0){
+              if(start ==0)start = Global_DATA[i][ii][4];
+              end = Global_DATA[i][ii][4];
+              if(start != end){
+              yy0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[0]);
+              xx0 = parseFloat(Global_DATA[i][ii-1][0].split(',')[1]);
+               dis = wialon.util.Geometry.getDistance(yy,xx,yy0,xx0);
+               if(dis<500000){
+                km+=dis;
+                t_m+=(Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4]);
+               }
+              }
+            }
+         }else{
+           if(km>1000){
+            let interval = end -start;
+            let stop = interval - t_m;
+               $("#unit_table").append("<tr><td>"+new Date(start).toISOString().split('T')[0]+"</td><td>"+unitName+"</td><td>"+new Date(start).toISOString().slice(11, 19)+"</td><td>"+new Date(end).toISOString().slice(11, 19)+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
+           }
+            t_m=0;
+            start=0;
+            end=0;
+            km =0;
+         }
+
+      }
+
+            if(km>1000){
+            let interval = end -start;
+            let stop = interval - t_m;
+               $("#unit_table").append("<tr><td>"+new Date(start).toISOString().split('T')[0]+"</td><td>"+unitName+"</td><td>"+new Date(start).toISOString().slice(11, 19)+"</td><td>"+new Date(end).toISOString().slice(11, 19)+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
+           }
+    }
+});
 
 //==========================================================================================================================================================================
 //==========================================================================================================================================================================
