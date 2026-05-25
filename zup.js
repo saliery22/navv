@@ -9080,8 +9080,9 @@ $("#unit_table").on("click", function (evt){
       let nm=unitslist[i].getName();
       if(nm==name){
         let id=unitslist[i].getId();
-        let from = row.cells[0].textContent +'T'+ row.cells[2].textContent +'Z';
-        let to = row.cells[0].textContent +'T'+ row.cells[3].textContent +'Z';
+        let from = row.cells[0].textContent +'T'+ row.cells[2].textContent;
+        let to = row.cells[0].textContent +'T'+ row.cells[3].textContent;
+
         treeselect3.value=id;
         treeselect3.mount();
         layers[0]=0;
@@ -9609,7 +9610,8 @@ $('#zona20_bt').click(function() {
            if(km>1000){
             let interval = end -start;
             let stop = interval - t_m;
-               $("#unit_table").append("<tr><td>"+new Date(start).toISOString().split('T')[0]+"</td><td>"+unitName+"</td><td>"+new Date(start).toISOString().slice(11, 19)+"</td><td>"+new Date(end).toISOString().slice(11, 19)+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
+            let start_lokal = 
+               $("#unit_table").append("<tr><td>"+new Date(start).toLocaleDateString('sv-SE', {timeZone: 'Europe/Kyiv'})+"</td><td>"+unitName+"</td><td>"+new Date(start).toLocaleTimeString('uk-UA', { hour12: false })+"</td><td>"+new Date(end).toLocaleTimeString('uk-UA', { hour12: false })+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
            }
             t_m=0;
             start=0;
@@ -9622,7 +9624,7 @@ $('#zona20_bt').click(function() {
             if(km>1000){
             let interval = end -start;
             let stop = interval - t_m;
-               $("#unit_table").append("<tr><td>"+new Date(start).toISOString().split('T')[0]+"</td><td>"+unitName+"</td><td>"+new Date(start).toISOString().slice(11, 19)+"</td><td>"+new Date(end).toISOString().slice(11, 19)+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
+               $("#unit_table").append("<tr><td>"+new Date(start).toLocaleDateString('sv-SE', {timeZone: 'Europe/Kyiv'})+"</td><td>"+unitName+"</td><td>"+new Date(start).toLocaleTimeString('uk-UA', { hour12: false })+"</td><td>"+new Date(end).toLocaleTimeString('uk-UA', { hour12: false })+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(interval/1000)+"</td><td>"+sec_to_time(t_m/1000)+"</td><td>"+sec_to_time(stop/1000)+"</td><td contenteditable='true'></td></tr>");
            }
     }
 });
