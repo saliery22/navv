@@ -755,6 +755,7 @@ button:hover {
 
         <option value="z16">історія обробки полів</option>
         <option value="z14">візуалізація треків за період</option>
+        <option value="z25">перебування в 20-ти км зоні</option>
         <option value="z15">планування маршрутів</option>
         <option value="z6">робота по регіонах</option>
         <option value="z3">звіт по мотогодинах в геозоні</option>
@@ -973,10 +974,10 @@ button:hover {
         завантажте данні, оберіть транспорт на мапі чи в списку, оберіть "час з" на шкалі часу (перемістіть повзунок на потрібний час і натисніть кнопку час з), оберіть "час по" на шкалі часу, виконайте "звіт"
         <br>
         <button id='prob_bt1'>  час з </button>   
-        <input id="prob_from" type="datetime-local"/>
+        <input id="prob_from" type="datetime-local" step="1"/>
 
         <button id='prob_bt2'>  час по </button> 
-        <input id="prob_to" type="datetime-local"/>  
+        <input id="prob_to" type="datetime-local" step="1"/>  
 
         <button id='prob_bt3'>  звіт </button> 
         <button id='prob_bt4'>  очистити </button>
@@ -1234,6 +1235,11 @@ button:hover {
             <button id='bt_dv_save' style='width:26%; display: none;'> 💾 ЗБЕРІГТИ ЗМІНИ </button>  
         </div>
 
+    </div>
+    <div id="zz25" class='zvit'>
+        завантажте данні необхідної техніки за необхідний період, виконайте "звіт"
+        <br>
+        <button id='zona20_bt' style='width:99%;'>  звіт </button> 
     </div>
  </div>
  <table id="unit_table"class='table'></table>
