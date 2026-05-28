@@ -6811,14 +6811,9 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  for (let ii = 1; ii<Global_DATA[i].length-11; ii++){
 
 
-
  if(!Global_DATA[i][ii][4])continue;
  if(!Global_DATA[i][ii+10][4])continue;
 
- if(Global_DATA[i][ii][2] && zalishki<parseFloat(Global_DATA[i][ii][2])){
-   zalishki = parseFloat(Global_DATA[i][ii][2]);
-   zalishki_data = Global_DATA[i][ii][1];
- }
  
   if(Global_DATA[i][ii][3]==0 && Global_DATA[i][ii+10][3]==0){
     zupp0+=(Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/1000;
@@ -6860,7 +6855,13 @@ let per=0;
 let grafik=[];
 
 
-for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){      
+for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){  
+  
+   if(Global_DATA[i][ii][2]){
+   zalishki = parseFloat(Global_DATA[i][ii][2]);
+   zalishki_data = Global_DATA[i][ii][1];
+ }
+ 
     if(ii<2)continue;
     if(ii>Global_DATA[i].length-2)continue;
     if(!Global_DATA[i][ii-1][0])continue;
