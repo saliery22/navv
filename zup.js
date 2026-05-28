@@ -8038,9 +8038,9 @@ let kx=0;
 $('#men7').css({'background':'#fffd7e'});
 }
 $('#bbd').click(function() {
-  let n=unitsgrup["легкові_нові"];
-
-
+  //let n=unitsgrup["легкові_нові"];
+  let n=$('#obd_unit').val();
+  if(unitsgrup[n]){n = unitsgrup[n];}
   if(!n)return;
   let fr =Date.parse($('#obd_time1').val())/1000;
   let to =Date.parse($('#obd_time2').val())/1000;
@@ -15309,7 +15309,11 @@ function Rote_gruzoperevozki(p1,p2,color,ind){
 
 
 
-
+//======================================================================================
+//======================================================================================
+//======================================================================================
+//======================================================================================
+//===========SERVIS=====================================================================
 
 
 $('#zz24 > button').click(function() {
@@ -15367,3 +15371,4 @@ $('#bt_dv_traktora, #bt_dv_to, #bt_dv_ludi').click(function() {
 $('#bt_dv_crt').click(function() {
  $('#dv_table').append('<tr><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>');
   });
+
