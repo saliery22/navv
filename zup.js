@@ -6773,6 +6773,7 @@ if ($("#2_mot").is(":checked")) html0+="<td>робота в полі год</td>
 html0+="<td>простій год</td>";
 if ($("#3_mot").is(":checked")) html0+="<td>простій на стані год</td><td>простій по за станом год</td>"
 if ($("#4_mot").is(":checked")) html0+="<td>простій мот-год</td><td>простій літри</td><td>простій л/год</td>" 
+if ($("#6_mot").is(":checked")) html0+="<td>залишки пального л</td><td>дата останнього рівня</td>" 
 html0+="</tr>";
 for(let i = 0; i<Global_DATA.length; i++){
 let nametr = Global_DATA[i][0][1];
@@ -6780,6 +6781,8 @@ let litry0=0;
 let prostoy0=0;
 let zupp0 =0;
 let litry=0;
+let zalishki=0;
+let zalishki_data=0;
 let prostoy=0;
 let zupp=0;
 let stoyanka=0;
@@ -6812,7 +6815,10 @@ str.forEach((element) => {if(nametr.indexOf(element)>=0){
  if(!Global_DATA[i][ii][4])continue;
  if(!Global_DATA[i][ii+10][4])continue;
 
- 
+ if(Global_DATA[i][ii][2] && zalishki<parseFloat(Global_DATA[i][ii][2])){
+   zalishki = parseFloat(Global_DATA[i][ii][2]);
+   zalishki_data = Global_DATA[i][ii][1];
+ }
  
   if(Global_DATA[i][ii][3]==0 && Global_DATA[i][ii+10][3]==0){
     zupp0+=(Global_DATA[i][ii+10][4]-Global_DATA[i][ii][4])/1000;
@@ -7172,6 +7178,8 @@ if ($("#3_mot").is(":checked"))html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(
   if ($("#4_mot").is(":checked")) html+="<td>"+h.padStart(2, 0) + ":" + m.padStart(2, 0) + ":00</td>";
  let lkm = (litry/prostoy*3600).toFixed(1);
  if ($("#4_mot").is(":checked"))html+="<td>"+ litry.toFixed(1) +"</td><td>"+ lkm +"</td></tr>";
+
+  if ($("#6_mot").is(":checked")) html+="<td>"+ zalishki.toFixed(1) + "</td><td>"+ zalishki_data + "</td>";
 
 
   html0+=html;
