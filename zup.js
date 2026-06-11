@@ -758,6 +758,10 @@ function mark7(e) {
          
          
 }
+function mark8(e) {
+  let name = context_menu_zone.sourceTarget.zone.n;
+ to_kml(name);
+}
 
 // Unit markers constructor
 function getUnitMarker(unit) {
@@ -923,6 +927,7 @@ let activ_zone=0;
 let marshrut_leyer_0;
 let polya_lablse = [];
 let serch_list =[];
+let serch_list_geo =[];
 let serch_list_avto=[];
 let serch_list_zones =[];
 let treeselect3;
@@ -965,6 +970,10 @@ function initUIData() {
            IDzonacord[zone.id]=cord;
            var geozona =  L.polygon([cord], {pane: 'Fields',color: '#FF00FF', stroke: true,weight: 1, opacity: 0.2, fillOpacity: 0.5, fillColor: color,  contextmenu: true,
     contextmenuItems: [{
+        text: 'конвертувати в KML',
+        callback: mark8,
+        index: 3
+    },{
         text: 'історія обробки',
         callback: mark5,
         index: 3
@@ -978,14 +987,15 @@ function initUIData() {
         index: 3
     },{
         separator: true,
-        index: 6
+        index: 7
     }]});
           // geozona.bindPopup(zone.n);
            geozona.bindTooltip(zone.n +'<br />'+(zone.ar/10000).toFixed(1)+'га <br />'+zonegr,{opacity:0.8,sticky:true});
            geozona.zone = zone;
            geozona.gr = zonegr;
            geozones.push(geozona);
-           serch_list.push({name:zone.n, value: "pole_"+zone.id});
+           serch_list.push({name:zone.n, value: zone.id});
+           serch_list_geo.push({name:zone.n, value: zone.id});
            geozonesID[zone.id] = geozona;
            $('#geomodul_field_lis').append($('<option>').text(zone.n).val(zone.n));
            $('#lis0').append($('<option>').text(zone.n).val("поле_"+zone.n));
@@ -1057,7 +1067,17 @@ function initUIData() {
           });
 
       }
-       treeselect3 = new Treeselect({
+
+  treeselect6 = new Treeselect({
+  parentHtmlContainer: document.querySelector('.container6'),
+  options: serch_list_geo,
+  showTags: false,
+  saveScrollPosition:true,
+  isSingleSelect:true
+});
+
+      
+  treeselect3 = new Treeselect({
   parentHtmlContainer: document.querySelector('.container3'),
   options: serch_list,
   //staticList: true,
@@ -9486,7 +9506,7 @@ $('#prob_bt3').click(function() {
 if($("#unit_table tr").length==0){
   $("#unit_table").append("<tr><td>дата</td><td>ТЗ</td><td>початок</td><td>кінець</td><td>пробіг км</td><td>час</td><td>час в русі</td><td>простій</td><td>коментар</td></tr>");
 }
-
+   let idd = $("#unit_table tr").length;
    let yy = 0;
    let xx = 0;
    let yy0 = 0;
@@ -9511,10 +9531,12 @@ if($("#unit_table tr").length==0){
          if(dis<500000){
           km+=dis;
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:weight,opacity:1}).addTo(map);
-          temp_layer.push(l);
+          l.id = idd;
+          marshrut_treck.push(l);
          }else{
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color:  'rgb(63, 62, 62)',weight:weight,opacity:1}).addTo(map);
-          temp_layer.push(l);
+          l.id = idd;
+          marshrut_treck.push(l);
          }
     
          if(stop>0){
@@ -9564,6 +9586,8 @@ if($("#unit_table tr").length==0){
 });
 $('#prob_bt4').click(function() {
   $("#unit_table").empty();
+  clearGarbage(marshrut_treck);
+  clearGarbage(zup_mark_data);
   $('#prob_from').val(null);
   $('#prob_to').val(null)
 });
@@ -9667,6 +9691,9 @@ $('#ga_bt2').click(function() {
   $('#ga_to').val(new Date(d- tzoffset1).toISOString().slice(0, -5));
 });
 
+
+
+
 function getAngleDiff(a, b) {
     let diff = Math.abs(a - b) % 360;
     return diff > 180 ? 360 - diff : diff;
@@ -9675,7 +9702,11 @@ function getAngleDiff(a, b) {
 
 $('#ga_bt3').click(function() {
   
+if($("#unit_table tr").length==0){
+  $("#unit_table").append("<tr><td>дата</td><td>ТЗ</td><td>початок</td><td>кінець</td><td>захват м</td><td>оброблено га</td><td>пересічення га</td><td>чистий обробіток га</td><td>пробіг км</td><td>час</td><td>час в русі</td><td>простій</td><td>коментар</td></tr>");
+}
 
+  let idd = $("#unit_table tr").length;
   let alfa1=parseInt(napr.value);
   let alfa2=alfa1+180;
   let from =Date.parse($('#ga_from').val());
@@ -9717,7 +9748,8 @@ $('#ga_bt3').click(function() {
          if(dis<500000){
           km+=dis;
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: "rgb(0, 4, 255)",weight:3,opacity:1}).addTo(map);
-          temp_layer.push(l);
+          l.id=idd;
+          marshrut_treck.push(l);
           if ($("#ga_rz").is(":checked")){
             let p0 = turf.point([xx0,yy0]);
             let p2 = turf.point([xx,yy]);
@@ -9727,24 +9759,28 @@ $('#ga_bt3').click(function() {
 
             if(diff1 <20 || diff2 <20){
               let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:3,opacity:1}).addTo(map);
-              temp_layer.push(l);
+              l.id=idd;
+              marshrut_treck.push(l);
                if(spline.length==0)spline.push([xx0,yy0]);
                spline.push([xx,yy]); 
             }else{
               let l = L.polyline([[yy,xx],[yy0,xx0]], {color: "rgb(255, 196, 0)",weight:3,opacity:1}).addTo(map);
-              temp_layer.push(l);
+              l.id=idd;
+              marshrut_treck.push(l);
                if(spline.length>1)splines.push(spline)
                spline=[];
             }
           }else{
            let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:3,opacity:1}).addTo(map);
-           temp_layer.push(l);
+           l.id=idd;
+           marshrut_treck.push(l);
            if(spline.length==0)spline.push([xx0,yy0]);
            spline.push([xx,yy]); 
           }
          }else{
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: "rgb(131, 131, 131)",weight:3,opacity:1}).addTo(map);
-          temp_layer.push(l);
+          l.id=idd;
+          marshrut_treck.push(l);
           if(spline.length>1)splines.push(spline)
           spline=[];
          }
@@ -9777,15 +9813,10 @@ $('#ga_bt3').click(function() {
        spline=[];
 
 
-let result = track_to_polygon(splines, zax);
-
-if($("#unit_table tr").length==0){
-  $("#unit_table").append("<tr><td>дата</td><td>ТЗ</td><td>початок</td><td>кінець</td><td>захват м</td><td>оброблено га</td><td>пересічення га</td><td>чистий обробіток га</td><td>пробіг км</td><td>час</td><td>час в русі</td><td>простій</td></tr>");
-}
+let result = track_to_polygon(splines, zax, idd);
 
 
-
-  $("#unit_table").append("<tr><td style='background-color: "+color+"'>"+$('#ga_from').val().replace("T", " ").split(' ')[0]+"</td><td>"+unitName+"</td><td>"+$('#ga_from').val().replace("T", " ").split(' ')[1]+"</td><td>"+$('#ga_to').val().replace("T", " ").split(' ')[1]+"</td><td>"+zax+"</td><td>"+(result.g).replace(/\./g, ",")+"</td><td>"+(result.p).replace(/\./g, ",")+"</td><td>"+(result.c).replace(/\./g, ",")+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(t_km+t_s)+"</td><td>"+sec_to_time(t_km)+"</td><td>"+sec_to_time(t_s)+"</td></tr>");
+  $("#unit_table").append("<tr><td style='background-color: "+color+"'>"+$('#ga_from').val().replace("T", " ").split(' ')[0]+"</td><td>"+unitName+"</td><td>"+$('#ga_from').val().replace("T", " ").split(' ')[1]+"</td><td>"+$('#ga_to').val().replace("T", " ").split(' ')[1]+"</td><td>"+zax+"</td><td>"+(result.g).replace(/\./g, ",")+"</td><td>"+(result.p).replace(/\./g, ",")+"</td><td>"+(result.c).replace(/\./g, ",")+"</td><td>"+(km/1000).toFixed(1).replace(/\./g, ",")+"</td><td>"+sec_to_time(t_km+t_s)+"</td><td>"+sec_to_time(t_km)+"</td><td>"+sec_to_time(t_s)+"</td><td contenteditable='true'></td></tr>");
 
   $('#prob_from').val(null);
   $('#prob_to').val(null);
@@ -9793,7 +9824,7 @@ if($("#unit_table tr").length==0){
 });
 
 
-function track_to_polygon(data, zahvat){
+function track_to_polygon(data, zahvat, idd){
   let res = {g:0, p:0,c:0};
    if(data.length==0) return res;
   let spline,p0,p1,p2,p3,p4,ang,ang1,ang2;
@@ -9886,7 +9917,8 @@ function myroutine(){
       areaI = (areaU -turf.area(union)*kof/10000).toFixed(2);
 
       let polylinee = L.geoJSON(union,{ style: function (feature) { return {color: color, fillOpacity: 0.5, weight: 1};}}).addTo(map);
-        temp_layer.push(polylinee); 
+       polylinee.id = idd;
+       marshrut_treck.push(polylinee); 
  
         if(union){
           if(union.geometry.type=="Polygon"){
@@ -9911,8 +9943,24 @@ function myroutine(){
 
 $('#ga_bt4').click(function() {
   $("#unit_table").empty();
+  clearGarbage(marshrut_treck);
+  clearGarbage(zup_mark_data);
   $('#ga_from').val(null);
   $('#ga_to').val(null)
+});
+
+$('#ga_bt5, #prob_bt5').click(function() {
+  if($("#unit_table tr").length>1){
+    let idd = $("#unit_table tr").length-1;
+    marshrut_treck = marshrut_treck.filter(item => {
+    if (item.id == idd) {
+      map.removeLayer(item);
+      return false; // Исключаем из массива
+    }
+    return true; // Оставляем в массиве
+  });
+     $("#unit_table tr").last().remove();
+  }
 });
 //========================================================================================================================
 //=======================================================================================================================
@@ -10800,6 +10848,60 @@ let html = "<tr><td>"+data[0][0][1]+"</td><td></td><td>відстань</td><td>
  html += "<tr><td>більше 80 менше 110</td><td style ='background-color: rgb(251, 255, 0)'></td><td>"+(d3/1000).toFixed(2)+"      ("+(d3/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t3)+"      ("+(t3/all_t*100).toFixed()+"%)</td></tr>";
  html += "<tr><td>більше 110</td><td style ='background-color: rgb(247, 0, 0)'></td><td>"+(d4/1000).toFixed(2)+"      ("+(d4/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t4)+"      ("+(t4/all_t*100).toFixed()+"%)</td></tr>";
 $("#unit_table").append(html);
+}
+
+$("#tokml_bt").on("click", function (){
+  let  name = treeselect6.srcElement.innerText;
+   to_kml(name)
+});
+function to_kml(name){
+let poligon = geozones.find(zone =>zone.zone.n.toLowerCase() === name.toLowerCase().trim());
+console.log(poligon);
+ const latlngs = poligon._latlngs[0];
+    let coordString = latlngs.map(ll => `${ll.lng},${ll.lat},0`).join(' ');
+    const firstPoint = `${latlngs[0].lng},${latlngs[0].lat},0`;
+    if (!coordString.endsWith(firstPoint)) {
+        coordString += ` ${firstPoint}`;
+    }
+ const currentDateTime = new Date().toLocaleDateString();
+ let color = poligon.options.fillColor || "#ff0000"; 
+ const cleanHex = color.replace('#', '');
+       color =  `7f${cleanHex.substring(4, 6)}${cleanHex.substring(2, 4)}${cleanHex.substring(0, 2)}`;
+
+const kmlString = `<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<name>Geofences</name>
+		<Placemark>
+			<name>${name}</name>
+			<description>Конвертировано ${currentDateTime}</description>
+			<Style>
+				<LineStyle>
+					<color>${color}</color>
+				</LineStyle>
+				<PolyStyle>
+					<color>${color}</color>
+				</PolyStyle>
+			</Style>
+			<Polygon>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>${coordString}</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>`;
+
+    const blob = new Blob([kmlString], { type: 'application/vnd.google-earth.kml+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    
+    link.href = URL.createObjectURL(blob);
+    link.download = `${name}.kml`
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 //===========================TELEGRAM=======================================================================================
