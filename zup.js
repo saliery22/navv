@@ -994,7 +994,7 @@ function initUIData() {
            geozona.zone = zone;
            geozona.gr = zonegr;
            geozones.push(geozona);
-           serch_list.push({name:zone.n, value: zone.id});
+           serch_list.push({name:zone.n, value: "pole_"+zone.id});
            serch_list_geo.push({name:zone.n, value: zone.id});
            geozonesID[zone.id] = geozona;
            $('#geomodul_field_lis').append($('<option>').text(zone.n).val(zone.n));
