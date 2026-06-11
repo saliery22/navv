@@ -755,6 +755,7 @@ button:hover {
 
         <option value="z16">історія обробки полів</option>
         <option value="z14">візуалізація треків за період</option>
+        <option value="z26">конвертація полів KML</option>
         <option value="z25">перебування в 20-ти км зоні</option>
         <option value="z15">планування маршрутів</option>
         <option value="z6">робота по регіонах</option>
@@ -974,33 +975,42 @@ button:hover {
           </table>
             </div> 
     <div id="zz18" class='zvit'>
-        завантажте данні, оберіть транспорт на мапі чи в списку, оберіть "час з" на шкалі часу (перемістіть повзунок на потрібний час і натисніть кнопку час з), оберіть "час по" на шкалі часу, виконайте "звіт"
-        <br>
-        <button id='prob_bt1'>  час з </button>   
-        <input id="prob_from" type="datetime-local" step="1"/>
+        <p style="font-size: 12px; line-height: 1.5; color: #4a5568; margin: 0 0 5px 0; padding-bottom: 6px; border-bottom: 1px solid #edf2f7;">
+        Завантажте дані, оберіть транспорт на мапі чи в списку, оберіть <strong>"час з"</strong> та <strong>"час по"</strong> на шкалі часу, виконайте <strong>"звіт"</strong>.
+        </p>
+    <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; width:100%;">
+        <div style="flex: 3;  display: flex; flex-direction: column; gap: 6px;">
+            <input id="prob_from" type="datetime-local" step="1"/>
+            <button id="prob_bt1">час з</button>
+        </div>
+        <div style="flex: 3;display: flex; flex-direction: column; gap: 6px;">
+            <input id="prob_to" type="datetime-local" step="1" />
+            <button id="prob_bt2">час по</button>
+        </div>
+            <div style="flex: 1;display: flex; flex-direction: column; gap: 6px;">
+            <input type="color" id="z18_color" value="#007bff" style='height:45px; padding: 0;'>
+        </div>
+        <div style="flex: 1;display: flex; flex-direction: column; gap: 6px;">
+            &nbsp;товщина 
+            <input type="number" id="z18_shirina" size="2"  step="1" value="3" min="1" style='width:50px;'>
+        </div>
+         <button id='prob_bt3' style=width:100px;>  звіт ▶️</button> 
+         <button id='prob_bt4' >  очистити 🗑️</button>
+         <button id='prob_bt5' >  відмінити ↩️</button>
+         <button class='copy_table'>  копіювати 📋</button>
 
-        <button id='prob_bt2'>  час по </button> 
-        <input id="prob_to" type="datetime-local" step="1"/>  
-
-        <button id='prob_bt3'>  звіт </button> 
-        <button id='prob_bt4'>  очистити </button>
-        <button class='copy_table'>  копіювати </button>
-             &nbsp;&nbsp; колір &nbsp;&nbsp;
-        <input type="color" id="z18_color" value="#007bff" style='height:20px; padding: 0;'>
-           &nbsp;&nbsp; товщина &nbsp;&nbsp;
-        <input type="number" id="z18_shirina" size="2"  step="1" value="3" min="1" style='width:50px;'>
-   
+    </div>
+            
     </div> 
     <div id="zz19" class='zvit'>
+         <p style="font-size: 12px; line-height: 1.5; color: #4a5568; margin: 0 0 5px 0; padding-bottom: 6px; border-bottom: 1px solid #edf2f7;">
         завантажте данні, оберіть транспорт на мапі чи в списку, оберіть "час з" на шкалі часу (перемістіть повзунок на потрібний час і натисніть кнопку час з), оберіть "час по" на шкалі часу, встановіть налаштування, виконайте "звіт"
-        <br>
-  
-        <button id='ga_bt1'>  час з </button>   
-        <input id="ga_from" type="datetime-local" step="1"/>
-
-        <button id='ga_bt2'>  час по </button> 
-        <input id="ga_to" type="datetime-local" step="1"/> 
-         <select id='agregat_lis'>
+        </p>
+      <div style='display: flex;  align-items: center; gap: 10px;'>
+        <img id='strelka' src="alfa.png"> 
+        <input type="range" id="ga_alfa" min="0" max="179" value="0" step="1"  style="width: 300px;"/>
+        <input type="checkbox" id="ga_rz" /> напрямок обробки
+        <select id='agregat_lis'>
             <option value=10>ширина захвату</option>
             <option value=6.7>Дискування</option>
             <option value=8.8>Глибоке рихлення</option>
@@ -1011,18 +1021,29 @@ button:hover {
             <option value=12>Збір врожаю</option>
             <option value=3.5>Оранка</option>
         </select>
-        <input type="number" id="ga_sh" size="3" name="num" step="0.1" value="10" min="0" style='width:80px;'>
-        <input type="color" id="z19_color" value="#007bff" style='height:20px; padding: 0;'>
-        <br>
-        <div style='display: flex;  align-items: center;'>
-        <img id='strelka' src="alfa.png"> 
-        <input type="checkbox" id="ga_rz" /> напрямок обробки
-        <input type="range" id="ga_alfa" min="0" max="179" value="0" step="1"  style="width: 300px;"/>
+         <input type="number" id="ga_sh" size="3" name="num" step="0.1" value="10" min="0" style='width:50px;'>
         </div>
-        
-        <button id='ga_bt3' style='width:70%;'>  звіт </button> 
-        <button id='ga_bt4' style='width:29%;'>  очистити </button>
          
+      <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; width:100%;">
+        <div style="flex: 3;  display: flex; flex-direction: column; gap: 6px;">
+            <input id="ga_from" type="datetime-local" step="1"/>
+            <button id="ga_bt1">час з</button>
+        </div>
+        <div style="flex: 3;display: flex; flex-direction: column; gap: 6px;">
+            <input id="ga_to" type="datetime-local" step="1" />
+            <button id="ga_bt2">час по</button>
+        </div>
+            <div style="flex: 1;display: flex; flex-direction: column; gap: 6px;">
+            <input type="color" id="z19_color" value="#007bff" style='height:45px; padding: 0;'>
+        </div>
+          <button id='ga_bt3' style=width:100px;>  звіт ▶️</button> 
+         <button id='ga_bt4' >  очистити 🗑️</button>
+         <button id='ga_bt5' >  відмінити ↩️</button>
+         <button class='copy_table'>  копіювати 📋</button>
+    
+
+      </div>
+      
     </div> 
     <div id="zz99" class='zvit'>
         завантажте данні, оберіть групу транспорту,натисніть кнопку "звіт"
@@ -1243,6 +1264,11 @@ button:hover {
         завантажте данні необхідної техніки за необхідний період, виконайте "звіт"
         <br>
         <button id='zona20_bt' style='width:99%;'>  звіт </button> 
+    </div>
+    <div id="zz26" class='zvit'>
+    <div class='container6' style='width:500px;  z-index: 99999;'></div>
+    <br>
+    <button id='tokml_bt' >  конвертувати в kml  </button> 
     </div>
  </div>
  <table id="unit_table"class='table'></table>
