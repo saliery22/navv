@@ -15217,6 +15217,7 @@ function calculate_mn(data,ind){
     $('#marsh_avto').append("<tr><td></td><td>ЧАС</td><td>ТЗ</td><td>ВОДІЙ</td><td>РОБОТА</td><td>НАРЯД</td><td>проб</td><td>ходки</td><td>роб</td><td>час</td></tr>");
     for(var i=0; i < rows.length-1; i++){
       let td = rows[i].split('\t');
+      if(!td[2] || !td[7])continue;
       let nn = 2;
       if(td[7]=='урожай')nn=1;
       if(td[7]=='ремонт')nn=3;
