@@ -9067,15 +9067,6 @@ let row = tbl.rows[tbl.rows.length-1];
  }
 
 
-      
-
- 
-
-   
-
-
-
-
 
 
  });
@@ -9088,7 +9079,7 @@ $("#unit_table").on("click", function (evt){
  
   if(ename=='візуалізація треків за період'){
     [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
-    row.style.backgroundColor = 'pink';
+    if (row && row.tagName === 'TR')row.style.backgroundColor = 'pink';
     let name = row.cells[0].textContent;
     for (let v = 0; v<temp_layer.length; v++){
       if(!temp_layer[v].name)continue;
@@ -9104,7 +9095,8 @@ $("#unit_table").on("click", function (evt){
 
     if(ename=='перебування в 20-ти км зоні'){
     [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
-    row.style.backgroundColor = 'pink';
+    if (row && row.tagName === 'TR')row.style.backgroundColor = 'pink';
+    
     let name = row.cells[1].textContent;
         for (let i = 0; i<unitslist.length; i++){
       let nm=unitslist[i].getName();
@@ -9125,7 +9117,7 @@ $("#unit_table").on("click", function (evt){
   if(ename=='історія обробки полів'){
     if (evt.target.cellIndex>0 ){
       [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
-      row.style.backgroundColor = 'pink';
+      if (row && row.tagName === 'TR')row.style.backgroundColor = 'pink';
     let ind = row.cells[1].textContent+row.cells[2].textContent+row.cells[5].textContent+row.cells[7].textContent;
     for (let v = 0; v<garbagepoly.length; v++){
       if(!garbagepoly[v].nam)continue;
