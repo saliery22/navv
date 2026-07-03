@@ -4034,6 +4034,7 @@ function CollectGlobalData(t2,i,unit){ // execute selected report
                         x=messages[i].pos.x;
                         s=messages[i].pos.s;
                         xy=messages[i].pos.y+','+messages[i].pos.x;
+                        //if(messages[i].pos.sc==0)s = null;
                     }else{
                         y=Global_DATA[ii][Global_DATA[ii].length-1][7];
                         x=Global_DATA[ii][Global_DATA[ii].length-1][8];
@@ -4126,7 +4127,7 @@ let ind = 1;
              if(data[ind][5]!=0)avto= data[ind][5];
              if(data[ind][6]!=0)vod= data[ind][6];
 
-           if(data[ind][0] || interval<data[ind][4]+600000){
+           if(data[ind][0] && interval<data[ind][4]+600000 && data[ind][3]!== null){
                   let  statusText = 
                   '<div style="min-width:50px; font-family: sans-serif;">' +
                       '<div style="text-align:center; font-size:11px; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:3px; margin-bottom:5px;">' + 
@@ -4810,7 +4811,6 @@ for ( j = 1; j < tableRow.length; j++){
                   for(let i = 0; i<Global_DATA.length; i++){ 
                   let idd = Global_DATA[i][0][0];
                   if(idd==unid){
-                    let windowSize = 30; 
                     for (let ii = 1; ii<Global_DATA[i].length-1; ii+=1){
                        const label = Global_DATA[i][ii][1].replace(/\s+/g, ' ');
                       data_gr.push({x: label, y: parseFloat(Global_DATA[i][ii][2])});
@@ -4818,10 +4818,12 @@ for ( j = 1; j < tableRow.length; j++){
                        
                       // let sum = 0;
                       // let count = 0;
-                      //     for (let k = 0; k < windowSize; k++) {
-                      //         if (ii - k >= 1) { // Проверяем, чтобы не выйти за границы данных
-                      //           if(!Global_DATA[i][ii - k][2])continue;
-                      //             sum += parseFloat(Global_DATA[i][ii - k][2]);
+                      // let windowSize = 30; 
+                      //     for (let k = -windowSize; k <= windowSize; k++) {
+                      //         let targetIndex = ii + k;
+                      //         if (targetIndex > 0 && targetIndex < Global_DATA[i].length) { 
+                      //             if (!Global_DATA[i][targetIndex][2]) continue; 
+                      //             sum += parseFloat(Global_DATA[i][targetIndex][2]);
                       //             count++;
                       //         }
                       //     }
@@ -4974,6 +4976,8 @@ meChart = new Chart(ctx, {
     //      //spanGaps: true,
     //      borderWidth: 1,
     //       yAxisID: 'y',
+    //       tension: 0.1, // Додає плавне згладжування лінії (значення від 0 до 1)
+    //       cubicInterpolationMode: 'monotone' // Робить згладжування правильним, без зайвих вигинів
       
     // },
   ],
