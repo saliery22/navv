@@ -2762,7 +2762,23 @@ L.easyButton('<img src="route.png" title="очистити мапу від тр�
    clear2();
  }).addTo(map);
  
-
+  L.easyButton('<img src="Text.png" title="відобразити назви іконок">', function(){
+    var visibleBounds = map.getBounds();
+    map.eachLayer(function (layer) {
+      var isMarker = layer instanceof L.Marker;
+      var isPolygon = layer instanceof L.Polygon;
+      if (layer instanceof L.Marker) {
+          var isVisibleOnScreen = false;
+          if (isMarker) {
+              isVisibleOnScreen = visibleBounds.contains(layer.getLatLng());
+          } 
+          var opacity = layer.options.opacity !== undefined ? layer.options.opacity : 1;
+          if ( isVisibleOnScreen && opacity > 0) {
+              layer.openTooltip();
+          }
+      }
+  });
+ }).addTo(map);
 
 
  let light =1;
@@ -2983,6 +2999,8 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
     }
   } 
  }).addTo(map);
+
+
 
   L.easyButton('<img src="kamaz.png" title="Авто Камаз">', function(){ fast_grop(["Авто Камаз"]) }).setPosition('topright').addTo(map);
  L.easyButton('<img src="scan.png" title="Авто SCANIA">', function(){ fast_grop(["Авто SCANIA"]) }).setPosition('topright').addTo(map);
