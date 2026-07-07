@@ -4879,8 +4879,8 @@ function grafik (data_gr,data_gr2,data_gr3){
    if(s1){
    sliv_start =Date.parse(s1);
    sliv_end =Date.parse(s2);
-   sliv_start_range =sliv_start-600000;
-   sliv_end_range =sliv_end+600000;
+   sliv_start_range =sliv_start-8000000;
+   sliv_end_range =sliv_end+8000000;
    }
    
 const ctx = document.getElementById('myChart');
