@@ -10811,10 +10811,15 @@ function Speed_data(data){
   let t2=0;
   let t3=0;
   let t4=0;
+  let t5=0;
+
   let d1=0;
   let d2=0;
   let d3=0;
   let d4=0;
+  let d5=0;
+
+  let max = 0;
 for (let i = 2; i<data[0].length; i++){
   let sp = data[0][i][2];
   if(!data[0][i][0] || !data[0][i-1][0] || sp<1)continue;
@@ -10824,10 +10829,17 @@ for (let i = 2; i<data[0].length; i++){
              let xx = parseFloat(data[0][i][0].split(',')[1]);
              let time = (Date.parse(data[0][i][1]) -Date.parse(data[0][i-1][1]))/1000;
              let dis = wialon.util.Geometry.getDistance(y, x, yy, xx);
-  if(dis>10000)continue;
+  if(dis>500)continue;
+  if(max<sp)max=sp;
   let l = L.polyline([[y,x],[yy,xx]], {color: 'rgb(0, 37, 247)',weight:4,opacity:0.8}).addTo(map);
     garbage.push(l);
   switch(true){
+     case sp>140:
+      l.setStyle({color: 'rgb(247, 0, 144)'});
+      l.bindTooltip(''+data[0][i][1]+'</br>'+data[0][i][2]+' км/год',{opacity:0.8, sticky:true});
+      t5+=time;
+      d5+=dis;
+      break;
     case sp>110:
       l.setStyle({color: 'rgb(247, 0, 0)'});
       l.bindTooltip(''+data[0][i][1]+'</br>'+data[0][i][2]+' км/год',{opacity:0.8, sticky:true});
@@ -10855,13 +10867,15 @@ for (let i = 2; i<data[0].length; i++){
       d1+=dis;
    }
 }
-let all_t = t1+t2+t3+t4;
-let all_d = d1+d2+d3+d4;
-let html = "<tr><td>"+data[0][0][1]+"</td><td></td><td>відстань</td><td>час</td></tr>";
+let all_t = t1+t2+t3+t4+t5;
+let all_d = d1+d2+d3+d4+d5;
+let html = "<tr><td>"+data[0][0][1]+"  "+$('#fromtime1').val().replace('T', ' ') +"  "+ $('#fromtime2').val().replace('T', ' ') +"</td><td></td><td>відстань</td><td>час</td></tr>";
  html += "<tr><td>менше 40</td><td style ='background-color: rgb(0, 37, 247)'></td><td>"+(d1/1000).toFixed(2)+"      ("+(d1/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t1)+"      ("+(t1/all_t*100).toFixed()+"%)</td></tr>";
  html += "<tr><td>більше 40 менше 80</td><td style ='background-color: rgb(8, 247, 0)'></td><td>"+(d2/1000).toFixed(2)+"      ("+(d2/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t2)+"      ("+(t2/all_t*100).toFixed()+"%)</td></tr>";
  html += "<tr><td>більше 80 менше 110</td><td style ='background-color: rgb(251, 255, 0)'></td><td>"+(d3/1000).toFixed(2)+"      ("+(d3/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t3)+"      ("+(t3/all_t*100).toFixed()+"%)</td></tr>";
  html += "<tr><td>більше 110</td><td style ='background-color: rgb(247, 0, 0)'></td><td>"+(d4/1000).toFixed(2)+"      ("+(d4/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t4)+"      ("+(t4/all_t*100).toFixed()+"%)</td></tr>";
+ html += "<tr><td>більше 130</td><td style ='background-color: rgb(247, 0, 144)'></td><td>"+(d5/1000).toFixed(2)+"      ("+(d5/all_d*100).toFixed()+"%)</td><td>"+sec_to_time(t5)+"      ("+(t5/all_t*100).toFixed()+"%)</td></tr>";
+ html += "<tr><td>максимальна швидкість    "+max+"   </td><td></td><td></td><td></td></tr>";
 $("#unit_table").append(html);
 }
 
