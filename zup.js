@@ -10407,21 +10407,25 @@ $('#ble_zvit').click(function() {
 });
 
 function getMostFrequent(arr) {
-  let frequencyCounter = {}; // Создаем объект для подсчета частоты
-  // Проходим по массиву и подсчитываем частоту каждого элемента
-  arr.forEach(item => {
-    frequencyCounter[item] = (frequencyCounter[item] || 0) + 1;
-  });
-  // Находим элемент с наибольшей частотой
-  let mostFrequentItem = null;
-  let maxFrequency = 0;
-  for (const item in frequencyCounter) {
-    if (frequencyCounter[item] > maxFrequency) {
-      maxFrequency = frequencyCounter[item];
-      mostFrequentItem = item;
-    }
-  }
-  return mostFrequentItem;
+  // let frequencyCounter = {}; // Создаем объект для подсчета частоты
+  // // Проходим по массиву и подсчитываем частоту каждого элемента
+  // arr.forEach(item => {
+  //   frequencyCounter[item] = (frequencyCounter[item] || 0) + 1;
+  // });
+  // // Находим элемент с наибольшей частотой
+  // let mostFrequentItem = null;
+  // let maxFrequency = 0;
+  // for (const item in frequencyCounter) {
+  //   if (frequencyCounter[item] > maxFrequency) {
+  //     maxFrequency = frequencyCounter[item];
+  //     mostFrequentItem = item;
+  //   }
+  // }
+  // return mostFrequentItem;
+
+    if (arr.length === 0) return null;
+    return Math.max(...arr);
+
 }
 
 
@@ -10679,7 +10683,7 @@ for(let i = 0; i<data.length; i++){
   for(let ii = 1; ii<data[i].length; ii++){
     if(!data[i][ii][1])continue;
     if( parseInt(data[i][ii][ind_rob])==0 && zav == 0){
-      data_ble.push(["-----","-----","-----","-----","-----","-----"]);
+      data_ble.push(["-----",name,"-----","-----","-----","-----"]);
       zav=1;
     }
     if( parseInt(data[i][ii][ind_rob])==1 ){
