@@ -10649,7 +10649,7 @@ function vagy(data){
     let to = Date.parse($('#vagy_time2').val())/1000; // end of day in seconds
     let fr = Date.parse($('#vagy_time1').val())/1000; // get begin time - beginning of day
     if(!fr){fr=0; to=0;}
-      let n="Перевантажувач";
+      let n="Перевантажувач,S680,S780,S7900";
    SendDataReportInCallback(fr,to,n,7,[],0,BLE);
     }
 
@@ -10668,10 +10668,10 @@ for(let i = 0; i<data.length; i++){
   
   let ind_rob = null;
    let ind_mitka = null;
-    let ind_dist = null;
+    let ind_dist = 2;
   for(let ii = 0; ii<data[i][0][2].length; ii++){
     if(data[i][0][2][ii]=='Робота Шнека')ind_rob = ii;
-    if(data[i][0][2][ii]=='Мітка BTT')ind_mitka = ii;
+    if(data[i][0][2][ii]=='Мітка BTT' || data[i][0][2][ii]=='Зчитувач Міток BLE')ind_mitka = ii;
     if(data[i][0][2][ii]=='Відстань до мітки BTT')ind_dist = ii;
 
   }
@@ -10696,7 +10696,7 @@ for(let i = 0; i<data.length; i++){
        zn = point_in_region(y,x);
       }
 
-       data_ble.push([data[i][ii][1],name,zn,ble.split('_')[0],data[i][ii][ind_mitka],data[i][ii][ind_dist]]);
+       data_ble.push([data[i][ii][1],name,zn,ble,data[i][ii][ind_mitka],data[i][ii][ind_dist]]);
        zav=0;
      //}
     }   
