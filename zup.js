@@ -4176,7 +4176,7 @@ let ind = 1;
                       '</table>' +
                   '</div>';
              markerrr.bindPopup(errorText);
-             markerrr.setOpacity(0.2);
+             markerrr.setOpacity(0.4);
            }
            y = data[ind][7];
            x = data[ind][8];
@@ -9275,6 +9275,29 @@ $("#unit_table").on("click", function (evt){
            markerr.openPopup();
           }
           }
+     }
+  }
+
+  if(row.rowIndex>0 && ename=='ваги'){
+      [...document.querySelectorAll("#unit_table tr")].forEach(e => e.style.backgroundColor = '');
+    if (row && row.tagName === 'TR')row.style.backgroundColor = 'pink';
+    
+    let name = row.cells[1].textContent;
+        for (let i = 0; i<unitslist.length; i++){
+      let nm=unitslist[i].getName();
+      if(nm==name){
+        let id=unitslist[i].getId();
+        let timee = Date.parse(row.cells[0].textContent);
+        if(timee){
+           Global_time=timee;
+           scrollToPercent();
+        }
+
+        treeselect3.value=id;
+        treeselect3.mount();
+        markerByUnit[id].openPopup();
+        break;
+     }
      }
   }
 
