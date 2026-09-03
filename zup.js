@@ -8177,8 +8177,8 @@ function avto_OBD(data){
       if(d<60000)km+=d;
       
       let sped = parseInt(data[i][ii][2]);
-      if(sped>sped_max && sped<120)sped_max=sped;
-      if(sped>90 && sped<120){
+      if(sped>sped_max && sped<160)sped_max=sped;
+      if(sped>90 && sped<160){
         sped_hr_interval+=time2-time1;
         if(sped_hr_interval>61){
           sped_hr+=time2-time1;
@@ -10856,7 +10856,7 @@ for (let i = 2; i<data[0].length; i++){
              let xx = parseFloat(data[0][i][0].split(',')[1]);
              let time = (Date.parse(data[0][i][1]) -Date.parse(data[0][i-1][1]))/1000;
              let dis = wialon.util.Geometry.getDistance(y, x, yy, xx);
-  if(dis>500)continue;
+  if(dis>500 || dis == 0)continue;
   if(max<sp)max=sp;
   let l = L.polyline([[y,x],[yy,xx]], {color: 'rgb(0, 37, 247)',weight:4,opacity:0.8}).addTo(map);
     garbage.push(l);
