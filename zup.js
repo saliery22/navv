@@ -7313,7 +7313,30 @@ for(let i = 0; i<geozonesgrup.length; i++){
 
  }
 
-
+  no_zlivy = [
+    "32474СВ Мятенко В.І. NH Комбайн",
+    "24169СВ Пономарчук М.М. NH Комбайн",
+    "34121СВ Довбиш О.І. NH Комбайн",
+    "26122СВ Довбиш О.І. Dieci",
+    "03913СВ Карп’юк В.Л. Claas Mega 360 Комбайн",
+    "21480СВ Сильченко В.М. Dieci",
+    "22200СВ Фомський В.І._Фомський Р.В.Case Steiger500",
+    "28782СВ Фомський В.Л._ Моцар А.В.МТЗ 82.1",
+    "34119СВ Фомський В.І._Фомський Р.В. МТЗ 82.1",
+    "17345 Воробей Ю.М. Case MX 340",
+    "36511СВ Ващенко Г.Г._Воробей Ю.М. МТЗ 82.1",
+    "28781СВ Апецько С.І._Клименко М.Г. МТЗ 82.1",
+    "02166СВ Клименко М.Г. Claas Mega 360 Комбайн",
+    "33357СВ Case Patriot",
+    "34120СВ Апецько С.І. Claas Axion 950",
+    "37582СВ Сергійко А.В. Case Patriot",
+    "19198СВ Кривенко Р.О. Case Patriot",
+    "45627СВ Фомський Р.В. NH Комбайн",
+    "27411СВ Фомський В.Л._Моцар А.В. Claas Axion 940",
+    "11688СВ Литвин Ю.Л. ХТЗ",
+    "СВ6406ВН Кухаренко П.М. Камаз",
+    "СВ4236ВВ Кабацький М.К. Камаз"
+  ];
  function zlivy(){
   $("#unit_table").empty();
   $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>літри</td><td>тривалість</td></tr>");
@@ -7326,6 +7349,8 @@ for(let i = 0; i<geozonesgrup.length; i++){
     let nametr = Global_DATA[i][0][1];
     let id = Global_DATA[i][0][0];
     if(nametr.indexOf('ДРП Криски')>=0 || nametr.indexOf('ДРП ККЗ')>=0 || nametr.indexOf('ДРП Райгородок')>=0 || nametr.indexOf('Бензин ККЗ Ультразвук')>=0 || nametr.indexOf('РЕЗЕРВУАР ККЗ новий')>=0 || nametr.indexOf('знято')>=0 ||  nametr.indexOf('Знято')>=0 ||  nametr.indexOf('еревантажувач')>=0) continue;
+    if(no_zlivy.includes(nametr))continue;
+
     let start=0;
     let finish=0;
     let interval0=0;
@@ -10856,6 +10881,7 @@ for (let i = 2; i<data[0].length; i++){
              let xx = parseFloat(data[0][i][0].split(',')[1]);
              let time = (Date.parse(data[0][i][1]) -Date.parse(data[0][i-1][1]))/1000;
              let dis = wialon.util.Geometry.getDistance(y, x, yy, xx);
+             console.log(data[0][i][1]+"      "+ dis +"      "+ sp)
   if(dis>500 || dis == 0)continue;
   if(max<sp)max=sp;
   let l = L.polyline([[y,x],[yy,xx]], {color: 'rgb(0, 37, 247)',weight:4,opacity:0.8}).addTo(map);
