@@ -10353,10 +10353,16 @@ tb.forEach((row, idx) => {
     let displayIdx = `${mainIndex}.${subIndex}`;
     lastVal = row[0];
 if (zapravki_F>=1){
-$("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
+  if (zapravki_F==2){
+  $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td></td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
+  }else{
+  $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>");
+  }
+
 }else{
  $("#unit_table").append("<tr class='zapravka_trak' id='"+row[5]+"," + row[2]+","+row[3]+ "'><td>"+displayIdx+"</td><td>"+row[0]+"</td><td>"+row[2]+"</td><td>"+row[3]+"</td><td>"+row[8]+"</td><td>"+row[4]+"</td><td>"+row[5]+"</td><td>"+row[6].replace(/\./g, ",")+"</td><td  contenteditable='true'>"+row[9] || ''+"</td></tr>"); 
 }
+
     
 });
 
