@@ -7519,21 +7519,33 @@ let temp_stor=[
 [51.4214,33.4826,1500,'Мутин'],
 [51.4184,33.7521,1000,'Яцине'],
 [51.5664,34.1129,3000,'Шалигине'],
+[51.7330,32.9622,2000,'Кориски'],
 ];
+let stor_marshrut_avto = [[51.6259,33.1059,2000,'Райгородок'],[51.7330,32.9622,2000,'Кориски']];
 async function marshrut_avto(){
   msg('Розпочато зівт маршрутів авто ЗАЧЕКАЙТЕ');
     $("#unit_table").empty();
-    $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>Маршрут</td><td>Пробіг</td></tr>");
+    $("#unit_table").append("<tr><td>ТЗ</td><td>Початок</td><td>Кінець</td><td>Маршрут</td><td>Пробіг</td><td>ХЕШ</td></tr>");
+
+    //stor_marshrut_avto = stor;
     let points = 0; 
     let stoyanka = 0;
     let sttime = 300;
     let km = 0;
     let start=0;
     let end=0;
+    let xy=0;
+    let tm=0;
     let html="";
+   
+  
     
     let adres='';
     let adres0='';
+
+    let routeString = "";
+
+
      for(let i = 0; i<Global_DATA.length; i++){ 
       points = 0;
       stoyanka = 500;
@@ -7542,6 +7554,11 @@ async function marshrut_avto(){
       end="";
       html="";
       adres0='';
+
+      adres='';
+      tm=0;
+
+
      let nametr = Global_DATA[i][0][1];
      let id = Global_DATA[i][0][0];
      let str =$('#unit_marsh').val().split(',');
@@ -7556,43 +7573,37 @@ async function marshrut_avto(){
         lon = markerr.getLatLng().lng;
       }
       
-       for (let ii = 1; ii<Global_DATA[i].length-1; ii+=1){
-   
+       for (let ii = 2; ii<Global_DATA[i].length-1; ii+=1){
        if(parseInt(Global_DATA[i][ii][3])<5){ 
         if((Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4])/1000)stoyanka+=(Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4])/1000; 
-       }
-       if(!Global_DATA[i][ii][0])continue;
-       if(!Global_DATA[i][ii-1][0])continue;
-       if(!Global_DATA[i][ii+1][0])continue;
-       if(parseInt(Global_DATA[i][ii][3])>0){
-        let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
-        let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-        let yyy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
-        let xxx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
-        km+=(wialon.util.Geometry.getDistance(yy,xx,yyy,xxx))/1000;
+        if(Global_DATA[i][ii][0]) xy = Global_DATA[i][ii][0];
+        if(tm==0)tm = Global_DATA[i][ii][1].slice(11, 16);
+        
        }
 
-       if(ii==Global_DATA[i].length-2){
+      if(ii==Global_DATA[i].length-2){
         if(stoyanka>sttime){ 
-          let y = parseFloat(Global_DATA[i][ii-1][0].split(',')[0]);
-          let x = parseFloat(Global_DATA[i][ii-1][0].split(',')[1]);
+          let y = parseFloat(xy.split(',')[0]);
+          let x = parseFloat(xy.split(',')[1]);
           if(!x) x = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
           if(!y) y = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-          for (let j = 0; j<stor.length; j++){
-            if(wialon.util.Geometry.getDistance(y,x,stor[j][0],stor[j][1])<stor[j][2]){
-              adres=stor[j][3];
+          for (let j = 0; j<stor_marshrut_avto.length; j++){
+            if(wialon.util.Geometry.getDistance(y,x,stor_marshrut_avto[j][0],stor_marshrut_avto[j][1])<stor_marshrut_avto[j][2]){
+              adres=stor_marshrut_avto[j][3];
               if(adres0!=adres){
-                html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
+                html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"  ("+ tm+")</span>  - ";
+                routeString += adres + "|"; 
                 adres0=adres;
               }
               break;
             }
-            if(j ==stor.length-1){
+            if(j ==stor_marshrut_avto.length-1){
               for (let jj = 0; jj<temp_stor.length; jj++){
                 if(wialon.util.Geometry.getDistance(y,x,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
                   adres=temp_stor[jj][3];
                   if(adres0!=adres){
-                    html+=" "+adres+" -";
+                    html+=" "+adres+"  ("+ tm+")  - ";
+                    routeString += adres + "|"; 
                     adres0=adres;
                   }
                   break;
@@ -7604,7 +7615,8 @@ async function marshrut_avto(){
                     if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
                   await sleep(500); 
                   if(adres0!=adres){
-                    html+=" "+adres+" -";
+                    html+=" "+adres+"  ("+ tm+")  - ";
+                    routeString += adres + "|";
                     adres0=adres;
                   }
                   temp_stor.push([y, x,600,adres]);
@@ -7616,6 +7628,20 @@ async function marshrut_avto(){
         }
 
        }
+
+
+       if(!Global_DATA[i][ii][0])continue;
+       if(!Global_DATA[i][ii-1][0])continue;
+       if(!Global_DATA[i][ii+1][0])continue;
+       if(parseInt(Global_DATA[i][ii][3])>0){
+        let yy = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
+        let xx = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
+        let yyy = parseFloat(Global_DATA[i][ii+1][0].split(',')[0]);
+        let xxx = parseFloat(Global_DATA[i][ii+1][0].split(',')[1]);
+        km+=(wialon.util.Geometry.getDistance(yy,xx,yyy,xxx))/1000;
+       }
+
+
 
        if(parseInt(Global_DATA[i][ii][3])>=5){
         if(!Global_DATA[i][ii][0])continue;
@@ -7630,21 +7656,23 @@ async function marshrut_avto(){
             let x = parseFloat(Global_DATA[i][ii-1][0].split(',')[1]);
             if(!x) x = parseFloat(Global_DATA[i][ii][0].split(',')[0]);
             if(!y) y = parseFloat(Global_DATA[i][ii][0].split(',')[1]);
-            for (let j = 0; j<stor.length; j++){
-              if(wialon.util.Geometry.getDistance(y,x,stor[j][0],stor[j][1])<stor[j][2]){
-                adres=stor[j][3];
+            for (let j = 0; j<stor_marshrut_avto.length; j++){
+              if(wialon.util.Geometry.getDistance(y,x,stor_marshrut_avto[j][0],stor_marshrut_avto[j][1])<stor_marshrut_avto[j][2]){
+                adres=stor_marshrut_avto[j][3];
                 if(adres0!=adres){
-                  html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
+                  html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"  ("+ tm+")</span>  - ";
+                  routeString += adres + "|";
                   adres0=adres;
                 }
                 break;
               }
-              if(j ==stor.length-1){
+              if(j ==stor_marshrut_avto.length-1){
                 for (let jj = 0; jj<temp_stor.length; jj++){
                   if(wialon.util.Geometry.getDistance(y,x,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
                     adres=temp_stor[jj][3];
                     if(adres0!=adres){
-                      html+=" "+adres+" -";
+                      html+=" "+adres+"  ("+ tm+")  - ";
+                      routeString += adres + "|";
                       adres0=adres;
                     }
                     break;
@@ -7656,7 +7684,8 @@ async function marshrut_avto(){
                       if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
                     await sleep(500); 
                     if(adres0!=adres){
-                      html+=" "+adres+" -";
+                      html+=" "+adres+"  ("+ tm+")  - ";
+                      routeString += adres + "|";
                       adres0=adres;
                     }
                     temp_stor.push([y, x,600,adres]);
@@ -7668,7 +7697,8 @@ async function marshrut_avto(){
           }else{
             if(ii<31)continue;
             if(ii>Global_DATA[i].length-11)continue;
-            if(stoyanka==0)continue;
+            //if(stoyanka==0)continue;
+            if(parseInt(Global_DATA[i][ii+v][3])>20)continue;
         
             let y0 = 0;
             let x0 = 0;
@@ -7754,21 +7784,23 @@ async function marshrut_avto(){
               //L.polyline([[y0, x0],[y1, x1]], {color: '#55ff33'}).addTo(map);
               //L.polyline([[y1, x1],[y2, x2]], {color: '#55ff33'}).addTo(map);
               
-              for (let j = 0; j<stor.length; j++){
-                if(wialon.util.Geometry.getDistance(y1,x1,stor[j][0],stor[j][1])<stor[j][2]){
-                  adres=stor[j][3];
+              for (let j = 0; j<stor_marshrut_avto.length; j++){
+                if(wialon.util.Geometry.getDistance(y1,x1,stor_marshrut_avto[j][0],stor_marshrut_avto[j][1])<stor_marshrut_avto[j][2]){
+                  adres=stor_marshrut_avto[j][3];
                   if(adres0!=adres){
-                    html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"</span> -";
+                    html+="<span style = 'background:rgb(170, 248, 170);'> "+adres+"  ("+ Global_DATA[i][ii][1].slice(11, 16)+")</span>  - ";
+                    routeString += adres + "|";
                     adres0=adres;
                   }
                   break;
                 }
-                if(j ==stor.length-1){
+                if(j ==stor_marshrut_avto.length-1){
                   for (let jj = 0; jj<temp_stor.length; jj++){
                     if(wialon.util.Geometry.getDistance(y1,x1,temp_stor[jj][0],temp_stor[jj][1])<temp_stor[jj][2]){
                       adres=temp_stor[jj][3];
                       if(adres0!=adres){
-                        html+=" "+adres+" -";
+                        html+=" "+adres+"  ("+ Global_DATA[i][ii][1].slice(11, 16)+")  - ";
+                        routeString += adres + "|";
                         adres0=adres;
                       }
                       break;
@@ -7780,7 +7812,8 @@ async function marshrut_avto(){
                         if (data) {let adr =data[0].split(', '); adres =adr[adr.length-1].replace(/[0-9]| km from |\.|\s/g, '');}});
                       await sleep(500); 
                       if(adres0!=adres){
-                        html+=" "+adres+" -";
+                        html+=" "+adres+"  ("+ Global_DATA[i][ii][1].slice(11, 16)+")  - ";
+                        routeString += adres + "|";
                         adres0=adres;
                       }
                       temp_stor.push([y1, x1,600,adres]);
@@ -7794,15 +7827,31 @@ async function marshrut_avto(){
           stoyanka=0;
           points=0;
           adres='';
+          tm=0;
        }
 
  
      }
-     if(km.toFixed()>0)$("#unit_table").append("<tr class='fail_trak' id='"+id+"," + lat+","+lon+ "'><td align='left'>"+nametr+"</td><td>"+start.slice(11, 16) +"</td><td>"+end.slice(11, 16) +"</td><td>"+html.slice(0, -1) +"</td><td>"+ km.toFixed()+"</td></tr>");
+     if(km.toFixed()>0){
+       let hash = getRouteId(routeString);
+       $("#unit_table").append("<tr class='fail_trak' id='"+id+"," + lat+","+lon+ "'><td align='left'>"+nametr+"</td><td>"+start.slice(11, 16) +"</td><td>"+end.slice(11, 16) +"</td><td>"+html.slice(0, -2) +"</td><td>"+ km.toFixed()+"</td><td>"+ hash+"</td></tr>");
+     }
     }
     }
     msg('Завантажено зівт маршрутів авто');
     }
+
+    // Функция получения уникального числа (алгоритм FNV-1a)
+      function getRouteId(str) {
+          let hash = 2166136261;
+          for (let i = 0; i < str.length; i++) {
+              hash ^= str.charCodeAt(i);
+              hash = Math.imul(hash, 16777619);
+          }
+          return hash >>> 0; // Превращаем в положительное целое число
+      }
+
+
 
 
     async function magazin(data) { 
