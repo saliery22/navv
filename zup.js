@@ -2346,6 +2346,16 @@ $("#men8").on("click", function (){
     
 }
 
+$("#serch").click(function() {
+  var unitId = treeselect3.value;
+    var popupp = markerByUnit[unitId];
+    if (unitId === 0) return;  
+   popupp.openPopup();   
+   layers[0]=0;
+   show_track();
+   if ($('#grafik').is(':hidden')) {}else{ show_gr();}
+ });
+
 let rote_map_x1=0;
 let rote_map_y1=0;
 let rote_point=[];
