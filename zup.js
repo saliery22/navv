@@ -9650,7 +9650,7 @@ if($("#unit_table tr").length==0){
          if(xx0==0){xx0 = parseFloat(Global_DATA[i][ii][0].split(',')[1]);yy0 = parseFloat(Global_DATA[i][ii][0].split(',')[0]);continue;}
          t_km+=(Global_DATA[i][ii][4]-Global_DATA[i][ii-1][4])/1000;
          dis = wialon.util.Geometry.getDistance(yy,xx,yy0,xx0);
-         if(dis<500000){
+         if(dis<100000){
           km+=dis;
           let l = L.polyline([[yy,xx],[yy0,xx0]], {color: color,weight:weight,opacity:1}).addTo(map);
           l.id = idd;
