@@ -3010,6 +3010,18 @@ L.easyButton('<img src="kmm.png" title="пробіг">', function(){
   } 
  }).addTo(map);
 
+ L.easyButton('<img src="fulskrin.png" title="на весь екран">', async function(){
+      try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.error('Ошибка полноэкранного режима:', err);
+    }
+ }).addTo(map);
+
 
 
   L.easyButton('<img src="kamaz.png" title="Авто Камаз">', function(){ fast_grop(["Авто Камаз"]) }).setPosition('topright').addTo(map);
